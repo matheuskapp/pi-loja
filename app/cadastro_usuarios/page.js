@@ -20,17 +20,6 @@ export default function CadastroUsuarios() {
               <img src="/logo.png" width="120" />
             </div>
 
-            <ul className="menu-links">
-
-              <div  class="list-group">
-                                  
-                <a href="#" class="list-group-item list-group-item-action">Vendas</a>
-                <a href="#" class="list-group-item list-group-item-action">Produtos</a>
-                <a href="#" class="list-group-item list-group-item-action">Clientes</a>
-
-              </div>
-            </ul>
-
             <hr />
 
             <div className="usuario">
