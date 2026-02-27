@@ -1,42 +1,37 @@
-export default function TabelaProdutos() {
+export function TabelaProdutos() {
     return (
-        <div className="tabelaprodutos">
-            <div className="col-9">
-                <div>
-                    <div className="mt-5"></div>
+        <div>
 
-                    <div className="row">
-                        <div className="col-6">
-                            <div className="input-group mb-3">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Pesquisar"
-                                />
-                                <button
-                                    className="btn btn-outline-secondary"
-                                    type="button"
-                                    id="button-addon2"
-                                >
-                                    🔍
-                                </button>
-                            </div>
-                        </div>
+            <div />
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nome</th>
 
-                        <div className="col-2"></div>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>ID</td>
+                        <td>Nome</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>ID</td>
+                        <td>Nome</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>ID</td>
+                        <td>Nome</td>
+                    </tr>
+        </tbody>
+            </table>
 
-                        <div className="col-4">
-                            <select className="form-select" defaultValue="">
-                                <option value="" hidden>
-                                    Filtrar
-                                </option>
-                                <option value="1">Ativo</option>
-                                <option value="2">Inativo</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     );
 }

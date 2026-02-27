@@ -1,4 +1,5 @@
 import Estrutura_vendas from "./Estrutura_vendas";
+
 import "./Style.css";
 import "./Estrutura.css";
 
