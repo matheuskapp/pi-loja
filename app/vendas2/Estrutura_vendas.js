@@ -1,4 +1,3 @@
-import "./Estrutura.css"
 
 export default function Estrutura_vendas() {
   return (
