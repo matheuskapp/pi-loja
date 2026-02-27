@@ -1,21 +1,30 @@
 import BarraLateral from "./barra_lateral";
 import Cabecalho from "./cabecalho";
-import TabelaProdutos from "./tabela_produtos";
-import "./home.css"
 import { BotaoAdicionarProdutos } from "./botao_adicionar_produtos";
+import { TabelaProdutos } from "./tabela_produtos";
+import "./home.css"
+import BarraPesquisa from "./barra_pesquisa";
 
-export default function Produtos2(){
-    return(
-        <div>
-        <Cabecalho />
-    
-        <TabelaProdutos />
+export default function Produtos2() {
+    return (
+        <div className="containerProdutos">
 
-        <BarraLateral />
+            <BarraLateral />
 
-        <BotaoAdicionarProdutos />
+            <div className="containerTabela">
+
+                <div className="containerCabecalho">
+                    
+                    <Cabecalho />
+
+                    <BarraPesquisa />
         
-        <TabelaProdutos />
+                    <BotaoAdicionarProdutos />
+
+                </div>
+
+                <TabelaProdutos />
+            </div>
 
 
         </div>

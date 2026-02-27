@@ -2,7 +2,6 @@ export function TabelaProdutos() {
     return (
         <div>
 
-            <div />
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -28,7 +27,7 @@ export function TabelaProdutos() {
                         <td>ID</td>
                         <td>Nome</td>
                     </tr>
-        </tbody>
+                </tbody>
             </table>
 
 
