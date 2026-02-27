@@ -1,0 +1,27 @@
+.barralateral{
+    background-color: #656565;
+    color: #FFF;
+    height: 100vh;
+    position: relative;
+}
+
+.barralateral button{
+    color: #FFF;
+}
+
+.barralateral .list-group a{
+    background-color:transparent;
+    color: #FFF;
+    border-color: #777;
+}
+.barralateral .list-group a:hover{
+    background-color: #555;
+    color: #FFF;
+}
+
+.barralateralPerfil{
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+}
