@@ -1,9 +1,9 @@
-import Link from "next/link";
-import "./barra_lateral.css";
-
-export default function BarraLateral() {
+import 'bootstrap/dist/css/bootstrap.min.css'
+import "./cadastro_clientes.css"
+export default function CadastroClientes() {
     return (
-        <div className="containerBarraLateral">
+        <div>
+<div className="containerBarraLateral">
 
             <div className="BarraLateral">
                 <div className="text-center mb-4">
@@ -50,6 +50,7 @@ export default function BarraLateral() {
             </div>
 
         </div>
+
+        </div>
     )
 }
-

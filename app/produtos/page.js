@@ -4,7 +4,6 @@ import BarraPesquisa from "./barra_pesquisa";
 import { BotaoAdicionarProdutos } from "./botao_adicionar_produtos";
 import { TabelaProdutos } from "./tabela_produtos";
 import Cabecalho from "./cabecalho";
-import "./home.css";
 
 
 
