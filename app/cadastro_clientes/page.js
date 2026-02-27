@@ -24,8 +24,8 @@ export default function CadastroClientes() {
                 {/* CONTEÚDO */}
                 <div>
 
-                    <div className="titulo">
-                        Cadastro de clientes
+                    <div className="titulo" >
+                        <p>Cadastro de Clientes</p>
 
                         <form>
                             <div class="input-group input-group-sm mb-3">
