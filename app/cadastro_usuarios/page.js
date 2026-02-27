@@ -38,6 +38,7 @@ export default function CadastroUsuarios() {
 
             <div className="voltar">
               Voltar
+              
             </div>
 
           </div>

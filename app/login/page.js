@@ -2,7 +2,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import "./login.css"
 
 
-
 export default function Login() {
     return (
 
@@ -39,7 +38,7 @@ export default function Login() {
 
                                 <label>
                                     Usuário:
-                                    <input size="50" type="text" class="form-control" aria-label="Username"></input>
+                                    <input size="60" type="text" class="form-control" aria-label="Username"></input>
 
                                 </label>
 
