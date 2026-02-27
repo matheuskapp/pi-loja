@@ -1,4 +1,4 @@
-.containerBarraLateral {
+/* .containerBarraLateral {
     background-color: #656565;
     color: #FFF;
     height: 100vh;
@@ -24,4 +24,26 @@
     position: absolute;
     bottom: 50px;
     color: #FFF;
+} */
+
+.containerBarraLateral {
+  width: 260px;
+  height: 100vh;
+  position: fixed;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding-top: 20px;
+}
+
+.containerBarraLateral .nav-link {
+  color: #334155;
+  border-radius: 10px;
+  margin: 5px 15px;
+  font-weight: 500;
+}
+
+.containerBarraLateral .nav-link:hover,
+.containerBarraLateral .nav-link.active {
+  background-color: #e2e8f0;
+  color: #0d6efd;
 }

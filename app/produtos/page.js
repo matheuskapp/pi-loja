@@ -1,4 +1,5 @@
-import BarraLateral from "./barra_lateral";
+
+import BarraLateral from "../components/barra_lateral";
 import BarraPesquisa from "./barra_pesquisa";
 import { BotaoAdicionarProdutos } from "./botao_adicionar_produtos";
 import { TabelaProdutos } from "./tabela_produtos";
@@ -12,7 +13,7 @@ export default function Produtos() {
         <div className="row">
             <div className="col-2">
 
-                <BarraLateral />
+                <BarraLateral/>
 
             </div>
 
