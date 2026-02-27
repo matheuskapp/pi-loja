@@ -1,8 +1,7 @@
 import Estrutura_vendas from "./Estrutura_vendas";
-import Link from "next/link";
 
-import "./Style.css";
-import "./Estrutura.css";
+
+
 import BarraLateral from "../components/barra_lateral";
 
 export default function Vendas() {
