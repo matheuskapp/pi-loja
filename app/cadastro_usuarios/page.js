@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "./usuarios.css"
+import BarraLateral from '../components/barra_lateral';
 
 
 
@@ -11,40 +12,15 @@ export default function CadastroUsuarios() {
       <div className="container-fluid">
         <div className="row">
 
-          {/* MENU */}
-          <div className="col-3 menu">
+          <div className='col-2'>
 
-            <div className="text-center mt-4">
-              <img src="/logo.png" width="120" />
-            </div>
-
-            <ul className="menu-links">
-
-              <div  class="list-group">
-                                  
-                <a href="#" class="list-group-item list-group-item-action">Vendas</a>
-                <a href="#" class="list-group-item list-group-item-action">Produtos</a>
-                <a href="#" class="list-group-item list-group-item-action">Clientes</a>
-
-              </div>
-            </ul>
-
-            <hr />
-
-            <div className="usuario">
-              Usuários
-              <div className="admin">admin</div>
-            </div>
-
-            <div className="voltar">
-              Voltar
-            </div>
+          <BarraLateral />
 
           </div>
 
 
           {/* CONTEÚDO */}
-          <div className="col-9 conteudo">
+          <div className="col-10 conteudo">
 
             <div className="titulo">
               <ol class="breadcrumb">
