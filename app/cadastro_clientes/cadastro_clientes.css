@@ -15,20 +15,20 @@
  padding: 0;
  margin-top: 30px;
 
- background-color:#3d4043
+ background-color:#303133
  
 
 }
 
-.menu-links li {
+.menu-links  {
  margin: 20px 0;
  font-size: 20px;
  cursor: pointer;
-background-color: #3d4043
+background-color: #18191a
 }
 
 .menu-links li:hover {
- color: #0c0c0c;
+ color: #000000;
 }
 
 .usuario {
