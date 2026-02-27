@@ -41,18 +41,37 @@ export function BotaoAdicionarProdutos() {
                                         <input
                                             type="text"
                                             className="form-control"
-                                            placeholder="Nome de Usuário"
+                                            placeholder="Nome"
                                         />
                                     </label>
                                 </div>
 
                                 <div className="mb-3">
+                                    {/* w-100 */}
                                     <label className="form-label w-100">
                                         <input
-                                            type="password"
+                                            type="text"
                                             className="form-control"
-                                            placeholder="Senha"
+                                            placeholder="SKU"
                                         />
+                                    </label>
+                                </div>
+
+                                <div className="mb-3">
+                                    {/* w-100 */}
+                                    <label className="form-label w-100">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Preço"
+                                        />
+                                    </label>
+                                </div>
+
+                                <div className="mb-3">
+                                    {/* w-100 */}
+                                    <label className="form-label w-100">
+                                        <textarea className="form-control" placeholder="Descrição"></textarea>
                                     </label>
                                 </div>
                             </div>
