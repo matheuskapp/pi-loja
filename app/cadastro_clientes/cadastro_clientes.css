@@ -1,0 +1,67 @@
+.menu {
+ background: #3d4043;
+ color: white;
+ height: 100vh;
+ padding: 20px;
+ position: relative;
+}
+
+.menu img {
+ margin-bottom: 30px;
+}
+
+.menu-links {
+ list-style: none;
+ padding: 0;
+ margin-top: 30px;
+
+ background-color:#3d4043
+ 
+
+}
+
+.menu-links li {
+ margin: 20px 0;
+ font-size: 20px;
+ cursor: pointer;
+background-color: #3d4043
+}
+
+.menu-links li:hover {
+ color: #0b1016;
+}
+
+.usuario {
+ margin-top: 40px;
+ font-size: 18px;
+}
+
+.admin {
+ font-size: 14px;
+ color: #ccc;
+}
+
+.voltar {
+ position: absolute;
+ bottom: 80px;
+ left: 20px;
+ font-size: 22px;
+ cursor: pointer;
+}
+
+.conteudo {
+ background: #e8e9eb;
+ height: 100vh;
+ padding: 30px;
+}
+
+.titulo {
+ background: #26282b;
+ color: white;
+ padding: 30px;
+ width: 80%;
+ margin: 40px auto;
+ text-align: center;
+ font-size: 24px;
+ border-radius: 15px;
+}
