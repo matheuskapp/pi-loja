@@ -1,6 +1,6 @@
 export function BotaoAdicionarProdutos() {
     return (
-        <div className="containerBotao">
+        <div className="containerBotao mb-3 text-end">
 
             <div >
                 <button

@@ -1,6 +1,6 @@
 export default function BarraPesquisa() {
     return (
-        <div className="barradepesquisa">
+        <div className="barradepesquisa mb-3 p-5">
             <div className="row">
                 <div className="col-6">
                     <div className="input-group">

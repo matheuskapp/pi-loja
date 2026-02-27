@@ -1,65 +1,27 @@
-.barralateral {
+.containerBarraLateral {
     background-color: #656565;
     color: #FFF;
     height: 100vh;
     position: relative;
 }
 
-.barralateral button {
+.containerBarraLateral button {
     color: #FFF;
 }
 
-.barralateral .list-group a {
+.containerBarraLateral .list-group a {
     background-color: transparent;
     color: #FFF;
     border-color: #777;
 }
 
-.barralateral .list-group a:hover {
+.containerBarraLateral .list-group a:hover {
     background-color: #555;
     color: #FFF;
 }
 
-.barralateralPerfil {
+.containerBarraLateralPerfil {
     position: absolute;
     bottom: 50px;
     color: #FFF;
-}
-
-.containerBotao {
-    display: flex;
-    flex-direction: column;
-    
-}
-
-.meuBotao {
-    padding: 10px 20px;
-}
-
-.containerProdutos {
-    display: flex;
-    flex-direction: row;
-}
-
-.containerTabela {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-}
-
-.containerCabecalho {
-    
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    /* margin-bottom: 20px; */
-}
-
-.barradepesquisa {
-    display: flex;
-    flex-direction: row;
-    
 }
