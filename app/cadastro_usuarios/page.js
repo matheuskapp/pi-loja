@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import "./usuarios.css"
+
+import BarraLateral from '../components/barra_lateral';
 
 
 
@@ -10,6 +11,7 @@ export default function CadastroUsuarios() {
 
       <div className="container-fluid">
         <div className="row">
+          <BarraLateral/>
 
           {/* MENU */}
           <div className="col-3 menu">
@@ -38,7 +40,7 @@ export default function CadastroUsuarios() {
 
             <div className="voltar">
               Voltar
-              
+
             </div>
 
           </div>
@@ -48,10 +50,7 @@ export default function CadastroUsuarios() {
           <div className="col-9 conteudo">
 
             <div className="titulo">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Usuário</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Cadastro de Usuários</li>
-              </ol>
+              
               <h1> Cadastro de Usuários </h1>
 
               <form onsubmit="salvar(event)">
