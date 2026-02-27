@@ -1,3 +1,6 @@
+import "./botao_adicionar_produtos.css";
+
+
 export function BotaoAdicionarProdutos() {
     return (
         <div className="containerBotao mb-3 text-end">
@@ -5,7 +8,7 @@ export function BotaoAdicionarProdutos() {
             <div >
                 <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-gradient"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
                 >
