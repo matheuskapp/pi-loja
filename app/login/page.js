@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import "./login.css"
+
 import BarraLateral from '../components/barra_lateral';
 
 
@@ -10,54 +10,42 @@ export default function Login() {
 
             <div className="container-fluid">
                 <div className="row">
-                    <BarraLateral/>
 
-                    {/* MENU */}
-                    <div className="col-3 menu">
-
-                        <div className="text-center mt-4">
-                            <img src="/logo.png" width="120" />
-                        </div>
-
-
-
-                        <hr />
-
-                        <div className="voltar">
-                            Voltar
-                        </div>
+                    <div className='col-2'>
+                        <BarraLateral />
 
                     </div>
 
-
                     {/* CONTEÚDO */}
-                    <div className="col-9 conteudo">
+                    <div className="col-10 ">
+
 
                         <div className="titulo">
                             <h1> Login </h1>
                             <br />
                             <form onsubmit="salvar(event)">
 
-                                <label>
-                                    Usuário:
-                                    <input size="60" type="text" class="form-control" aria-label="Username"></input>
-
-                                </label>
+                                <div>
+                                    <label for="exampleInputPassword1" class="form-label">Usuário</label>
+                                    <input type="text" class="form-control" id="exampleInputPassword1" />
+                                </div>
 
                                 <br /> <br />
 
                                 <form>
 
-                                    <div class="emailSenha">
+                                    <div>
                                         <label for="exampleInputPassword1" class="form-label">Senha</label>
                                         <input type="password" class="form-control" id="exampleInputPassword1" />
                                     </div>
                                     <br />
 
+                                    
 
-                                    <button type="Salvar" class="btn btn-primary">Salvar</button>
+                                    <button type="Salvar" class="btn btn-primary me-5">Salvar</button>
                                     <button type="button" class="btn btn-dark">Cancelar</button>
 
+                                    
                                 </form>
 
                                 <br /><br />
