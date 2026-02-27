@@ -4,9 +4,10 @@ export default function CadastroClientes() {
     return (
         <div>
 
-            <h1>Cadastro de Clientes</h1>
+           
 
             <div className="container-fluid">
+                 <h1>Cadastro de Clientes</h1>
                 <div className="row">
 
                     {/* MENU */}
@@ -19,7 +20,7 @@ export default function CadastroClientes() {
                         <div class="menu-links list-group list-group-flush my-5">
 
                             <ul className="menu-links">
-                                <li><a href="#" class="list-group-item-action">Vendas</a></li>
+                                <li><a href="#" class="list-group-item list-group-item-action">Vendas</a></li>
                                 <li><a href="#" class="list-group-item list-group-item-action ">Produtos</a></li>
                                 <li><a href="#" class="list-group-item list-group-item-action">Prdutos</a></li>
                             </ul>
@@ -77,48 +78,7 @@ export default function CadastroClientes() {
 
                 </div>
             </div>
-            <form>
-                <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">Nome completo</span>
-                    <input type="text" class="form-control" />
-                </div>
-                <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">CPF</span>
-                    <input type="number" class="form-control" />
-                </div>
-                <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">Telefone</span>
-                    <input type="number" class="form-control" />
-                </div>
-                <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">E-mail</span>
-                    <input type="text" class="form-control" />
-                </div>
-                <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">Endereço</span>
-                    <input type="text" class="form-control" />
-                </div>
-                <button>Salvar Cliente</button>
-            </form>
-            <br></br>
-            <br></br>
-
-
-            <div class="card">
-                <h3 class="text-center">📋 Clientes cadastrados</h3>
-
-                <table lass="text-center" >
-                    <thead lass="text-center">
-                        <tr>
-                            <th>Cliente</th>
-                            <th>Contato</th>
-                            <th>Email</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelaClientes"></tbody>
-                </table>
-            </div>
+    
 
 
 
