@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "./login.css"
+import BarraLateral from '../components/barra_lateral';
 
 
 export default function Login() {
@@ -9,6 +10,7 @@ export default function Login() {
 
             <div className="container-fluid">
                 <div className="row">
+                    <BarraLateral/>
 
                     {/* MENU */}
                     <div className="col-3 menu">
