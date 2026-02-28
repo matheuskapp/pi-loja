@@ -3,65 +3,74 @@ import "./cadastro_clientes.css"
 import BarraLateral from '../components/barra_lateral'
 export default function CadastroClientes() {
     return (
-        <div className='row'>
+        <div className="row">
             <div className='col-2'>
 
                 <BarraLateral />
 
             </div>
-            <div className='col-9'>
+            <div className="col-9">
 
-                <div className="container-fluid">
-                    <h1>Cadastro de Clientes</h1>
-
-                    <div className="voltar">
-                        ⬅ Voltar
-                    </div>
-
-                </div>
+                <div className="container-fluid" />
+                <h1>Cadastro de Clientes</h1>
 
 
-                {/* CONTEÚDO */}
-                <div>
 
-                    <div className="titulo" >
-                        <p>Cadastro de Clientes</p>
 
-                        <form>
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Nome completo</span>
-                                <input type="text" class="form-control" />
-                            </div>
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">CPF</span>
-                                <input type="number" class="form-control" />
-                            </div>
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Telefone</span>
-                                <input class="form-control" />
-                            </div>
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">E-mail</span>
-                                <input type="Email" class="form-control" />
-                            </div>
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Endereço</span>
-                                <input type="text" class="form-control" />
-                            </div>
-                            <button>Salvar</button>
-                        </form>
-                    </div>
+                <div className="titulo" >
 
                 </div>
+
+
+                <form onsubmit="salvar(event)">
+
+
+                    <br /> <br />
+
+                    <form>
+                        <div class="nomeCompleto">
+                            <label class="form-label">Nome Completo</label>
+                            <input type="text" class="form-control" />
+
+                        </div>
+                        <div class="cpf">
+                            <label class="form-label">CPF</label>
+                            <input type="number" class="form-control" />
+                        </div>
+                        <br />
+                        <div class="telefone">
+                            <label class="form-label">Telefone</label>
+                            <input type="number" class="form-control" />
+                        </div>
+                        <br />
+                        <div class="emailSenha">
+                            <label class="form-label">E-mail</label>
+                            <input type="email" class="form-control" />
+                        </div>
+                        <br />
+                        <div class="endereco">
+                            <label class="form-label">Endereço</label>
+                            <input class="form-control" />
+                        </div>
+                        <br />
+
+
+
+                        <button type="Salvar" class="btn btn-primary mp-5">Salvar</button>
+                        <button type="button" class="btn btn-dark">Cancelar</button>
+
+                    </form>
+
+                    <br /><br />
+
+                </form>
 
             </div>
 
+
+
+
         </div>
-
-
-
-
-
 
 
     )
