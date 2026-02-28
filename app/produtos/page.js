@@ -24,9 +24,7 @@ export default function Produtos() {
                 <TabelaProdutos />
 
             </div>
-            <div className="col-10 ">
-
-            </div>
+            
         </div>
 
     );

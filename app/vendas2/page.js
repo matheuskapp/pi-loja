@@ -1,54 +1,50 @@
 import Estrutura_vendas from "./Estrutura_vendas";
 
-import "./Style.css";
-import "./Estrutura.css";
+
+
+import BarraLateral from "../components/barra_lateral";
 
 export default function Vendas() {
-    return (
-        <div className="container-fluid">
-            <div className="row">
-
-                {/* MENU */}
-                <div className="col-3 menu">
-
-                    <div className="text-center mt-4">
-                        <img src="/logo.png" width="120" />
-                    </div>
-
-                    <ul className="menu-links">
-                        <li>📊 Vendas</li>
-                        <li>📦 Produtos</li>
-                        <li>👥 Clientes</li>
-                    </ul>
-
-                    <hr />
-
-                    <div className="usuario">
-                        👤 Usuários
-                        <div className="admin">admin</div>
-                    </div>
-
-                    <div className="voltar">
-                        ⬅ Voltar
-                    </div>
-
-                </div>
+  return (
 
 
-                {/* CONTEÚDO */}
-                <div className="col-9 conteudo">
+    <div className="row">
+      
 
-                    {/* TÍTULO */}
-                    <div className="titulo">
-                        Vendas
-                    </div>
 
-                    {/* VISUALIZAÇÃO */}
-                    <Estrutura_vendas />
+        {/* SIDEBAR */}
 
-                </div>
+        <div className="col-2">
 
-            </div>
+          <BarraLateral />
+
         </div>
-    );
+
+        <div className="col-10 p-4">
+
+          {/* TOPO DASHBOARD */}
+          <div className="d-flex justify-content-between align-items-center mb-4">
+
+            <div>
+              <h2 className="fw-bold mb-1">Dashboard</h2>
+              <small className="text-muted">
+                Visão geral do seu negócio • 26/02/2026
+              </small>
+            </div>
+
+            <button className="btn btn-dark d-flex align-items-center gap-2 px-4 py-2">
+              <i className="bi bi-cart3"></i>
+              Nova Venda
+            </button>
+
+          </div>
+
+          <Estrutura_vendas />
+
+        </div>
+
+
+      
+    </div>
+  );
 }
