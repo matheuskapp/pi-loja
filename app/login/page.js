@@ -43,7 +43,7 @@ export default function Login() {
 
 
                                     <button type="button" class="btn btn-outline-success me-3">Salvar</button>
-                                    <button type="button" class="btn btn-outline-danger me-5">Cancelar</button>
+                                    <button type="button" class="btn btn-outline-danger me-3">Cancelar</button>
 
 
                                 </form>
