@@ -1,5 +1,5 @@
 import Link from "next/link";
-import "./barra_lateral.css";
+import "./barra_lateral.css"
 
 export default function BarraLateral() {
     return (
@@ -52,4 +52,3 @@ export default function BarraLateral() {
         </div>
     )
 }
-
