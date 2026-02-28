@@ -40,12 +40,12 @@ export default function Login() {
                                     </div>
                                     <br />
 
-                                    
 
-                                    <button type="Salvar" class="btn btn-primary me-5">Salvar</button>
-                                    <button type="button" class="btn btn-dark">Cancelar</button>
 
-                                    
+                                    <button type="button" class="btn btn-outline-success me-3">Salvar</button>
+                                    <button type="button" class="btn btn-outline-danger me-5">Cancelar</button>
+
+
                                 </form>
 
                                 <br /><br />
