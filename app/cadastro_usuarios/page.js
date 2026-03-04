@@ -49,8 +49,8 @@ export default function CadastroUsuarios() {
               <option value="2">Colaborador</option>
 
             </select>
-<button type="button" class="btn btn-outline-success me-3">Salvar</button>
-                                    <button type="button" class="btn btn-outline-danger me-3">Cancelar</button>
+            <button type="button" class="btn btn-outline-success me-3">Salvar</button>
+            <button type="button" class="btn btn-outline-danger me-3">Cancelar</button>
           </form>
 
           <br /><br />
