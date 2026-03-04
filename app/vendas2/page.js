@@ -34,7 +34,7 @@ export default function Vendas() {
 
             <button className="btn btn-dark d-flex align-items-center gap-2 px-4 py-2">
               <i className="bi bi-cart3"></i>
-              Nova Venda
+            🛒 Nova Venda
             </button>
 
           </div>
