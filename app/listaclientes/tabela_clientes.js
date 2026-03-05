@@ -163,7 +163,7 @@ function TabelaClientes() {
             endereco: endereco,
 
         }
-        console.log(objeto)
+       alteraListaClientes(listaClientes.concat(objeto))
     }
     return (
         <div>
