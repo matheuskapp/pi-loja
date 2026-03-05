@@ -47,6 +47,86 @@ export default function Estrutura_vendas() {
 
       </div>
 
+      <div className="row mt-5">
+        <div className="col-12">
+          <div className="card shadow-sm" style={{ minHeight: "400px" }}>
+            <div className="card-body">
+              <h5 className="fw-bold mb-3">Aqui vai um gráfico de Vendas</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div className="row mt-5">
+
+        <div className="col-sm-6 mb-3 mb-sm-0">
+          <div className="card shadow-sm h-100" style={{ minHeight: "300px" }}>
+            <div className="card-body">
+              <h5 className="card-title"><strong>Mais Vendidos</strong></h5>
+              <p className="card-text">Top 5 produtos por quantidade.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-sm-6">
+          <div className="card shadow-sm h-100" style={{ minHeight: "300px" }}>
+            <div className="card-body">
+              <h5 className="card-title"><strong>Estoque Baixo</strong></h5>
+              <p className="card-text">Produtos abaixo do mínimo.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div className="row mt-5">
+        <div className="col-12">
+          <div className="card shadow-sm">
+            <div className="card-body">
+
+              <h5 className="fw-bold mb-3 text">
+                ⚠ Sem Vendas a 30 Dias ⚠
+              </h5>
+              <p className="text-muted">
+                Produtos precisando de reposição!
+              </p>
+
+              {/* Sub-cards organizados corretamente */}
+              <div className="row g-3 mt-3">
+
+                <div className="col-md-4">
+                  <div className="border rounded p-3 h-100">
+                    <h6 className="text-muted">Camiseta Oversize </h6>
+                    <p>Rosa-XXG</p>
+                    <strong>0 vendas</strong>
+                  </div>
+                </div>
+
+                <div className="col-md-4">
+                  <div className="border rounded p-3 h-100">
+                    <h6 className="text-muted">Camiseta Polo</h6>
+                    <p>Bege-M</p>
+                    <strong>0 vendas</strong>
+                  </div>
+                </div>
+
+                <div className="col-md-3">
+                  <div className="border rounded p-3 h-100">
+                    <h6 className="text-muted">Camiseta Polo</h6>
+                    <p>Azul-P</p>
+                    <strong>0 vendas</strong>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }
+
