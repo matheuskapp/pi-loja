@@ -1,7 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "./cadastro_clientes.css"
 import BarraLateral from '../components/barra_lateral'
+
 export default function CadastroClientes() {
+
     return (
         <div className="row">
             <div className='col-2'>
@@ -56,7 +58,7 @@ export default function CadastroClientes() {
 
 
 
-                        <button type="Salvar" class="btn btn-primary mp-5">Salvar</button>
+                        <button type="Salvar" class="btn btn-primary me-3">Salvar</button>
                         <button type="button" class="btn btn-dark">Cancelar</button>
 
                     </form>
