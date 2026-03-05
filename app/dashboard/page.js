@@ -1,18 +1,14 @@
-import Estrutura_vendas from "./Estrutura_vendas";
+import DashBoard from "./DashBoard";
 
 
 
 import BarraLateral from "../components/barra_lateral";
 
-export default function Vendas() {
+export default function dashboard() {
   return (
 
 
     <div className="row">
-      
-
-
-        
 
         <div className="col-2">
 
@@ -39,7 +35,7 @@ export default function Vendas() {
 
           </div>
 
-          <Estrutura_vendas />
+          <DashBoard />
 
         </div>
 
