@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function listaFuncionarios() {
 
-    const [nome, alteraNomeCompleto] = useState("");
+    const [nome, alteraNome] = useState("");
     const [email, alteraemail] = useState("");
     const [senha, alteraSenha] = useState("");
 
@@ -87,17 +87,17 @@ export default function listaFuncionarios() {
     ]);
 
     function salvar(e) {
-        e.preventDefault()
+        e.preventDefault();
 
         const item = {
-            nome: nomeCompleto,
+            nome: nome,
             email: email,
             senha: senha,
             tipoUsuario: false
 
 
         }
-        console.log(objeto)
+        console.log(item)
        
     }
 
@@ -115,12 +115,12 @@ return (
             <p> Digite o Nome Completo</p>
             <input onChange={e => alteraNome(e.target.value)} />
             <p> Digite seu Email</p>
-            <input onChange={e => alteraemail(e.target.value)} />
+            <input onChange={e => alteraEmail(e.target.value)} />
             <p> Digite a Senha</p>
             <input onChange={e => alteraSenha(e.target.value)} />
             
             <br />
-            <button>Salvar</button>
+            <button onSubmit={salvar}>Salvar</button>
             <br /><br />
 
         </form>
