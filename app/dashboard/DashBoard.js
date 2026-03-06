@@ -1,5 +1,5 @@
 
-export default function Estrutura_vendas() {
+export default function DashBoard() {
   return (
     <div className="container-fluid">
 
