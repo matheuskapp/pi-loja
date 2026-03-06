@@ -1,10 +1,9 @@
 import Link from "next/link";
-import "./barra_lateral.css"
+import "./barra_lateral.css";
 
 export default function BarraLateral() {
     return (
         <div className="containerBarraLateral">
-
             <div className="BarraLateral">
                 <div className="text-center mb-4">
                     <h4 className="fw-bold">Boy+ Plus</h4>
@@ -12,7 +11,7 @@ export default function BarraLateral() {
 
                 <ul className="nav nav-pills flex-column">
                     <li className="nav-item">
-                        <Link href="login" className="nav-link active">
+                        <Link href="/login" className="nav-link">
                             <i className="bi bi-grid me-2"></i> Inicio
                         </Link>
                     </li>
@@ -22,7 +21,7 @@ export default function BarraLateral() {
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link href="produtos" className="nav-link">
+                        <Link href="/produtos" className="nav-link">
                             <i className="bi bi-credit-card me-2"></i> Produtos
                         </Link>
                     </li>
@@ -32,28 +31,33 @@ export default function BarraLateral() {
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link href="vendas2" className="nav-link">
-                            <i className="bi bi-gear me-2"></i> Vendas
-                        </Link>
-                        <li className="nav-item">
-                            <Link href="listaclientes" className="nav-link ">
-                                <i className="bi bi-grid me-2"></i> Clientes
-                            </Link>
-                        </li>
-                    </li>
-                    <li className="nav-item">
-                        <Link href="cadastro_clientes" className="nav-link">
-                            <i className="bi bi-gear me-2"></i> Cadastro de Clientes
+                        <Link href="/vendas2" className="nav-link">
+                            <i className="bi bi-cart me-2"></i> Vendas
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link href="cadastro_usuarios" className="nav-link">
-                            <i className="bi bi-gear me-2"></i> Usuários
+                        <Link href="/listaclientes" className="nav-link ">
+                            <i className="bi bi-people me-2"></i> Clientes
                         </Link>
                     </li>
+                    <li className="nav-item">
+                        <Link href="/cadastro_clientes" className="nav-link">
+                            <i className="bi bi-person-plus me-2"></i> Cadastro de Clientes
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link href="/cadastro_usuarios" className="nav-link">
+                            <i className="bi bi-person-gear me-2"></i> Cadastro Usuarios
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link href="/listafuncionarios" className="nav-link">
+                            <i className="bi bi-person-gear me-2"></i> Funcionarios
+                        </Link>
+                    </li>
+                    
                 </ul>
             </div>
-
         </div>
-    )
+    );
 }

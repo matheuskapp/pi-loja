@@ -1,7 +1,16 @@
+'use client'
+import { useState } from "react";
+
+
 function TabelaClientes() {
 
+    const [nome, alteraNome] = useState("")
+    const [cpf, alteraCpf] = useState()
+    const [telefone, alteraTelefone] = useState()
+    const [email, alteraEmail] = useState("")
+    const [endereco, alteraEndereco] = useState("")
 
-    const listaClientes = [
+    const [listaClientes, alteraListaClientes] = useState([
         {
             nome: "Ana Souza",
             cpf: "123.456.789-01",
@@ -142,47 +151,79 @@ function TabelaClientes() {
             email: "rodrigo.azevedo@email.com",
             endereco: "Av. Afonso Pena, 888 - Campo Grande/MS"
         }
-    ];
+    ])
 
+    function salvar(e) {
+        e.preventDefault()
+        const objeto = {
+            nome: nome,
+            cpf: cpf,
+            telefone: telefone,
+            email: email,
+            endereco: endereco,
+
+        }
+       alteraListaClientes(listaClientes.concat(objeto))
+    }
     return (
+        <div>
+
+            <form onSubmit={salvar}>
+
+                <p>Nome Completo: </p>
+                <input onChange={e => alteraNome(e.target.value)} />
+                <p>CPF: </p>
+                <input onChange={e => alteraCpf(e.target.value)} />
+                <p>Telefone: </p>
+                <input onChange={e => alteraTelefone(e.target.value)} />
+                <p>Email: </p>
+                <input onChange={e => alteraEmail(e.target.value)} />
+                <p>Endereço: </p>
+                <input onChange={e => alteraEndereco(e.target.value)} />
+                <br></br>
+
+                <button>Salvar</button>
 
 
-        
-                <div>
 
-                    <table class="table">
+            </form>
 
-                        <tr>
-                            <th scope="col">Nome</th>
-                            <th scope="col">CPF</th>
-                            <th scope="col">Telefone</th>
-                            <th scope="col">E-mail</th>
-                            <th scope="col">Endereço</th>
-                        </tr>
-                        <thead />
-                        <tbody>
 
-                            {
-                                listaClientes.map(
 
-                                    item => <tr>
 
-                                        <td>{item.nome}</td>
-                                        <td>{item.cpf}</td>
-                                        <td>{item.telefone}</td>
-                                        <td>{item.email}</td>
-                                        <td>{item.endereco}</td>
-                                    </tr>
-                                )
-                            }
-                        </tbody>
-                    </table>
+            <table class="table">
 
-                </div>
-                
-                
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">CPF</th>
+                    <th scope="col">Telefone</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Endereço</th>
+                </tr>
+                <thead />
+                <tbody>
 
-                );
+                    {
+                        listaClientes.map(
+
+                            item => <tr>
+
+                                <td>{item.nome}</td>
+                                <td>{item.cpf}</td>
+                                <td>{item.telefone}</td>
+                                <td>{item.email}</td>
+                                <td>{item.endereco}</td>
+                            </tr>
+                        )
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+
+
+    );
 }
 
-                export default TabelaClientes;
+export default TabelaClientes;
