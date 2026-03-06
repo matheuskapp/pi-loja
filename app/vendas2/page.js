@@ -12,7 +12,7 @@ export default function Vendas() {
       
 
 
-        
+        {/* SIDEBAR */}
 
         <div className="col-2">
 
@@ -22,7 +22,7 @@ export default function Vendas() {
 
         <div className="col-10 p-4">
 
-          
+          {/* TOPO DASHBOARD */}
           <div className="d-flex justify-content-between align-items-center mb-4">
 
             <div>
