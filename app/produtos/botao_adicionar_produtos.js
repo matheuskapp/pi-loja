@@ -1,7 +1,34 @@
+'use client';
+import { useState } from "react";
 import "./botao_adicionar_produtos.css";
 
 
 export function BotaoAdicionarProdutos() {
+
+
+
+    const [nome, alteraNome] = useState("");
+    const [sku, alteraSku] = useState("");
+    const [preco, alteraPreco] = useState();
+    const [descricao, alteraDescricao] = useState("");
+
+
+
+    const [listaProdutos, alteraListaProdutos] = useState([]);
+
+    function salvar(e) {
+        e.preventDefault();
+        const novoItem = {
+            nome: nome,
+            sku: sku,
+            preco: preco,
+            descricao: descricao
+        }
+
+        console.log(novoItem);
+    }
+
+
     return (
         <div className="containerBotao mb-3 text-end">
 
@@ -37,11 +64,19 @@ export function BotaoAdicionarProdutos() {
                                 ></button>
                             </div>
 
+
+
+
+                            {/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
+
+
+                        
                             <div className="modal-body">
                                 <div className="mb-3">
                                     {/* w-100 */}
                                     <label className="form-label w-100">
-                                        <input
+                                        <input onChange={e => alteraNome(e.target.value)}
+
                                             type="text"
                                             className="form-control"
                                             placeholder="Nome"
@@ -52,7 +87,7 @@ export function BotaoAdicionarProdutos() {
                                 <div className="mb-3">
                                     {/* w-100 */}
                                     <label className="form-label w-100">
-                                        <input
+                                        <input onChange={e => alteraSku(e.target.value)}
                                             type="text"
                                             className="form-control"
                                             placeholder="SKU"
@@ -63,7 +98,8 @@ export function BotaoAdicionarProdutos() {
                                 <div className="mb-3">
                                     {/* w-100 */}
                                     <label className="form-label w-100">
-                                        <input
+                                        <input onChange={e => alteraPreco(e.target.value)}
+
                                             type="text"
                                             className="form-control"
                                             placeholder="Preço"
@@ -74,10 +110,22 @@ export function BotaoAdicionarProdutos() {
                                 <div className="mb-3">
                                     {/* w-100 */}
                                     <label className="form-label w-100">
-                                        <textarea className="form-control" placeholder="Descrição"></textarea>
+                                        <input onChange={e => alteraDescricao(e.target.value)}
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Descrição"
+                                        />
+
                                     </label>
                                 </div>
                             </div>
+
+
+
+                            {/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
+
+
+
 
                             <div className="modal-footer">
                                 <button
@@ -88,7 +136,7 @@ export function BotaoAdicionarProdutos() {
                                     Fechar
                                 </button>
 
-                                <button
+                                <button onClick={salvar}
                                     type="button"
                                     className="btn btn-primary"
                                 >
