@@ -168,7 +168,7 @@ function TabelaClientes() {
     return (
         <div>
 
-            <form onSubmit={salvar}>
+           {/* <form onSubmit={salvar}>
 
                 <p>Nome Completo: </p>
                 <input onChange={e => alteraNome(e.target.value)} />
@@ -188,7 +188,7 @@ function TabelaClientes() {
 
             </form>
 
-
+           */}
 
 
             <table class="table">
