@@ -1,5 +1,14 @@
-export default function ListaFuncionarios() {
-    const funcionarios = [
+'use client'
+
+import { useState } from "react";
+
+export default function listaFuncionarios() {
+
+    const [nome, alteraNomeCompleto] = useState("");
+    const [email, alteraemail] = useState("");
+    const [senha, alteraSenha] = useState("");
+
+    const [funcionarios, alterafuncionarios] = useState([
         {
             nomeCompleto: "Ana Carolina Souza",
             email: "ana.souza@email.com",
@@ -75,49 +84,78 @@ export default function ListaFuncionarios() {
         }
 
 
-    ];
-    return (
-  
-   
+    ]);
+
+    function salvar(e) {
+        e.preventDefault()
+
+        const item = {
+            nome: nomeCompleto,
+            email: email,
+            senha: senha,
+            tipoUsuario: false
+
+
+        }
+        console.log(objeto)
        
-        <div>
-
-            <h1> Lista de Funcionários</h1>
-
-            <table class="table " >
-                <thead>
-                    <tr>
-                        <th scope="col">Nome Completo</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Senha</th>
-                        <th scope="col">Tipo de Usuário</th>
-                        
-                    </tr>
-                </thead>
-                <tbody>
-
-                    {
-                        funcionarios.map(
-                            item =>
-                                <tr>
-
-                                    <td>{item.nomeCompleto}</td>
-                                    <td>{item.email}</td>
-                                    <td>{item.senha}</td>
-                                    <td>{item.tipoUsuario}</td>
-                                    
-                                    
-                                </tr>
-
-                        )
-                    }
-
-                </tbody>
-            </table>
-        </div>
+    }
 
 
-    );
+return (
 
+
+
+    <div>
+
+        <h1> Lista de Funcionários</h1>
+
+        <form onSubmit={salvar}>
+
+            <p> Digite o Nome Completo</p>
+            <input onChange={e => alteraNome(e.target.value)} />
+            <p> Digite seu Email</p>
+            <input onChange={e => alteraemail(e.target.value)} />
+            <p> Digite a Senha</p>
+            <input onChange={e => alteraSenha(e.target.value)} />
+            
+            <br />
+            <button>Salvar</button>
+            <br /><br />
+
+        </form>
+
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Nome Completo</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Senha</th>
+                    
+
+
+                </tr>
+            </thead>
+            <tbody>
+
+                {
+                funcionarios.map(
+                        item =>
+                            <tr>
+
+                                <td>{item.nomeCompleto}</td>
+                                <td>{item.email}</td>
+                                <td>{item.senha}</td>
+                                
+
+                            </tr>
+
+                    )
+                }
+
+            </tbody>
+        </table>
+    </div >
+)
 }
-
