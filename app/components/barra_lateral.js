@@ -36,7 +36,7 @@ export default function BarraLateral() {
                             <i className="bi bi-gear me-2"></i> Vendas
                         </Link>
                         <li className="nav-item">
-                            <Link href="listaclientes" className="nav-link active">
+                            <Link href="listaclientes" className="nav-link ">
                                 <i className="bi bi-grid me-2"></i> Clientes
                             </Link>
                         </li>
