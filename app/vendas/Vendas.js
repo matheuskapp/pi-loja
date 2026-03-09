@@ -12,7 +12,7 @@ export default function Vendas() {
     const [formaPagamento, setFormaPagamento] = useState("");
     const [obsVenda, setObsVenda] = useState("");
 
-    // Lista de vendas (começa com alguns exemplos)
+    
     const [listaVendas, setListaVendas] = useState([
         { cliente: "João Silva", produto: "Camiseta Oversize", qtd: 2, desconto: "5.00", total: 114.00, pagto: "PIX" },
         { cliente: "Maria Oliveira", produto: "Calça Jeans", qtd: 1, desconto: "0.00", total: 89.90, pagto: "Cartão" }
