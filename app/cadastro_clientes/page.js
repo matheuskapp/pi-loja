@@ -1,4 +1,6 @@
 'use client'
+import { createClient } from '@supabase/supabase-js'
+const supabase = createClient('https://walrpbrbskwawykdrwna.supabase.co', 'sb_publishable_e6ELe320z3xGITtIk-2QVg_K3tLxQTa')
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "./cadastro_clientes.css"
 import BarraLateral from '../components/barra_lateral'
