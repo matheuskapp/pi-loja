@@ -4,7 +4,7 @@ import { useState } from "react";
 
 
 export default function Vendas() {
-    // Estados para o formulário
+    
     const [cliente, setCliente] = useState("");
     const [produto, setProduto] = useState("");
     const [quantidade, setQuantidade] = useState("");
@@ -12,7 +12,7 @@ export default function Vendas() {
     const [formaPagamento, setFormaPagamento] = useState("");
     const [obsVenda, setObsVenda] = useState("");
 
-    // Lista de vendas (começa com alguns exemplos)
+    
     const [listaVendas, setListaVendas] = useState([
         { cliente: "João Silva", produto: "Camiseta Oversize", qtd: 2, desconto: "5.00", total: 114.00, pagto: "PIX" },
         { cliente: "Maria Oliveira", produto: "Calça Jeans", qtd: 1, desconto: "0.00", total: 89.90, pagto: "Cartão" }
@@ -28,13 +28,13 @@ export default function Vendas() {
             desconto,
             pagto: formaPagamento,
             obs: obsVenda,
-            // Aqui você poderia calcular o total real baseado no preço do produto futuramente
+            
             total: (quantidade * 50) - (desconto || 0) 
         };
 
         setListaVendas([...listaVendas, novaVenda]);
 
-        // Limpar campos após salvar
+        
         setCliente("");
         setProduto("");
         setQuantidade("");
@@ -49,7 +49,7 @@ export default function Vendas() {
             <main style={{ marginLeft: "260px", width: "100%", padding: "24px" }}>
                 <h2 className="fw-bold mb-4">🛒 Lançar Nova Venda</h2>
 
-                {/* FORMULÁRIO DENTRO DE UM CARD */}
+                
                 <div className="card shadow-sm mb-5">
                     <div className="card-body">
                         <form onSubmit={salvarVenda} className="row g-3">
@@ -132,7 +132,7 @@ export default function Vendas() {
                     </div>
                 </div>
 
-                {/* TABELA DE VENDAS REALIZADAS */}
+                
                 <h3 className="fw-bold mb-3">Vendas Recentes</h3>
                 <div className="table-responsive bg-white rounded shadow-sm p-3">
                     <table className="table table-hover">

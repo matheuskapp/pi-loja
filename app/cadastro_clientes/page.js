@@ -22,6 +22,7 @@ export default function CadastroClientes() {
             telefone: telefone,
             email: email,
             endereco: endereco,
+            
 
         }
         console.log(objeto)

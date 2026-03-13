@@ -1,4 +1,8 @@
 'use client';
+import { createClient } from '@supabase/supabase-js'
+
+// Create a single supabase client for interacting with your database
+const supabase = createClient('https://walrpbrbskwawykdrwna.supabase.co', 'sb_publishable_e6ELe320z3xGITtIk-2QVg_K3tLxQTa')
 import { useState } from "react";
 import "./botao_adicionar_produtos.css";
 
@@ -7,27 +11,44 @@ export function BotaoAdicionarProdutos() {
 
 
 
-    const [nome, alteraNome] = useState("");
-    const [sku, alteraSku] = useState("");
-    const [preco, alteraPreco] = useState();
-    const [descricao, alteraDescricao] = useState("");
+    const [nome, alteraNome] = useState("")
+    const [sku, alteraSku] = useState("")
+    const [preco, alteraPreco] = useState()
+    // const [status, alteraStatus] = useState("")
+    // const [desconto, alteraDesconto] = useState("")
+    const [quantidade, alteraQuantidade] = useState()
+    const [descricao, alteraDescricao] = useState("")
 
-
-
-    const [listaProdutos, alteraListaProdutos] = useState([]);
-
-    function salvar(e) {
-        e.preventDefault();
-        const novoItem = {
+    async function salvar() {
+        const objetos = {
             nome: nome,
             sku: sku,
-            preco: preco,
+            preco: preco.replace(",", "."),
+            // status: status,
+            // desconto: desconto,
+            quantidade: quantidade,
             descricao: descricao
         }
+        console.log(objetos)
+        const { error } = await supabase
+            .from('produtos')
+            .insert(objetos)
 
-        console.log(novoItem);
+        console.log(error)
+
+        if (error == null) {
+            alert("Livro cadastrado com sucesso!")
+            alteraNome("")
+            alteraSku("")
+            alteraPreco("")
+            // alteraStatus("")
+            // alteraDesconto("")
+            alteraQuantidade("")
+            alteraDescricao("")
+        } else {
+            alert("Dados invalidos, verifique os campos e tente novamente")
+        }
     }
-
 
     return (
         <div className="containerBotao mb-3 text-end">
@@ -70,12 +91,12 @@ export function BotaoAdicionarProdutos() {
                             {/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
 
 
-                        
+
                             <div className="modal-body">
                                 <div className="mb-3">
                                     {/* w-100 */}
                                     <label className="form-label w-100">
-                                        <input onChange={e => alteraNome(e.target.value)}
+                                        <input value={nome} onChange={e => alteraNome(e.target.value)}
 
                                             type="text"
                                             className="form-control"
@@ -87,7 +108,7 @@ export function BotaoAdicionarProdutos() {
                                 <div className="mb-3">
                                     {/* w-100 */}
                                     <label className="form-label w-100">
-                                        <input onChange={e => alteraSku(e.target.value)}
+                                        <input value={sku} onChange={e => alteraSku(e.target.value)}
                                             type="text"
                                             className="form-control"
                                             placeholder="SKU"
@@ -98,7 +119,7 @@ export function BotaoAdicionarProdutos() {
                                 <div className="mb-3">
                                     {/* w-100 */}
                                     <label className="form-label w-100">
-                                        <input onChange={e => alteraPreco(e.target.value)}
+                                        <input value={preco} onChange={e => alteraPreco(e.target.value)}
 
                                             type="text"
                                             className="form-control"
@@ -110,12 +131,22 @@ export function BotaoAdicionarProdutos() {
                                 <div className="mb-3">
                                     {/* w-100 */}
                                     <label className="form-label w-100">
-                                        <input onChange={e => alteraDescricao(e.target.value)}
+                                        <input value={descricao} onChange={e => alteraDescricao(e.target.value)}
                                             type="text"
                                             className="form-control"
                                             placeholder="Descrição"
                                         />
+                                    </label>
+                                </div>
 
+                                <div className="mb-3">
+                                    {/* w-100 */}
+                                    <label className="form-label w-100">
+                                        <input value={quantidade} onChange={e => alteraQuantidade(e.target.value)}
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Quantidade"
+                                        />
                                     </label>
                                 </div>
                             </div>
