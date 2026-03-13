@@ -50,13 +50,13 @@ export default function CadastroClientes() {
             console.log(objeto)
         }
 
-         const { error } = await supabase
+        const { error } = await supabase
             .from('clientes')
             .insert(objeto)
 
         console.log(error)
 
-        if(error == null){
+        if (error == null) {
             alert("Cliente cadastrado com sucesso!")
             alteraNome("")
             alteraCpf("")
@@ -64,80 +64,86 @@ export default function CadastroClientes() {
             alteraEmail("")
             alteraEndereco("")
 
-        }else alert("Dados inválidos, verifique os campos e tente novamente...")
+        } else alert("Dados inválidos, verifique os campos e tente novamente...")
 
     }
+    
+    return (
+        <div className="row">
+            <div className='col-2'>
 
-        return (
-            <div className="row">
-                <div className='col-2'>
+                <BarraLateral />
 
-                    <BarraLateral />
+            </div>
+            <div className="col-9">
+
+                <div className="container-fluid" />
+                <h1>Cadastro de Clientes</h1>
+
+
+
+
+                <div className="titulo" >
 
                 </div>
-                <div className="col-9">
-
-                    <div className="container-fluid" />
-                    <h1>Cadastro de Clientes</h1>
 
 
+                <form onsubmit="salvar(event)">
 
 
-                    <div className="titulo" >
+                    <br /> <br />
 
-                    </div>
+                    <form>
+                        <div class="nomeCompleto">
+                            <label class="form-label">Nome Completo</label>
+                            <input onChange={e => alteraNome(e.target.value)} type="text" class="form-control" />
 
-
-                    <form onsubmit="salvar(event)">
-
-
-                        <br /> <br />
-
-                        <form>
-                            <div class="nomeCompleto">
-                                <label class="form-label">Nome Completo</label>
-                                <input onChange={e => alteraNome(e.target.value)} type="text" class="form-control" />
-
-                            </div>
-                            <div class="cpf">
-                                <label class="form-label">CPF</label>
-                                <input onChange={e => alteraCpf(e.target.value)} type="number" class="form-control" />
-                            </div>
-                            <br />
-                            <div class="telefone">
-                                <label class="form-label">Telefone</label>
-                                <input onChange={e => alteraTelefone(e.target.value)} type="number" class="form-control" />
-                            </div>
-                            <br />
-                            <div class="emailSenha">
-                                <label class="form-label">E-mail</label>
-                                <input onChange={e => alteraEmail(e.target.value)} type="email" class="form-control" />
-                            </div>
-                            <br />
-                            <div class="endereco">
-                                <label class="form-label">Endereço</label>
-                                <input onChange={e => alteraEndereco(e.target.value)} class="form-control" />
-                            </div>
-                            <br />
+                        </div>
+                        <div class="cpf">
+                            <label class="form-label">CPF</label>
+                            <input onChange={e => alteraCpf(e.target.value)} type="number" class="form-control" />
+                        </div>
+                        <br />
+                        <div class="telefone">
+                            <label class="form-label">Telefone</label>
+                            <input onChange={e => alteraTelefone(e.target.value)} type="number" class="form-control" />
+                        </div>
+                        <br />
+                        <div class="emailSenha">
+                            <label class="form-label">E-mail</label>
+                            <input onChange={e => alteraEmail(e.target.value)} type="email" class="form-control" />
+                        </div>
+                        <br />
+                        <div class="endereco">
+                            <label class="form-label">Endereço</label>
+                            <input onChange={e => alteraEndereco(e.target.value)} class="form-control" />
+                        </div>
+                        <br />
 
 
 
-                            <button onClick={salvar} type="Salvar" class="btn btn-primary me-3">Salvar</button>
-                            <button onClick={cancelar} type="button" class="btn btn-dark">Cancelar</button>
-
-                        </form>
-
-                        <br /><br />
+                        <button onClick={salvar} type="Salvar" class="btn btn-primary me-3">Salvar</button>
+                        <button onClick={cancelar} type="button" class="btn btn-dark">Cancelar</button>
 
                     </form>
 
-                </div>
+                    <br /><br />
 
-
-
+                </form>
 
             </div>
 
+                <ul>
+                {
+                    listaClientes.map(
+                        item => <li> Nome: {item.nome} CPF: {item.cpf} Telefone: {item.telefone}  E-mail: {item.email} Endereço: {item.endereco}</li>
+                    )
+                }
+            </ul>
 
-        )
-    }
+
+        </div>
+
+
+    )
+}
