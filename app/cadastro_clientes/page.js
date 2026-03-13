@@ -18,7 +18,7 @@ export default function CadastroClientes() {
 
     async function cancelar() {
         const { data, error } = await supabase
-            .from('cadastro_clientes')
+            .from('clientes')
             .select()
         console.log(data)
         alteraListaClientes(data)
@@ -51,7 +51,7 @@ export default function CadastroClientes() {
         }
 
          const { error } = await supabase
-            .from('cadastro_clientes')
+            .from('clientes')
             .insert(objeto)
 
         console.log(error)
