@@ -55,6 +55,7 @@ export default function CadastroClientes() {
             .insert(objeto)
 
         console.log(error)
+        console.log(objeto)
 
         if (error == null) {
             alert("Cliente cadastrado com sucesso!")
