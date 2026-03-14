@@ -4,7 +4,7 @@ import BarraLateral from '../components/barra_lateral';
 
 
 
-export default function CadastroUsuarios() {
+export default function CadastroFuncionarios() {
   return (
 
 
@@ -20,7 +20,7 @@ export default function CadastroUsuarios() {
         <div className="container-fluid">
 
         </div>
-        <h1> Cadastro de Usuários </h1>
+        <h1> Cadastro de Funcionarios </h1>
 
         <form onsubmit="salvar(event)">
 
