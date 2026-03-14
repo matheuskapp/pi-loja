@@ -1,63 +1,35 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createClient } from '@supabase/supabase-js'
 const supabase = createClient('https://walrpbrbskwawykdrwna.supabase.co', 'sb_publishable_e6ELe320z3xGITtIk-2QVg_K3tLxQTa')
 
 
 function TabelaClientes() {
 
-    const [nome, alteraNome] = useState("")
-    const [cpf, alteraCpf] = useState()
-    const [telefone, alteraTelefone] = useState()
-    const [email, alteraEmail] = useState("")
-    const [endereco, alteraEndereco] = useState("")
+    const [listaClientes, alteraListaClientes] = useState([])
 
-    const [listaClientes, alteraListaClientes] = useState()
+    async function buscar() {
 
-    async function salvar(e) {
-        e.preventDefault()
-        const objeto = {
-            nome: nome,
-            cpf: cpf,
-            telefone: telefone,
-            email: email,
-            endereco: endereco,
-
-        }
-       alteraListaClientes(listaClientes.concat(objeto))
-
-       const { error } = await supabase
+        const { data, error } = await supabase
             .from('clientes')
-            .select(objeto)      
+            .select()
+        console.log(data)
+        alteraListaClientes(data)
+
     }
 
-       
+    useEffect(() => {
+        buscar()
+    }, [])
+
+
 
     return (
         <div>
 
-           {/* <form onSubmit={salvar}>
-
-                <p>Nome Completo: </p>
-                <input onChange={e => alteraNome(e.target.value)} />
-                <p>CPF: </p>
-                <input onChange={e => alteraCpf(e.target.value)} />
-                <p>Telefone: </p>
-                <input onChange={e => alteraTelefone(e.target.value)} />
-                <p>Email: </p>
-                <input onChange={e => alteraEmail(e.target.value)} />
-                <p>Endereço: </p>
-                <input onChange={e => alteraEndereco(e.target.value)} />
-                <br></br>
-
-                <button>Salvar</button>
 
 
-
-            </form>
-
-           */}
-
+          
 
             <table class="table">
 
