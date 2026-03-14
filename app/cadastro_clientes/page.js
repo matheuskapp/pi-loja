@@ -1,4 +1,6 @@
 'use client'
+import { createClient } from '@supabase/supabase-js'
+const supabase = createClient('https://walrpbrbskwawykdrwna.supabase.co', 'sb_publishable_e6ELe320z3xGITtIk-2QVg_K3tLxQTa')
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "./cadastro_clientes.css"
 import BarraLateral from '../components/barra_lateral'
@@ -14,19 +16,59 @@ export default function CadastroClientes() {
 
     const [listaClientes, alteraListaClientes] = useState([]);
 
-    function salvar(e) {
-        e.preventDefault()
+    async function cancelar() {
+        const { data, error } = await supabase
+            .from('clientes')
+            .select()
+        console.log(data)
+        alteraListaClientes(data)
+    }
+
+    async function salvar() {
+
         const objeto = {
             nome: nome,
-            cpf: cpf,
+            cpf: cpf.replaceAll(".", ""),
             telefone: telefone,
             email: email,
             endereco: endereco,
-            
+
 
         }
+
+        function salvar(e) {
+            e.preventDefault()
+            const objeto = {
+                nome: nome,
+                cpf: cpf,
+                telefone: telefone,
+                email: email,
+                endereco: endereco,
+
+
+            }
+            console.log(objeto)
+        }
+
+        const { error } = await supabase
+            .from('clientes')
+            .insert(objeto)
+
+        console.log(error)
         console.log(objeto)
+
+        if (error == null) {
+            alert("Cliente cadastrado com sucesso!")
+            alteraNome("")
+            alteraCpf("")
+            alteraTelefone()
+            alteraEmail("")
+            alteraEndereco("")
+
+        } else alert("Dados inválidos, verifique os campos e tente novamente...")
+
     }
+    
     return (
         <div className="row">
             <div className='col-2'>
@@ -82,7 +124,7 @@ export default function CadastroClientes() {
 
 
                         <button onClick={salvar} type="Salvar" class="btn btn-primary me-3">Salvar</button>
-                        <button type="button" class="btn btn-dark">Cancelar</button>
+                        <button onClick={cancelar} type="button" class="btn btn-dark">Cancelar</button>
 
                     </form>
 
@@ -92,7 +134,13 @@ export default function CadastroClientes() {
 
             </div>
 
-
+                <ul>
+                {
+                    listaClientes.map(
+                        item => <li> Nome: {item.nome} CPF: {item.cpf} Telefone: {item.telefone}  E-mail: {item.email} Endereço: {item.endereco}</li>
+                    )
+                }
+            </ul>
 
 
         </div>

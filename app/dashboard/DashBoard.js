@@ -3,7 +3,7 @@ export default function DashBoard() {
   return (
     <div className="container-fluid">
 
-      
+      {/* CARDS SUPERIORES */}
       <div className="row g-4">
 
         <div className="col-md-3">
@@ -40,7 +40,7 @@ export default function DashBoard() {
 
       </div>
 
-      
+      {/* CARD GRÁFICO */}
       <div className="row mt-4">
         <div className="col-12">
           <div
@@ -52,7 +52,7 @@ export default function DashBoard() {
         </div>
       </div>
 
-      
+      {/* DOIS CARDS LADO A LADO */}
       <div className="row mt-4">
 
         <div className="col-sm-6 mb-4">
@@ -77,7 +77,7 @@ export default function DashBoard() {
 
       </div>
 
-      
+      {/* CARD ALERTA GRANDE */}
       <div className="row mt-4">
         <div className="col-12">
           <div className="card shadow p-3 mb-4 bg-body-tertiary rounded">

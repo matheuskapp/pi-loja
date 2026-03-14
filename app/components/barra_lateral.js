@@ -12,7 +12,7 @@ export default function BarraLateral() {
 
                 <ul className="nav nav-pills flex-column">
                     <li className="nav-item">
-                        <Link href="login" className="nav-link active">
+                        <Link href="login" className="nav-link">
                             <i className="bi bi-grid me-2"></i> Inicio
                         </Link>
                     </li>
@@ -38,23 +38,30 @@ export default function BarraLateral() {
 
                     </li>
                     <li className="nav-item">
-                        <Link href="cadastro_usuarios" className="nav-link">
-                            <i className="bi bi-gear me-2"></i> Usuários
+                        <Link href="cadastro_funcionarios" className="nav-link">
+                            <i className="bi bi-gear me-2"></i> Cadastro Funcionarios
                         </Link>
                     </li>
-                    <li className="nav-item">
-                        <Link href="/listaclientes" className="nav-link active">
-                            <i className="bi bi-people me-2"></i> Clientes
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link href="/cadastro_clientes" className="nav-link">
-                            <i className="bi bi-person-plus me-2"></i> Cadastro de Clientes
-                        </Link>
-                    </li>
-                </ul>
+               
+                <li className="nav-item">
+                    <Link href="/listafuncionarios" className="nav-link">
+                        <i className="bi bi-gear me-2"></i> Lista de Funcionários
+                    </Link>
+                </li>
 
-            </div >
+                <li className="nav-item">
+                    <Link href="/listaclientes" className="nav-link">
+                        <i className="bi bi-people me-2"></i> Clientes
+                    </Link>
+                </li>
+                <li className="nav-item">
+                    <Link href="/cadastro_clientes" className="nav-link">
+                        <i className="bi bi-person-plus me-2"></i> Cadastro de Clientes
+                    </Link>
+                </li>
+            </ul>
+
+        </div >
         </div >
     )
 }
