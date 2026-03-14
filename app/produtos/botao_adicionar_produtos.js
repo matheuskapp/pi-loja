@@ -5,6 +5,7 @@ import { createClient } from '@supabase/supabase-js'
 const supabase = createClient('https://walrpbrbskwawykdrwna.supabase.co', 'sb_publishable_e6ELe320z3xGITtIk-2QVg_K3tLxQTa')
 import { useState } from "react";
 import "./botao_adicionar_produtos.css";
+import { Alert } from 'bootstrap';
 
 
 export function BotaoAdicionarProdutos() {
@@ -30,14 +31,41 @@ export function BotaoAdicionarProdutos() {
             descricao: descricao
         }
         console.log(objetos)
+
+
+        if (objetos.nome.length < 3){
+            alert("O nome do produte deve conter mais de 3 caracteres")
+            return
+        }
+
+        if (objetos.preco <= 0){
+            alert("O valor do produto não pode ser 0,00")
+            return
+        }
+
+        if (objetos.descricao == ""){
+            alert("Digite uma descrição para o produto")
+            return
+        }
+        if (objetos.descricao.length > 10){
+            alert("A descrição deve conter menos de 100 caracteres")
+            return
+        }
+        if (objetos.quantidade <= 0 ){
+            alert("A quantidade nao pode ser 0 ")
+            return
+        }
+
+
         const { error } = await supabase
             .from('produtos')
             .insert(objetos)
 
         console.log(error)
 
+
         if (error == null) {
-            alert("Livro cadastrado com sucesso!")
+            alert("Produto cadastrado com sucesso!")
             alteraNome("")
             alteraSku("")
             alteraPreco("")
@@ -50,6 +78,7 @@ export function BotaoAdicionarProdutos() {
         }
     }
 
+    
     return (
         <div className="containerBotao mb-3 text-end">
 
