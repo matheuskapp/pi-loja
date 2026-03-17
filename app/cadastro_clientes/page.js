@@ -1,14 +1,14 @@
 'use client'
-import { createClient } from '@supabase/supabase-js'
-const supabase = createClient('https://walrpbrbskwawykdrwna.supabase.co', 'sb_publishable_e6ELe320z3xGITtIk-2QVg_K3tLxQTa')
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "./cadastro_clientes.css"
 import BarraLateral from '../components/barra_lateral'
 import { useState } from 'react'
+import supabase from '../conexao/supabase'
 
 export default function CadastroClientes() {
 
     const [nome, alteraNome] = useState("")
+    const [nascimento, alteraDataNascimento] = useState()
     const [cpf, alteraCpf] = useState()
     const [telefone, alteraTelefone] = useState()
     const [email, alteraEmail] = useState("")
@@ -28,6 +28,7 @@ export default function CadastroClientes() {
 
         const objeto = {
             nome: nome,
+            nascimento: nascimento,
             cpf: cpf.replaceAll(".", ""),
             telefone: telefone,
             email: email,
@@ -40,6 +41,7 @@ export default function CadastroClientes() {
             e.preventDefault()
             const objeto = {
                 nome: nome,
+                nascimento: nascimento,
                 cpf: cpf,
                 telefone: telefone,
                 email: email,
@@ -60,6 +62,7 @@ export default function CadastroClientes() {
         if (error == null) {
             alert("Cliente cadastrado com sucesso!")
             alteraNome("")
+            alteraDataNascimento()
             alteraCpf("")
             alteraTelefone()
             alteraEmail("")
@@ -68,7 +71,7 @@ export default function CadastroClientes() {
         } else alert("Dados inválidos, verifique os campos e tente novamente...")
 
     }
-    
+
     return (
         <div className="row">
             <div className='col-2'>
@@ -98,18 +101,29 @@ export default function CadastroClientes() {
                         <div class="nomeCompleto">
                             <label class="form-label">Nome Completo</label>
                             <input onChange={e => alteraNome(e.target.value)} type="text" class="form-control" />
-
                         </div>
+                        <br />
+                        <div class="dataNascimento">
+                            <label class="form-label">Data de Nascimento</label>
+                            <input onChange={e => alteraDataNascimento(e.target.value)} type="number" class="form-control" />
+                        </div>
+
+                        <br />
+
                         <div class="cpf">
                             <label class="form-label">CPF</label>
                             <input onChange={e => alteraCpf(e.target.value)} type="number" class="form-control" />
                         </div>
+
                         <br />
+
                         <div class="telefone">
                             <label class="form-label">Telefone</label>
                             <input onChange={e => alteraTelefone(e.target.value)} type="number" class="form-control" />
                         </div>
+
                         <br />
+                        
                         <div class="emailSenha">
                             <label class="form-label">E-mail</label>
                             <input onChange={e => alteraEmail(e.target.value)} type="email" class="form-control" />
@@ -134,7 +148,7 @@ export default function CadastroClientes() {
 
             </div>
 
-                <ul>
+            <ul>
                 {
                     listaClientes.map(
                         item => <li> Nome: {item.nome} CPF: {item.cpf} Telefone: {item.telefone}  E-mail: {item.email} Endereço: {item.endereco}</li>
