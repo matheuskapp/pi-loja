@@ -35,6 +35,7 @@ function TabelaClientes() {
 
                 <tr>
                     <th scope="col">Nome</th>
+                    <th scope="col">Data de Nascimento</th>
                     <th scope="col">CPF</th>
                     <th scope="col">Telefone</th>
                     <th scope="col">E-mail</th>
@@ -50,6 +51,7 @@ function TabelaClientes() {
 
                                 <td>{item.nome}</td>
                                 <td>{item.cpf}</td>
+                                <td>{item.data_nascimento}</td>
                                 <td>{item.telefone}</td>
                                 <td>{item.email}</td>
                                 <td>{item.endereco}</td>
