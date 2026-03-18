@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from '@supabase/supabase-js'
+import supabase from "../conexao/supabase";
+
 
 // conexão com o Supabase
 const supabase = createClient(
@@ -19,7 +21,8 @@ export default function Vendas() {
     const [listaVendas, setListaVendas] = useState([]);
 
 
-    async function salvar() {
+    async function salvar(e) {
+        e.preventDefault()
         const objetos = {
             cliente: cliente,
             produto: produto,
@@ -37,12 +40,12 @@ export default function Vendas() {
 
         if (error == null) {
             alert("VENDA cadastrado com sucesso!")
-            setCliente("")
-            setProduto("")
-            setQuantidade("")
-            setFormaPagamento("")
-            setDesconto("")
-            
+             //setCliente("")
+             //setProduto("")
+             //setQuantidade("")
+             //setFormaPagamento("")
+             //setDesconto("")
+
         } else {
             alert("Dados invalidos, verifique os campos e tente novamente")
         }
@@ -64,7 +67,7 @@ export default function Vendas() {
 
     return (
         <>
-            <h1 style={{ color: "red" }}>TESTE DO NATANAEL</h1>
+
 
             <div className="card shadow-sm mb-5">
                 <div className="card-body">
@@ -152,7 +155,7 @@ export default function Vendas() {
                         </tr>
                     </thead>
                     <tbody>
-                        {listaVendas.map(item => 
+                        {listaVendas.map(item =>
                             <tr >
                                 <td>{item.cliente}</td>
                                 <td>{item.produto}</td>
