@@ -1,15 +1,9 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { createClient } from '@supabase/supabase-js'
+
 import supabase from "../conexao/supabase";
 
-
-// conexão com o Supabase
-const supabase = createClient(
-    'https://walrpbrbskwawykdrwna.supabase.co',
-    'sb_publishable_e6ELe320z3xGITtIk-2QVg_K3tLxQTa'
-)
 
 export default function Vendas() {
     const [cliente, setCliente] = useState("");
@@ -32,19 +26,23 @@ export default function Vendas() {
             total_compra: 0
         }
 
-        const { error } = await supabase
+        const { data, error } = await supabase
             .from('vendas')
             .insert(objetos)
+            .select(`
+                *,
+                cliente.id(*)
+                `)
 
         console.log(error)
 
         if (error == null) {
             alert("VENDA cadastrado com sucesso!")
-             //setCliente("")
-             //setProduto("")
-             //setQuantidade("")
-             //setFormaPagamento("")
-             //setDesconto("")
+             setCliente("")
+             setProduto("")
+             setQuantidade("")
+             setFormaPagamento("")
+             setDesconto("")
 
         } else {
             alert("Dados invalidos, verifique os campos e tente novamente")
@@ -157,7 +155,7 @@ export default function Vendas() {
                     <tbody>
                         {listaVendas.map(item =>
                             <tr >
-                                <td>{item.cliente}</td>
+                                <td>{item.cliente.nome}</td>
                                 <td>{item.produto}</td>
                                 <td>{item.quantidade}</td>
                                 <td className="text-danger">R$ {item.desconto}</td>
