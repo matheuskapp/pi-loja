@@ -49,10 +49,34 @@ export default function Vendas() {
         }
     }
 
+
+
+    async function excluir(id) {
+        const opcao = confirm("TEM CERTEZA QUE DESEJA EXCLUIR?");
+
+        if (opcao == false) {
+            return;
+        }
+
+        const { error } = await supabase.from('vendas').delete().eq('id', id);
+
+        if (error == null) {
+            alert("Venda excluída com sucesso!");
+            buscar(); // Isso atualiza a sua tabela na hora!
+        } else {
+            alert("Erro ao excluir.");
+        }
+    }
+
+
     async function buscar() {
         const { data, error } = await supabase
             .from('vendas')
-            .select()
+            .select(`
+                *,
+                cliente (nome),
+                produto (nome)
+            `)
         console.log(data)
         setListaVendas(data)
     }
@@ -150,13 +174,14 @@ export default function Vendas() {
                             <th>Desconto</th>
                             <th>Forma de Pagamento</th>
                             <th>Total da Compra</th>
+                            <th>Ações</th> {/* Cabeçalho da nova coluna */}
                         </tr>
                     </thead>
                     <tbody>
                         {listaVendas.map(item =>
-                            <tr >
-                                <td>{item.cliente.nome}</td>
-                                <td>{item.produto}</td>
+                            <tr key={item.id}>
+                                <td>{item.cliente?.nome}</td>
+                                <td>{item.produto?.nome}</td>
                                 <td>{item.quantidade}</td>
                                 <td className="text-danger">R$ {item.desconto}</td>
                                 <td>
@@ -166,6 +191,15 @@ export default function Vendas() {
                                 </td>
                                 <td className="fw-bold text-success">
                                     R$ {item.total_compra}
+                                </td>
+                                {/* Botão de Excluir aqui */}
+                                <td>
+                                    <button 
+                                        className="btn btn-outline-danger btn-sm"
+                                        onClick={() => excluir(item.id)}
+                                    >
+                                        Excluir
+                                    </button>
                                 </td>
                             </tr>
                         )}
