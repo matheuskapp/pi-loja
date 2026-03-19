@@ -49,10 +49,19 @@ export default function Vendas() {
         }
     }
 
+
+
+    
+
+
     async function buscar() {
         const { data, error } = await supabase
             .from('vendas')
-            .select()
+            .select(`
+                *,
+                cliente (nome),
+                produto (nome)
+            `)
         console.log(data)
         setListaVendas(data)
     }
@@ -150,13 +159,14 @@ export default function Vendas() {
                             <th>Desconto</th>
                             <th>Forma de Pagamento</th>
                             <th>Total da Compra</th>
+                           
                         </tr>
                     </thead>
                     <tbody>
                         {listaVendas.map(item =>
-                            <tr >
-                                <td>{item.cliente.nome}</td>
-                                <td>{item.produto}</td>
+                            <tr key={item.id}>
+                                <td>{item.cliente?.nome}</td>
+                                <td>{item.produto?.nome}</td>
                                 <td>{item.quantidade}</td>
                                 <td className="text-danger">R$ {item.desconto}</td>
                                 <td>
@@ -167,6 +177,7 @@ export default function Vendas() {
                                 <td className="fw-bold text-success">
                                     R$ {item.total_compra}
                                 </td>
+                                
                             </tr>
                         )}
                     </tbody>
