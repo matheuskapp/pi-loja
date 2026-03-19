@@ -48,15 +48,9 @@ export default function BarraLateral() {
                         <i className="bi bi-gear me-2"></i> Lista de Funcionários
                     </Link>
                 </li>
-
-                <li className="nav-item">
-                    <Link href="/listaclientes" className="nav-link">
-                        <i className="bi bi-people me-2"></i> Clientes
-                    </Link>
-                </li>
                 <li className="nav-item">
                     <Link href="/cadastro_clientes" className="nav-link">
-                        <i className="bi bi-person-plus me-2"></i> Cadastro de Clientes
+                        <i className="bi bi-person-plus me-2"></i>Clientes
                     </Link>
                 </li>
             </ul>
