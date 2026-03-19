@@ -51,22 +51,7 @@ export default function Vendas() {
 
 
 
-    async function excluir(id) {
-        const opcao = confirm("TEM CERTEZA QUE DESEJA EXCLUIR?");
-
-        if (opcao == false) {
-            return;
-        }
-
-        const { error } = await supabase.from('vendas').delete().eq('id', id);
-
-        if (error == null) {
-            alert("Venda excluída com sucesso!");
-            buscar(); // Isso atualiza a sua tabela na hora!
-        } else {
-            alert("Erro ao excluir.");
-        }
-    }
+    
 
 
     async function buscar() {
@@ -174,7 +159,7 @@ export default function Vendas() {
                             <th>Desconto</th>
                             <th>Forma de Pagamento</th>
                             <th>Total da Compra</th>
-                            <th>Ações</th> {/* Cabeçalho da nova coluna */}
+                           
                         </tr>
                     </thead>
                     <tbody>
@@ -192,15 +177,7 @@ export default function Vendas() {
                                 <td className="fw-bold text-success">
                                     R$ {item.total_compra}
                                 </td>
-                                {/* Botão de Excluir aqui */}
-                                <td>
-                                    <button 
-                                        className="btn btn-outline-danger btn-sm"
-                                        onClick={() => excluir(item.id)}
-                                    >
-                                        Excluir
-                                    </button>
-                                </td>
+                                
                             </tr>
                         )}
                     </tbody>
