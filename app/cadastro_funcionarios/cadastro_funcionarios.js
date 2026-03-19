@@ -1,0 +1,61 @@
+
+export default function CadastroFuncionarios() {
+  return (
+
+
+    <div className="row">
+
+        {/* CONTEÚDO */}
+      <div className="col-10 ">
+        <div className="container-fluid">
+
+        </div>
+        <h1> Cadastro de Funcionarios </h1>
+
+        <form onsubmit="salvar(event)">
+
+          <label>
+            Nome Completo:
+            <input size="50" type="text" class="form-control" aria-label="Username"></input>
+
+          </label>
+
+          <br /> <br />
+
+          <form>
+            <div class="emailSenha">
+              <label for="exampleInputEmail1" class="form-label">Digite seu Email</label>
+              <input size="20" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+
+            </div>
+            <div class="emailSenha">
+              <label for="exampleInputPassword1" class="form-label">Senha</label>
+              <input type="password" class="form-control" id="exampleInputPassword1" />
+            </div>
+            <br />
+            <select class="form-select form-select-lg mb-3" aria-label="Large select example">
+
+              <option value="1">Administrador</option>
+              <option value="2">Colaborador</option>
+
+            </select>
+            <button type="button" class="btn btn-outline-success me-3">Salvar</button>
+            <button type="button" class="btn btn-outline-danger me-3">Cancelar</button>
+          </form>
+
+          <br /><br />
+
+        </form>
+
+
+      </div>
+
+
+    </div>
+
+
+
+
+
+  );
+}
