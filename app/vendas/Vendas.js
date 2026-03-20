@@ -16,30 +16,41 @@ export default function Vendas() {
 
     async function buscarClientes() {
         const { data } = await supabase
-        .from("clientes")
-        .select(`id,
-                nome`);
+            .from("clientes")
+            .select(`id,
+                nome`); { /*coluna simples nao precisa de (*)  */ }
         setListaClientes(data || []);
     }
 
     async function buscarProdutos() {
         const { data } = await supabase
-        .from("produtos")
-        .select(`id, nome, preco`);
+            .from("produtos")
+            .select(`id,
+            nome,
+            preco`);
         setListaProdutos(data || []);
     }
 
     async function salvar(e) {
         e.preventDefault()
 
-        const prodSelecionado = listaProdutos.find(p => p.id == produto)
-        const precoUnitario = prodSelecionado ? prodSelecionado.preco : 0
+        const prodSelecionado = listaProdutos.find(produtoDaLista => produtoDaLista.id == produto);
+
+
         
+        let precoUnitario
+
+        if (prodSelecionado) {
+            precoUnitario = prodSelecionado.preco;
+        } else {
+            precoUnitario = 0
+        }
+
         const valorTotal = (precoUnitario * parseInt(quantidade)) - (parseFloat(desconto) || 0)
 
         const objetos = {
-            cliente: cliente, 
-            produto: produto, 
+            cliente: cliente,
+            produto: produto,
             quantidade: parseInt(quantidade),
             desconto: parseFloat(desconto) || 0,
             forma_pagamento: forma_pagamento,
@@ -88,7 +99,7 @@ export default function Vendas() {
             <div className="card shadow-sm mb-5">
                 <div className="card-body">
                     <form onSubmit={salvar} className="row g-3">
-                        
+
                         <div className="col-md-12">
                             <label className="form-label fw-bold">Cliente</label>
                             <select
