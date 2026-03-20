@@ -15,14 +15,16 @@ export default function CadastroClientes() {
     const [endereco, alteraEndereco] = useState("")
 
     const [listaClientes, alteraListaClientes] = useState([]);
-    
+
+
 
     async function cancelar() {
         const { data, error } = await supabase
-        .from('clientes')
-           .select()
+            .from('clientes')
+            .select()
         console.log(data)
-      alteraListaClientes(data)
+        alteraListaClientes(data)
+
     }
 
     async function salvar(e) {
@@ -36,13 +38,17 @@ export default function CadastroClientes() {
             endereco: endereco,
         }
 
-        
+
+
+
+
+
         const { error } = await supabase
-        .from('clientes')
-        .insert(objeto)
-        
+            .from('clientes')
+            .insert(objeto)
+
         alteraListaClientes(listaClientes.concat(objeto))
-        
+
         console.log(objeto)
 
 
@@ -69,15 +75,31 @@ export default function CadastroClientes() {
         <div className="row">
             <div className='col-2'>
 
-                <BarraLateral />
+
 
             </div>
-            <div className="col-9">
+            <div className="col-20">
 
                 <div className="container-fluid" />
                 <h1>Cadastro de Clientes</h1>
 
-
+                <div class="modal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Modal title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Modal body text goes here.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
                 <div className="titulo" >
@@ -90,7 +112,7 @@ export default function CadastroClientes() {
 
                 <br /> <br />
 
-                <form onSubmit={() => salvar(event)} type="Salvar">
+                  <form onSubmit={() => salvar(event)} type="Salvar">
                     <div className="nomeCompleto">
                         <label className="form-label">Nome Completo</label>
                         <input onChange={e => alteraNome(e.target.value)} type="text" className="form-control" />
@@ -130,8 +152,9 @@ export default function CadastroClientes() {
 
 
 
-                    <button  className="btn btn-primary me-3">Salvar</button>
-                    <button  onClick={cancelar} className="btn btn-dark">Cancelar</button>
+                    <button className="btn btn-primary me-3">Salvar</button>
+                    <button onClick={cancelar} className="btn btn-dark">Cancelar</button>
+
 
                 </form>
 
@@ -141,8 +164,8 @@ export default function CadastroClientes() {
 
             </div>
 
-        
-                
+
+
 
         </div>
 
