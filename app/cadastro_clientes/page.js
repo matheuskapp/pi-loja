@@ -18,7 +18,7 @@ function cadastroClientes() {
           
                       </div>
           
-                      <div className="col-10 mb-5 p-5">
+                      <div className="col-10">
           
                           <BarraPesquisaClientes />
                           <BotaoAdicionarClientes/>

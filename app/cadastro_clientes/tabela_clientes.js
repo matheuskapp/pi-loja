@@ -31,7 +31,7 @@ function TabelaClientes() {
 
           
 
-            <table class="table">
+            <table className="table align-middle">
 
                 <tr>
                     <th scope="col">Nome</th>
@@ -40,6 +40,7 @@ function TabelaClientes() {
                     <th scope="col">Telefone</th>
                     <th scope="col">E-mail</th>
                     <th scope="col">Endereço</th>
+                    <th scope="col">Ações</th>
                 </tr>
                 <thead />
                 <tbody>
@@ -55,6 +56,7 @@ function TabelaClientes() {
                                 <td>{item.telefone}</td>
                                 <td>{item.email}</td>
                                 <td>{item.endereco}</td>
+                                <td></td>
                             </tr>
                         )
                     }
