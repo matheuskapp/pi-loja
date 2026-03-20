@@ -39,7 +39,7 @@ export default function BarraLateral() {
                     </li>
                     <li className="nav-item">
                         <Link href="cadastro_funcionarios" className="nav-link">
-                            <i className="bi bi-gear me-2"></i> Cadastro Funcionarios
+                            <i className="bi bi-gear me-2"></i> Funcionarios
                         </Link>
                     </li>
                
