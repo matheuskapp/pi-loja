@@ -1,9 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
-
 import supabase from "../conexao/supabase";
-
 
 export default function Vendas() {
     const [cliente, setCliente] = useState("");
@@ -13,94 +11,127 @@ export default function Vendas() {
     const [forma_pagamento, setFormaPagamento] = useState("");
 
     const [listaVendas, setListaVendas] = useState([]);
+    const [listaClientes, setListaClientes] = useState([]);
+    const [listaProdutos, setListaProdutos] = useState([]);
 
+    async function buscarClientes() {
+        const { data } = await supabase
+            .from("clientes")
+            .select(`id,
+                nome`); { /*coluna simples nao precisa de (*)  */ }
+        setListaClientes(data || []);
+    }
+
+    async function buscarProdutos() {
+        const { data } = await supabase
+            .from("produtos")
+            .select(`id,
+            nome,
+            preco`);
+        setListaProdutos(data || []);
+    }
 
     async function salvar(e) {
         e.preventDefault()
+
+        const prodSelecionado = listaProdutos.find(produtoDaLista => produtoDaLista.id == produto);
+
+
+        
+        let precoUnitario
+
+        if (prodSelecionado) {
+            precoUnitario = prodSelecionado.preco;
+        } else {
+            precoUnitario = 0
+        }
+
+        const valorTotal = (precoUnitario * parseInt(quantidade)) - (parseFloat(desconto) || 0)
+
         const objetos = {
             cliente: cliente,
             produto: produto,
-            quantidade: quantidade,
+            quantidade: parseInt(quantidade),
+            desconto: parseFloat(desconto) || 0,
             forma_pagamento: forma_pagamento,
-            desconto: desconto,
-            total_compra: 0
+            total_compra: valorTotal
         }
 
-        const { data, error } = await supabase
+        const { error } = await supabase
             .from('vendas')
-            .insert(objetos)
-            .select(`
-                *,
-                cliente.id(*)
-                `)
-
-        console.log(error)
+            .insert([objetos])
 
         if (error == null) {
-            alert("VENDA cadastrado com sucesso!")
-             setCliente("")
-             setProduto("")
-             setQuantidade("")
-             setFormaPagamento("")
-             setDesconto("")
-
+            alert("VENDA cadastrada com sucesso!")
+            setCliente("")
+            setProduto("")
+            setQuantidade("")
+            setFormaPagamento("")
+            setDesconto("")
+            buscar();
         } else {
-            alert("Dados invalidos, verifique os campos e tente novamente")
+            console.error(error);
+            alert("Erro: ");
         }
     }
-
-
-
-    
-
 
     async function buscar() {
         const { data, error } = await supabase
             .from('vendas')
             .select(`
                 *,
-                cliente (nome),
-                produto (nome)
+                clientes (nome),
+                produtos (nome)
             `)
-        console.log(data)
-        setListaVendas(data)
+        if (!error) {
+            setListaVendas(data || []);
+        }
     }
 
     useEffect(() => {
-        buscar()
+        buscar();
+        buscarClientes();
+        buscarProdutos();
     }, [])
-
-
 
     return (
         <>
-
-
             <div className="card shadow-sm mb-5">
                 <div className="card-body">
                     <form onSubmit={salvar} className="row g-3">
-                        <div className="col-md-6">
+
+                        <div className="col-md-12">
                             <label className="form-label fw-bold">Cliente</label>
-                            <input
-                                type="text"
-                                className="form-control"
+                            <select
+                                className="form-select mb-3"
                                 value={cliente}
                                 onChange={(e) => setCliente(e.target.value)}
-                                placeholder="Nome do cliente"
                                 required
-                            />
+                            >
+                                <option value="">Selecione um cliente</option>
+                                {listaClientes.map((item) => (
+                                    <option key={item.id} value={item.id}>
+                                        {item.nome}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
 
                         <div className="col-md-6">
                             <label className="form-label fw-bold">Produto</label>
-                            <input
-                                type="text"
-                                className="form-control"
+                            <select
+                                className="form-select"
                                 value={produto}
                                 onChange={(e) => setProduto(e.target.value)}
-                                placeholder="Ex: Camiseta Polo"
                                 required
-                            />
+                            >
+                                <option value="">Selecione um produto</option>
+                                {listaProdutos.map((item) => (
+                                    <option key={item.id} value={item.id}>
+                                        {item.nome} - R$ {item.preco}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
 
                         <div className="col-md-2">
@@ -118,13 +149,14 @@ export default function Vendas() {
                             <label className="form-label fw-bold">Desconto (R$)</label>
                             <input
                                 type="number"
+                                step="0.01"
                                 className="form-control"
                                 value={desconto}
                                 onChange={(e) => setDesconto(e.target.value)}
                             />
                         </div>
 
-                        <div className="col-md-4">
+                        <div className="col-md-2">
                             <label className="form-label fw-bold">Forma de Pagamento</label>
                             <select
                                 className="form-select"
@@ -159,14 +191,13 @@ export default function Vendas() {
                             <th>Desconto</th>
                             <th>Forma de Pagamento</th>
                             <th>Total da Compra</th>
-                           
                         </tr>
                     </thead>
                     <tbody>
                         {listaVendas.map(item =>
                             <tr key={item.id}>
-                                <td>{item.cliente?.nome}</td>
-                                <td>{item.produto?.nome}</td>
+                                <td>{item.clientes?.nome}</td>
+                                <td>{item.produtos?.nome}</td>
                                 <td>{item.quantidade}</td>
                                 <td className="text-danger">R$ {item.desconto}</td>
                                 <td>
@@ -177,7 +208,6 @@ export default function Vendas() {
                                 <td className="fw-bold text-success">
                                     R$ {item.total_compra}
                                 </td>
-                                
                             </tr>
                         )}
                     </tbody>
