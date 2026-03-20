@@ -17,7 +17,7 @@ export default function BarraLateral() {
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link href="#" className="nav-link">
+                        <Link href="dashboard" className="nav-link">
                             <i className="bi bi-kanban me-2"></i> Dashboard
                         </Link>
                     </li>
@@ -32,7 +32,7 @@ export default function BarraLateral() {
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link href="vendas2" className="nav-link">
+                        <Link href="vendas" className="nav-link">
                             <i className="bi bi-gear me-2"></i> Vendas
                         </Link>
 
