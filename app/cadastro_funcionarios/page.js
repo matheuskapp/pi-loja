@@ -1,7 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import BarraLateral from '../components/barra_lateral';
-import ListaFuncionarios from './listafuncionarios';
-import CadastroFuncionarios from '../cadastro_funcionarios/cadastro_funcionarios';
+import BarraPesquisa from './barra_pesquisa';
+import { BotaoAdicionarFuncionarios } from './botao_adicionar_funcionarios';
+import { ListaFuncionarios } from './listafuncionarios';
+import Cabecalho from '../produtos/cabecalho';
+import CabecalhoFuncionarios from './cabecalho_funcionarios';
 
 
 
@@ -18,12 +21,12 @@ export default function CadastroUsuarios() {
             </div>
 
 
-            <div className='col-3'>
-                <CadastroFuncionarios/>
 
-            </div>
             <div className='col-10'>
-                <ListaFuncionarios />
+                <CabecalhoFuncionarios/>
+                <BarraPesquisa />
+                <BotaoAdicionarFuncionarios/>
+                <ListaFuncionarios/>
             </div>
 
         </div>

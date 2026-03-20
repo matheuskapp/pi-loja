@@ -1,166 +1,83 @@
-'use client'
+'use client';
+import { useEffect, useState } from "react";
+import supabase from "../conexao/supabase";
 
-import { createClient } from '@supabase/supabase-js'
+export function ListaFuncionarios() {
 
-const supabase = createClient('https://walrpbrbskwawykdrwna.supabase.co', 'sb_publishable_e6ELe320z3xGITtIk-2QVg_K3tLxQTa')
+    const [listafuncionarios, alteraListaFuncionarios] = useState([])
 
-import { useState } from "react";
+    async function excluir(id) {
+        const response = await supabase
+            .from("produtos")
+            .delete()
+            .eq("id", id);
 
-
-export default function listaFuncionarios() {
-
-    const [nome, alteraNome] = useState("");
-    const [email, alteraemail] = useState("");
-    const [senha, alteraSenha] = useState("");
-
+        if (response) {
+            console.log("Erro ao deletar:", response);
+        } else {
+            console.log("Registro deletado");
+        }
+    }
 
     async function buscar() {
-
         const { data, error } = await supabase
-            .from('listaFuncionarios')
+            .from('usuarios')
             .select()
         console.log(data)
-        alteralistaFuncionarios(data)
+        alteraListaFuncionarios(data)
     }
 
+    useEffect(() => {
+        buscar()
+    }, [])
 
+   
 
-        const [funcionarios, alteralistaFuncionarios] = useState([
-            {
-                nomeCompleto: "Ana Carolina Souza",
-                email: "ana.souza@email.com",
-                senha: "Ana@1234",
-                tipoUsuario: "administrador"
-            },
-            {
-                nomeCompleto: "Bruno Henrique Lima",
-                email: "bruno.lima@email.com",
-                senha: "Bruno@1234",
-                tipoUsuario: "colaborador"
-            },
-            {
-                nomeCompleto: "Carla Mendes Oliveira",
-                email: "carla.oliveira@email.com",
-                senha: "Carla@1234",
-                tipoUsuario: "colaborador"
-            },
-            {
-                nomeCompleto: "Daniel Alves Pereira",
-                email: "daniel.pereira@email.com",
-                senha: "Daniel@1234",
-                tipoUsuario: "administrador"
-            },
-            {
-                nomeCompleto: "Eduarda Santos Rocha",
-                email: "eduarda.rocha@email.com",
-                senha: "Eduarda@1234",
-                tipoUsuario: "colaborador"
-            },
-            {
-                nomeCompleto: "Felipe Martins Costa",
-                email: "felipe.costa@email.com",
-                senha: "Felipe@1234",
-                tipoUsuario: "colaborador"
-            },
-            {
-                nomeCompleto: "Gabriela Nunes Ferreira",
-                email: "gabriela.ferreira@email.com",
-                senha: "Gabriela@1234",
-                tipoUsuario: "administrador"
-            },
-            {
-                nomeCompleto: "Henrique Almeida Barbosa",
-                email: "henrique.barbosa@email.com",
-                senha: "Henrique@1234",
-                tipoUsuario: "colaborador"
-            },
-            {
-                nomeCompleto: "Isabela Ribeiro Gomes",
-                email: "isabela.gomes@email.com",
-                senha: "Isabela@1234",
-                tipoUsuario: "colaborador"
-            },
-            {
-                nomeCompleto: "João Pedro Castro",
-                email: "joao.castro@email.com",
-                senha: "Joao@1234",
-                tipoUsuario: "administrador"
-            },
-            {
-                nomeCompleto: "Larissa Teixeira Silva",
-                email: "larissa.silva@email.com",
-                senha: "Larissa@1234",
-                tipoUsuario: "colaborador"
-            },
+    return (
+        <div>
 
-            {
-                nomeCompleto: "Patrícia Lima Cardoso",
-                email: "patricia.cardoso@email.com",
-                senha: "Patricia@1234",
-                tipoUsuario: "colaborador"
-            }
+            <div class="container py-5 bg-light text-align-left ms-4 rounded-5">
+                <div class="col text-end">
+                    <button onClick={() => buscar()} class="btn btn-primary p-1 mb-2">🔄</button>
+                </div>
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-body">
 
+                        <table class="table align-middle">
+                            <thead class="text-muted">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Senha</th>
+                                    <th className="text-end">Ações</th>
+                                </tr>
+                            </thead>
 
-        ]);
+                            <tbody>
 
-        function salvar(e) {
-            e.preventDefault();
+                                {
+                                    listafuncionarios.map(
+                                        (item, index) => <tr key={index}>
+                                            <td>{item.id}</td>
+                                            <td>{item.nome}</td>
+                                            <td>{item.email}</td>
+                                            <td>{item.senha}</td>
 
-            const item = {
-                nome: nome,
-                email: email,
-                senha: senha,
-                tipoUsuario: false
+                                            <td class="text-end">
+                                                <button class="btn btn-primary btn-sm me-2">Editar</button>
+                                                <button onClick={() => { excluir(item.id); buscar() }} class="btn btn-danger btn-sm">Excluir</button>
+                                            </td>
+                                        </tr>
 
+                                    )
+                                }
+                            </tbody>
+                        </table>
 
-            }
-            console.log(item)
-
-        }
-
-        
-    
-    
-        return (
-
-
-            <div>
-
-                <h1> Lista de Funcionários</h1>
-
-                
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Nome Completo</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Senha</th>
-
-
-
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        {
-                            funcionarios.map(
-                                item =>
-                                    <tr>
-
-                                        <td>{item.nomeCompleto}</td>
-                                        <td>{item.email}</td>
-                                        <td>{item.senha}</td>
-
-
-                                    </tr>
-
-                            )
-                        }
-
-                    </tbody>
-                </table>
-            </div >
-        )
-    }
-
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
