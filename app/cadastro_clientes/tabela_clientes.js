@@ -31,7 +31,10 @@ function TabelaClientes() {
 
           
 
-            <table className="table align-middle">
+            <table className="container py-5 bg-light text-align-left ms-4 rounded-5">
+
+               <table class="table align-middle">
+
 
                 <tr>
                     <th scope="col">Nome</th>
@@ -61,6 +64,7 @@ function TabelaClientes() {
                         )
                     }
                 </tbody>
+               </table>
             </table>
 
         </div>

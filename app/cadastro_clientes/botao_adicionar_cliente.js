@@ -9,7 +9,7 @@ export function BotaoAdicionarClientes() {
 
 
     const [nome, alteraNome] = useState("")
-    const [dataNascimento, alteraDataNascimento] = useState("")
+    const [data_nascimento, alteraDataNascimento] = useState("")
     const [cpf, alteraCpf] = useState()
     const [telefone, alteraTelefone] = useState()
     const [email, alteraEmail] = useState()
@@ -19,7 +19,7 @@ export function BotaoAdicionarClientes() {
     async function salvar() {
         const objetos = {
             nome: nome,
-            dataNascimento: dataNascimento,
+            data_nascimento: data_nascimento,
             cpf: cpf,
             telefone: telefone,
             email: email,
@@ -27,12 +27,6 @@ export function BotaoAdicionarClientes() {
 
         }
         console.log(objetos)
-
-
-        if (objetos.nome.length < 3) {
-            alert("O nome do produte deve conter mais de 3 caracteres")
-            return
-        }
 
 
         const { error } = await supabase
@@ -46,9 +40,9 @@ export function BotaoAdicionarClientes() {
             alert("Cliente cadastrado com sucesso!")
             alteraNome("")
             alteraDataNascimento()
-            alteraCpf("")
+            alteraCpf()
             alteraTelefone()
-            alteraEmail("")
+            alteraEmail()
             alteraEndereco("")
 
         }
@@ -56,7 +50,7 @@ export function BotaoAdicionarClientes() {
     }
 
 
-    
+
 
 
     return (
@@ -117,8 +111,8 @@ export function BotaoAdicionarClientes() {
                                 <div className="mb-3">
                                     {/* w-100 */}
                                     <label className="form-label w-100">
-                                        <input value={dataNascimento} onChange={e => alteraDataNascimento(e.target.value)}
-                                            type="text"
+                                        <input value={data_nascimento} onChange={e => alteraDataNascimento(e.target.value)}
+                                            type="date"
                                             className="form-control"
                                             placeholder="Data de Nascimento"
                                         />
@@ -152,7 +146,7 @@ export function BotaoAdicionarClientes() {
                                     {/* w-100 */}
                                     <label className="form-label w-100">
                                         <input value={email} onChange={e => alteraEmail(e.target.value)}
-                                            type="text"
+                                            type="email"
                                             className="form-control"
                                             placeholder="Email"
                                         />
