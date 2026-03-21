@@ -1,71 +1,34 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import BarraLateral from '../components/barra_lateral';
+import BarraPesquisa from './barra_pesquisa';
+import { BotaoAdicionarFuncionarios } from './botao_adicionar_funcionarios';
+import { ListaFuncionarios } from './listafuncionarios';
+import Cabecalho from '../produtos/cabecalho';
+import CabecalhoFuncionarios from './cabecalho_funcionarios';
 
 
 
 
-export default function CadastroFuncionarios() {
-  return (
+export default function CadastroUsuarios() {
+    return (
 
 
-    <div className="row">
+        <div className="row">
 
-      <div className='col-2'>
-        <BarraLateral />
+            <div className='col-2'>
+                <BarraLateral />
 
-      </div>
+            </div>
 
-      {/* CONTEÚDO */}
-      <div className="col-10 ">
-        <div className="container-fluid">
+
+
+            <div className='col-10'>
+                <CabecalhoFuncionarios/>
+                <BarraPesquisa />
+                <BotaoAdicionarFuncionarios/>
+                <ListaFuncionarios/>
+            </div>
 
         </div>
-        <h1> Cadastro de Funcionarios </h1>
-
-        <form onsubmit="salvar(event)">
-
-          <label>
-            Nome Completo:
-            <input size="50" type="text" class="form-control" aria-label="Username"></input>
-
-          </label>
-
-          <br /> <br />
-
-          <form>
-            <div class="emailSenha">
-              <label for="exampleInputEmail1" class="form-label">Digite seu Email</label>
-              <input size="20" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
-
-            </div>
-            <div class="emailSenha">
-              <label for="exampleInputPassword1" class="form-label">Senha</label>
-              <input type="password" class="form-control" id="exampleInputPassword1" />
-            </div>
-            <br />
-            <select class="form-select form-select-lg mb-3" aria-label="Large select example">
-
-              <option value="1">Administrador</option>
-              <option value="2">Colaborador</option>
-
-            </select>
-            <button type="button" class="btn btn-outline-success me-3">Salvar</button>
-            <button type="button" class="btn btn-outline-danger me-3">Cancelar</button>
-          </form>
-
-          <br /><br />
-
-        </form>
-
-
-      </div>
-
-
-    </div>
-
-
-
-
-
-  );
+    );
 }

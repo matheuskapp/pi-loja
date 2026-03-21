@@ -17,7 +17,7 @@ export default function BarraLateral() {
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link href="#" className="nav-link">
+                        <Link href="dashboard" className="nav-link">
                             <i className="bi bi-kanban me-2"></i> Dashboard
                         </Link>
                     </li>
@@ -32,31 +32,20 @@ export default function BarraLateral() {
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link href="vendas2" className="nav-link">
+                        <Link href="vendas" className="nav-link">
                             <i className="bi bi-gear me-2"></i> Vendas
                         </Link>
 
                     </li>
                     <li className="nav-item">
                         <Link href="cadastro_funcionarios" className="nav-link">
-                            <i className="bi bi-gear me-2"></i> Cadastro Funcionarios
+                            <i className="bi bi-gear me-2"></i> Funcionarios
                         </Link>
                     </li>
                
-                <li className="nav-item">
-                    <Link href="/listafuncionarios" className="nav-link">
-                        <i className="bi bi-gear me-2"></i> Lista de Funcionários
-                    </Link>
-                </li>
-
-                <li className="nav-item">
-                    <Link href="/listaclientes" className="nav-link">
-                        <i className="bi bi-people me-2"></i> Clientes
-                    </Link>
-                </li>
-                <li className="nav-item">
+                    <li className="nav-item">
                     <Link href="/cadastro_clientes" className="nav-link">
-                        <i className="bi bi-person-plus me-2"></i> Cadastro de Clientes
+                        <i className="bi bi-person-plus me-2"></i>Clientes
                     </Link>
                 </li>
             </ul>
