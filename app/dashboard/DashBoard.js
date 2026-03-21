@@ -1,6 +1,61 @@
+'use client'
+import { useEffect, useState } from "react";
+import supabase from "../conexao/supabase";
+import dashboard from "./page";
+
+
+
 
 export default function DashBoard() {
+
+
+
+
+
+
+  const [somaVendas, alteraSomaVendas] = useState(0);
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+  const dataFiltro = hoje.toISOString();
+
+  async function ordenarVendas() {
+    const { data, error } = await supabase
+      .from('vendas')
+      .select()
+      .order('quantidade', { ascending: false })
+  }
+
+  async function buscaVendasHoje() {
+    const { data, error } = await supabase
+      .from('vendas')
+      .select('*')
+      .gte('created_at', dataFiltro)
+    if (data) {
+      const totalSomado = data.reduce((acumulador, item) => {
+        return acumulador + item.total_compra;
+      }, 0);
+      alteraSomaVendas(totalSomado)
+    }
+    console.log(data)
+  }
+
+
+
+
+  useEffect(() => {
+    buscaVendasHoje()
+  }, [])
+
+
+
+
+
+
+
+
+
   return (
+
     <div className="container-fluid">
 
       {/* CARDS SUPERIORES */}
@@ -9,7 +64,7 @@ export default function DashBoard() {
         <div className="col-md-3">
           <div className="card shadow p-3 mb-4 bg-body-tertiary rounded h-100">
             <h6 className="text-muted">Vendas Hoje</h6>
-            <h4 className="fw-bold">R$ 0,00</h4>
+            <p className="fw-bold">{somaVendas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
             <small className="text-muted">0 vendas realizadas</small>
           </div>
         </div>
