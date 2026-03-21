@@ -95,6 +95,18 @@ export default function Vendas() {
         buscarProdutos();
     }, [])
 
+
+    const CorPagamento = (forma) => {
+        switch (forma) {
+            case 'Pix': return 'bg-success text-white';      // Verde
+            case 'Cartão de Crédito': return 'bg-primary text-white';   // Azul
+            case 'Dinheiro': return 'bg-warning text-dark';  // Amarelo
+            case 'Cartão de Débtio': return 'bg-secondary text-white';
+            default: return 'bg-secondary text-white';       // Cinza
+        }
+    };
+
+
     return (
         <>
             <div className="card shadow-sm mb-5">
@@ -202,7 +214,7 @@ export default function Vendas() {
                                 <td>{item.quantidade}</td>
                                 <td className="">R$ {item.desconto}</td>
                                 <td>
-                                    <span className="badge bg-info text-dark">
+                                    <span className={`badge rounded-pill ${CorPagamento(item.forma_pagamento)}`}>
                                         {item.forma_pagamento}
                                     </span>
                                 </td>
