@@ -7,6 +7,10 @@ export function TabelaProdutos() {
     const [produtos, alteraProdutos] = useState([])
 
     async function excluir(id) {
+        const opcao =  confirm("Tem certeza que deseja excluir?")
+        if (opcao == false){
+            return
+        }
         const response = await supabase
             .from("produtos")
             .delete()

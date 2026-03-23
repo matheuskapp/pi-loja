@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import supabase from "../conexao/supabase";
+import './FinalizarVenda.css'
 
 export default function Vendas() {
     const [cliente, setCliente] = useState("");
@@ -37,7 +38,7 @@ export default function Vendas() {
         const prodSelecionado = listaProdutos.find(produtoDaLista => produtoDaLista.id == produto);
 
 
-        
+
         let precoUnitario
 
         if (prodSelecionado) {
@@ -93,6 +94,18 @@ export default function Vendas() {
         buscarClientes();
         buscarProdutos();
     }, [])
+
+
+    const CorPagamento = (forma) => {
+        switch (forma) {
+            case 'Pix': return 'bg-success text-white';      // Verde
+            case 'Cartão de Crédito': return 'bg-primary text-white';   // Azul
+            case 'Dinheiro': return 'bg-warning text-dark';  // Amarelo
+            case 'Cartão de Débtio': return 'bg-secondary text-white';
+            default: return 'bg-secondary text-white';       // Cinza
+        }
+    };
+
 
     return (
         <>
@@ -172,7 +185,7 @@ export default function Vendas() {
                         </div>
 
                         <div className="col-12 text-end mt-4">
-                            <button type="submit" className="btn btn-primary px-5">
+                            <button type="submit" className="btn btn-primary px-5 btn-gradient">
                                 Finalizar Venda
                             </button>
                         </div>
@@ -199,9 +212,9 @@ export default function Vendas() {
                                 <td>{item.clientes?.nome}</td>
                                 <td>{item.produtos?.nome}</td>
                                 <td>{item.quantidade}</td>
-                                <td className="text-danger">R$ {item.desconto}</td>
+                                <td className="">R$ {item.desconto}</td>
                                 <td>
-                                    <span className="badge bg-info text-dark">
+                                    <span className={`badge rounded-pill ${CorPagamento(item.forma_pagamento)}`}>
                                         {item.forma_pagamento}
                                     </span>
                                 </td>
