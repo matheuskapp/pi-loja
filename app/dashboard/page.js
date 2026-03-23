@@ -1,20 +1,30 @@
+'use client'
 import DashBoard from "./DashBoard";
-
-
-
+import { useState } from "react";
 import BarraLateral from "../components/barra_lateral";
+import supabase from "../conexao/supabase";
+
+
 
 export default function dashboard() {
+
+  
+
+
+  
+
+
+
   return (
 
 
     <div style={{ display: "flex" }}>
-      
+
       <BarraLateral />
 
-      
+
       <main style={{ marginLeft: "260px", width: "100%", padding: "24px" }}>
-        
+
         <div className="d-flex justify-content-between align-items-center mb-4">
           <div>
             <h2 className="fw-bold mb-1">Dashboard</h2>
@@ -23,16 +33,10 @@ export default function dashboard() {
             </small>
           </div>
 
-
-          <button className="btn btn-dark d-flex align-items-center gap-2 px-4 py-2">
-            <i className="bi bi-cart3"></i>
-            🛒 Nova Venda
-          </button>
-
-
         </div>
-
+        
         <DashBoard />
+
       </main>
     </div>
   );
