@@ -49,7 +49,7 @@ export function TabelaProdutos() {
     }
 
 
-
+// a
 
     // async function excluir(id) {
     //     const opcao =  confirm("Tem certeza que deseja excluir?")
