@@ -6,18 +6,7 @@ export function ListaFuncionarios() {
 
     const [listafuncionarios, alteraListaFuncionarios] = useState([])
 
-    async function excluir(id) {
-        const response = await supabase
-            .from("produtos")
-            .delete()
-            .eq("id", id);
-
-        if (response) {
-            console.log("Erro ao deletar:", response);
-        } else {
-            console.log("Registro deletado");
-        }
-    }
+  
 
     async function buscar() {
         const { data, error } = await supabase
@@ -26,6 +15,17 @@ export function ListaFuncionarios() {
         console.log(data)
         alteraListaFuncionarios(data)
     }
+
+     async function Excluir(id) {
+
+        const opcao = confirm("Tem certeza que deseja excluir?")
+       if(opcao == false){
+        return
+       }
+       const response = await supabase.from ('usuarios').delete().eq('id',id)
+
+    }
+
 
     useEffect(() => {
         buscar()
@@ -42,12 +42,12 @@ export function ListaFuncionarios() {
                 </div>
                 <div class="card shadow-sm border-0 rounded-4">
                     <div class="card-body">
-
+                    
                         <table class="table align-middle">
                             <thead class="text-muted">
                                 <tr>
-                                    <th>#</th>
-                                    <th>Nome</th>
+                                    <th >#</th>
+                                    <th >Nome</th>
                                     <th>Email</th>
                                     <th>Senha</th>
                                     <th className="text-end">Ações</th>
@@ -62,11 +62,11 @@ export function ListaFuncionarios() {
                                             <td>{item.id}</td>
                                             <td>{item.nome}</td>
                                             <td>{item.email}</td>
-                                            <td>{item.senha}</td>
+                                            <td>****</td>
 
                                             <td class="text-end">
                                                 <button class="btn btn-primary btn-sm me-2">Editar</button>
-                                                <button onClick={() => { excluir(item.id); buscar() }} class="btn btn-danger btn-sm">Excluir</button>
+                                                                                                <button onClick={() => { Excluir (item.id); buscar() }} class="btn btn-danger btn-sm">Excluir</button>
                                             </td>
                                         </tr>
 

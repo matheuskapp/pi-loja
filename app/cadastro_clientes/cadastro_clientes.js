@@ -42,7 +42,6 @@ export default function CadastroClientes() {
 
 
 
-
         const { error } = await supabase
             .from('clientes')
             .insert(objeto)
@@ -118,12 +117,8 @@ export default function CadastroClientes() {
                         <input onChange={e => alteraNome(e.target.value)} type="text" className="form-control" />
                     </div>
                     <br />
-                    <div className="data_nascimento">
-                        <label className="form-label">Data de Nascimento</label>
-                        <input onChange={e => alteraData_Nascimento(e.target.value)} type="date" className="form-control" />
-                    </div>
 
-                    <br />
+
 
                     <div className="cpf">
                         <label className="form-label">CPF</label>
@@ -131,6 +126,15 @@ export default function CadastroClientes() {
                     </div>
 
                     <br />
+
+
+                    <div className="data_nascimento">
+                        <label className="form-label">Data de Nascimento</label>
+                        <input onChange={e => alteraData_Nascimento(e.target.value)} type="date" className="form-control" />
+                    </div>
+
+                    <br />
+
 
                     <div className="telefone">
                         <label className="form-label">Telefone</label>
