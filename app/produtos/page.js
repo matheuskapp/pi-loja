@@ -19,7 +19,6 @@ export default function Produtos() {
             <div className="col-10 mb-5 p-5">
 
                 <Cabecalho />
-                <BarraPesquisa />
                 <BotaoAdicionarProdutos />
                 <TabelaProdutos />
 

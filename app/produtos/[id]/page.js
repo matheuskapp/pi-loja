@@ -1,10 +1,10 @@
 'use client'
-import supabase from "@/app/conexao/supabase";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-
-function consultaVenda() {
-
+import supabase from "@/app/conexao/supabase"
+import { useParams } from "next/navigation"
+import { useEffect, useState } from "react"
+function consultaProdutos() {
+     
+        
     const [listaProdutos, alteraListaProdutos] = useState([])
      
     async function buscaProdutos() {
@@ -13,36 +13,40 @@ function consultaVenda() {
             .from('produtos')
             .select('*')
             .eq('id', params.id)
-        alteraListaVendas(data)
+        alteraListaProdutos(data)
     }
 
     const params = useParams()
 
     useEffect(() => {
-        buscaVendas()
+        buscaProdutos()
     }, [])
 
     return (
         <div>
-            <h1>Consulta de vendas</h1>
+            <h1>Consulta de Produtos</h1>
 
             <hr />
+
+            
+
+
+
+
             {
                 listaProdutos.map(
                     item => <div> 
                         <p>ID: {item.id}</p>
-                        <p>Comprador: {item.id_usuario.nome}</p>
-                        <p>Livro: {item.id_livro.nome} </p>
+                        <p>produto: {item.nome} </p>
                         <p>quantidade: {item.quantidade} </p>
                         <p>datetime: {item.created_at}</p>
-
                     </div>
                 )
             }
-
+            
 
         </div>
-    );
+     );
 }
 
-export default consultaVenda;
+export default consultaProdutos;

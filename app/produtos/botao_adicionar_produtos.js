@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js'
 const supabase = createClient('https://walrpbrbskwawykdrwna.supabase.co', 'sb_publishable_e6ELe320z3xGITtIk-2QVg_K3tLxQTa')
 import { useState } from "react";
 import "./botao_adicionar_produtos.css";
-import { Alert } from 'bootstrap';
+
 
 
 export function BotaoAdicionarProdutos() {

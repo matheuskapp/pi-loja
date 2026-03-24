@@ -12,7 +12,7 @@ export default function DashBoard() {
 
 
 
-
+  const [listaVendas, alteraListaVendas] = useState([])
   const [somaVendas, alteraSomaVendas] = useState(0);
   const hoje = new Date();
   hoje.setHours(0, 0, 0, 0);
@@ -39,18 +39,20 @@ export default function DashBoard() {
     console.log(data)
   }
 
-
+  async function pesquisaMaiorVenda() {
+    const { data, error } = await supabase
+      .from('vendas')
+      .select('*, id_usuario(*), id_livro(*)')
+      .order('quantidade', { ascending: false })
+      .limit(1)
+    alteraListaVendas(data)
+  }
 
 
   useEffect(() => {
     buscaVendasHoje()
+    pesquisaMaiorVenda
   }, [])
-
-
-
-
-
-
 
 
 
@@ -116,7 +118,7 @@ export default function DashBoard() {
             style={{ minHeight: "300px" }}
           >
             <h5 className="fw-bold">Mais Vendidos</h5>
-            <p className="text-muted">Top 5 produtos por quantidade.</p>
+            <p className="text-muted"><button onClick={pesquisaMaiorVenda}>a</button>{listaVendas}</p>
           </div>
         </div>
 
