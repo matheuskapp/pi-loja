@@ -18,6 +18,10 @@ function TabelaClientes() {
 
     }
 
+    function editar(objeto){
+        
+    }
+
     useEffect(() => {
         buscar()
     }, [])
@@ -59,7 +63,7 @@ function TabelaClientes() {
                                 <td>{item.telefone}</td>
                                 <td>{item.email}</td>
                                 <td>{item.endereco}</td>
-                                <td></td>
+                                <td><button onClick={() => editar(item)}>Editar</button></td>
                             </tr>
                         )
                     }
