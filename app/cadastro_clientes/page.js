@@ -45,7 +45,7 @@ function cadastroClientes() {
     }, [])
 
     return (
-      
+        
           <div className="row">
                       <div className="col-2">
           
@@ -57,7 +57,7 @@ function cadastroClientes() {
           
                           
                           <BotaoAdicionarClientes/>
-                          <TabelaClientes listaClientes={listaClientes} pesquisar={pesquisar} />
+                          <TabelaClientes listaClientes={listaClientes} pesquisar={pesquisar} pesquisaClientes={pesquisaClientes} alteraPesquisaClientes={alteraPesquisaClientes} />
                           
           
                       </div>

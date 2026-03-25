@@ -1,7 +1,7 @@
 'use client'
 
 
-function TabelaClientes({listaClientes, pesquisar}) {
+function TabelaClientes({listaClientes, pesquisar, pesquisaClientes, alteraPesquisaClientes}) {
 
 
     return (
@@ -13,7 +13,7 @@ function TabelaClientes({listaClientes, pesquisar}) {
                 <div className="row">
                     <div className="col-6">
                         <div className="input-group">
-                            <input onChange={e => alteraPesquisaClientes(e.target.value)}
+                            <input value={pesquisaClientes} onChange={e => alteraPesquisaClientes(e.target.value)}
                                 type="text"
                                 className="form-control"
                                 placeholder="Pesquisar Cliente.."
@@ -23,7 +23,7 @@ function TabelaClientes({listaClientes, pesquisar}) {
                                 type="button col-10"
                                 id="button-addon2"
                             >
-                                🔍
+                               Pesquisar 🔍
                             </button>
                         </div>
                     </div>
