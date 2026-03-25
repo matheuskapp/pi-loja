@@ -8,7 +8,19 @@ import supabase from "../conexao/supabase";
 
 export function TabelaProdutos() {
 
+    const [nome, alteraNome] = useState("")
+    const [sku, alteraSku] = useState("")
+    const [preco, alteraPreco] = useState()
+    const [quantidade, alteraQuantidade] = useState()
+    const [descricao, alteraDescricao] = useState("")
+
+    //
+
+    const [editando, alteraEditando] = useState(null)
     const [observacao, alteraObservacao] = useState()
+
+
+
     const [produtos, alteraProdutos] = useState([])
 
     const [inputPesquisaProduto, alteraInputPesquisaProduto] = useState("")
@@ -38,18 +50,25 @@ export function TabelaProdutos() {
 
     function editar(objeto) {
         alteraEditando(objeto.id)
-        alteraObservacao(objeto.observacao)
+
+        alteraNome(objeto.nome)
+        alteraSku(objeto.sku)
+        alteraPreco(objeto.preco)
+        alteraQuantidade(objeto.quantidade)
+        alteraDescricao(objeto.descricao)
     }
 
     function cancelaEdicao() {
         alteraEditando(null)
+        alteraNome("")
+        alteraSku("")
+        alteraPreco("")
         alteraQuantidade("")
-        alteraPagamento("")
-        alteraObservacao("")
+        alteraDescricao("")
     }
 
 
-// a
+    // a
 
     // async function excluir(id) {
     //     const opcao =  confirm("Tem certeza que deseja excluir?")
@@ -90,6 +109,22 @@ export function TabelaProdutos() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div className="barradepesquisa mb-3 p-5">
                 <div className="row">
                     <div className="col-6">
@@ -111,7 +146,7 @@ export function TabelaProdutos() {
 
                     <div className="col-2"></div>
 
-                    <div className="col-4">
+                    {/* <div className="col-4">
                         <select className="form-select" defaultValue="">
                             <option value="" hidden>
                                 Filtrar
@@ -119,7 +154,7 @@ export function TabelaProdutos() {
                             <option value="1">Ativo</option>
                             <option value="2">Inativo</option>
                         </select>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
@@ -127,9 +162,123 @@ export function TabelaProdutos() {
 
 
 
+            {/* MODAL */}
+            <div
+                className="modal fade"
+                id="modaledicao"
+                tabIndex="-1"
+                aria-hidden="true"
+            >
+                <div className="modal-dialog">
+                    <div className="modal-content">
+
+                        <div className="modal-header">
+                            <h3 className="modal-title fs-5">
+                                Edição de Produto
+                            </h3>
+                            <button
+                                type="button"
+                                className="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
 
 
 
+
+                        {/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
+
+
+
+                        <div className="modal-body">
+                            <div className="mb-3">
+                                {/* w-100 */}
+                                <label className="form-label w-100">
+                                    <input value={nome} onChange={e => alteraNome(e.target.value)}
+
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Nome"
+                                    />
+                                </label>
+                            </div>
+
+                            <div className="mb-3">
+                                {/* w-100 */}
+                                <label className="form-label w-100">
+                                    <input value={sku} onChange={e => alteraSku(e.target.value)}
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="SKU"
+                                    />
+                                </label>
+                            </div>
+
+                            <div className="mb-3">
+                                {/* w-100 */}
+                                <label className="form-label w-100">
+                                    <input value={preco} onChange={e => alteraPreco(e.target.value)}
+
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Preço"
+                                    />
+                                </label>
+                            </div>
+
+                            <div className="mb-3">
+                                {/* w-100 */}
+                                <label className="form-label w-100">
+                                    <input value={descricao} onChange={e => alteraDescricao(e.target.value)}
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Descrição"
+                                    />
+                                </label>
+                            </div>
+
+                            <div className="mb-3">
+                                {/* w-100 */}
+                                <label className="form-label w-100">
+                                    <input value={quantidade} onChange={e => alteraQuantidade(e.target.value)}
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Quantidade"
+                                    />
+                                </label>
+                            </div>
+                        </div>
+
+
+
+                        {/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
+
+
+
+
+                        <div className="modal-footer">
+                            <button onClick={cancelaEdicao}
+                                type="button"
+                                className="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                            >
+                                Fechar
+                            </button>
+
+                            <button
+                                onClick={salvar}
+                                className="btn btn-primary"
+                                data-bs-dismiss="modal"
+                            >
+                                Salvar
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            {/* MODAL */}
 
 
 
@@ -177,7 +326,7 @@ export function TabelaProdutos() {
                                             <td onClick={() => location.href = "/produtos/" + item.id}>{item.quantidade}</td>
                                             <td onClick={() => location.href = "/produtos/" + item.id}>{item.descricao}</td>
                                             <td class="text-end">
-                                                <button class="btn btn-primary btn-sm me-2">Editar</button>
+                                                <button onClick={() => editar(item)} class="btn btn-primary btn-sm me-2 " data-bs-target="#modaledicao" data-bs-toggle="modal" >Editar</button>
                                                 {/* <button onClick={() => { excluir(item.id)}} class="btn btn-danger btn-sm">Excluir</button> */}
                                             </td>
                                         </tr>
@@ -186,6 +335,13 @@ export function TabelaProdutos() {
                                 }
                             </tbody>
                         </table>
+
+
+
+
+
+
+
 
                     </div>
                 </div>
