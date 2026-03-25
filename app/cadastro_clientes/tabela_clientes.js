@@ -1,78 +1,7 @@
 'use client'
-import { useEffect, useState } from "react";
-import supabase from "../conexao/supabase";
 
 
-
-
-function TabelaClientes() {
-
-    const [listaClientes, alteraListaClientes] = useState([])
-
-    const [pesquisaClientes, alteraPesquisaClientes] = useState("")
-
-    //function editar
-    
-    const [editarUsuario, alteraEditarUsuario] = useState()
-    
-
-
-
-
-
-
-    async function buscar() {
-
-        const { data, error } = await supabase
-            .from('clientes')
-            .select()
-        console.log(data)
-        alteraListaClientes(data)
-
-    }
-
-    async function salvar(e) {
-        e.preventDefault()
-        const objeto = {
-            nome: nome,
-            data_nascimento: data_nascimento,
-            cpf: cpf,
-            telefone: telefone,
-            email: email,
-            endereco: endereco
-
-        }
-
-    }
-
-
-
-    async function pesquisar() {
-        const { data, error } = await supabase
-            .from('clientes')
-            .select('*')
-            .ilike('nome', '%' + pesquisaClientes + '%')
-        console.log(data)
-        console.log(error)
-
-        alteraListaClientes(data)
-
-    }
-
-    function editar(objeto) {
-
-        alteraEditarUsuario(objeto.id)
-        
-
-
-
-    }
-
-
-    useEffect(() => {
-        buscar()
-    }, [])
-
+function TabelaClientes({listaClientes, pesquisar}) {
 
 
     return (
@@ -138,7 +67,7 @@ function TabelaClientes() {
                                     <td>{item.email}</td>
                                     <td>{item.endereco}</td>
                                     <td><button data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal" onClick={() => editar(item)}>Editar</button></td>
+                                        data-bs-target="#exampleModal">Editar</button></td>
                                 </tr>
                             )
                         }
