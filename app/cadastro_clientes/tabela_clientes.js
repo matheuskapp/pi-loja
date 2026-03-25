@@ -11,6 +11,11 @@ function TabelaClientes() {
 
     const [pesquisaClientes, alteraPesquisaClientes] = useState("")
 
+    //function editar
+    
+    const [editarUsuario, alteraEditarUsuario] = useState()
+    
+
 
 
 
@@ -40,6 +45,8 @@ function TabelaClientes() {
 
     }
 
+
+
     async function pesquisar() {
         const { data, error } = await supabase
             .from('clientes')
@@ -49,6 +56,15 @@ function TabelaClientes() {
         console.log(error)
 
         alteraListaClientes(data)
+
+    }
+
+    function editar(objeto) {
+
+        alteraEditarUsuario(objeto.id)
+        
+
+
 
     }
 
@@ -121,7 +137,8 @@ function TabelaClientes() {
                                     <td>{item.telefone}</td>
                                     <td>{item.email}</td>
                                     <td>{item.endereco}</td>
-                                    <td><button onClick={() => editar(item)}>Editar</button></td>
+                                    <td><button data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal" onClick={() => editar(item)}>Editar</button></td>
                                 </tr>
                             )
                         }
