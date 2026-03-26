@@ -16,18 +16,36 @@ export default function CadastroClientes() {
 
     const [listaClientes, alteraListaClientes] = useState([]);
 
-
-
-    async function cancelar() {
-        const { data, error } = await supabase
-            .from('clientes')
-            .select()
-        console.log(data)
-        alteraListaClientes(data)
-
+    function editar(objeto) {
+        alteraEditando(objeto.id)
+        alteraNome(objeto.nome)
+        alteraData_Nascimento(objeto.data_nascimento)
+        alteraCpf(objeto.cpf)
+        alteraTelefone(objeto.telefone)
+        alteraEmail(objeto.email)
+        alteraEndereco(objeto.endereco)
+    }
+    
+    function cancelaEdicao() {
+        alteraEditando(null)
+        alteraNome("")
+        alteraData_Nascimento()
+        alteraCpf("")
+        alteraTelefone()
+        alteraEmail("")
+        alteraEndereco("")
     }
 
-    async function salvar(e) {
+    // async function cancelar() {
+    //     const { data, error } = await supabase
+    //         .from('clientes')
+    //         .select()
+    //     console.log(data)
+    //     alteraListaClientes(data)
+
+    // }
+
+    async function atualizar(e) {
         e.preventDefault();
         const objeto = {
             nome: nome,
@@ -66,7 +84,7 @@ export default function CadastroClientes() {
         else alert("Dados inválidos, verifique os campos e tente novamente...")
     }
 
-    
+
 
 
 
@@ -79,32 +97,132 @@ export default function CadastroClientes() {
 
 
             </div>
-            <div className="col-20">
+            <div className="col-10">
 
-                <div className="container-fluid" />
-                <h1>Cadastro de Clientes</h1>
+                <div
+                    className="modal fade"
+                    id="modaledicao"
+                    tabIndex="-1"
+                    aria-hidden="true"
+                >
+                    <div className="modal-dialog">
+                        <div className="modal-content">
 
-                <div className="modal fade" id="modalEditar">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Modal title</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div className="modal-header">
+                                <h3 className="modal-title fs-5">
+                                    Edição de Cliente
+                                </h3>
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                ></button>
                             </div>
-                            <div class="modal-body">
-                                <p>Modal body text goes here.</p>
+
+
+
+
+                            {/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
+
+
+
+                            <div className="modal-body">
+                                <div className="mb-3">
+                                    {/* w-100 */}
+                                    <label className="form-label w-100">
+                                        <input value={nome} onChange={e => alteraNome(e.target.value)}
+
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Nome"
+                                        />
+                                    </label>
+                                </div>
+
+                                <div className="mb-3">
+                                    {/* w-100 */}
+                                    <label className="form-label w-100">
+                                        <input value={data_nascimento} onChange={e => alteraData_Nascimento(e.target.value)}
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Data de nascimento"
+                                        />
+                                    </label>
+                                </div>
+
+                                <div className="mb-3">
+                                    {/* w-100 */}
+                                    <label className="form-label w-100">
+                                        <input value={cpf} onChange={e => alteraCpf(e.target.value)}
+
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="CPF"
+                                        />
+                                    </label>
+                                </div>
+
+                                <div className="mb-3">
+                                    {/* w-100 */}
+                                    <label className="form-label w-100">
+                                        <input value={telefone} onChange={e => alteraTelefone(e.target.value)}
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Telefone"
+                                        />
+                                    </label>
+                                </div>
+
+                                <div className="mb-3">
+                                    {/* w-100 */}
+                                    <label className="form-label w-100">
+                                        <input value={email} onChange={e => alteraEmail(e.target.value)}
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="E-mail"
+                                        />
+                                    </label>
+                                </div>
+                                <div className="mb-3">
+                                    {/* w-100 */}
+                                    <label className="form-label w-100">
+                                        <input value={endereco} onChange={e => alteraEndereco(e.target.value)}
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Endereço"
+                                        />
+                                    </label>
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
+
+
+
+                            {/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
+
+
+
+
+                            <div className="modal-footer">
+                                <button onClick={cancelaEdicao}
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    data-bs-dismiss="modal"
+                                >
+                                    Fechar
+                                </button>
+
+                                <button
+                                    onClick={atualizar}
+                                    className="btn btn-primary"
+                                    data-bs-dismiss="modal"
+                                >
+                                    Salvar
+                                </button>
                             </div>
+
                         </div>
                     </div>
-                </div>
-
-
-                <div className="titulo" >
-
                 </div>
 
 
@@ -113,7 +231,7 @@ export default function CadastroClientes() {
 
                 <br /> <br />
 
-                  <form onSubmit={() => salvar(event)} type="Salvar">
+                <form onSubmit={() => salvar(event)} type="Salvar">
                     <div className="nomeCompleto">
                         <label className="form-label">Nome Completo</label>
                         <input onChange={e => alteraNome(e.target.value)} type="text" className="form-control" />
@@ -159,7 +277,7 @@ export default function CadastroClientes() {
 
 
                     <button className="btn btn-primary me-3">Salvar</button>
-                    <button onClick={cancelar} className="btn btn-dark">Cancelar</button>
+                    <button onClick={cancelaEdicao} className="btn btn-dark">Cancelar</button>
 
 
                 </form>

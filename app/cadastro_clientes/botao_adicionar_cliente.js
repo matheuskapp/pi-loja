@@ -5,12 +5,7 @@ import "./botao_adicionar_clientes.css"
 
 
 export function BotaoAdicionarClientes() {
-    function editar(cliente) {
-        alteraEditarCliente(cliente)
-
-
-
-    }
+   
 
 
     const [nome, alteraNome] = useState("")

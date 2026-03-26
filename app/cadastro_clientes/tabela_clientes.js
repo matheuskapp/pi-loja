@@ -1,9 +1,26 @@
 'use client'
 
+import { useState } from "react"
+
 
 function TabelaClientes({ listaClientes, pesquisar, pesquisaClientes, alteraPesquisaClientes, editar }) {
+    const [editando, alteraEditando] = useState([])
+    const [nome, alteraNome] = useState("")
+    const [data_nascimento, alteraData_Nascimento] = useState()
+    const [cpf, alteraCpf] = useState()
+    const [telefone, alteraTelefone] = useState()
+    const [email, alteraEmail] = useState("")
+    const [endereco, alteraEndereco] = useState("")
 
-
+     function editar(objeto) {
+        alteraEditando(objeto.id)
+        alteraNome(objeto.nome)
+        alteraData_Nascimento(objeto.data_nascimento)
+        alteraCpf(objeto.cpf)
+        alteraTelefone(objeto.telefone)
+        alteraEmail(objeto.email)
+        alteraEndereco(objeto.endereco)
+    }
 
     return (
 
@@ -65,10 +82,10 @@ function TabelaClientes({ listaClientes, pesquisar, pesquisaClientes, alteraPesq
                                     <td>{item.endereco}</td>
                                     <td>
                                         <button
-                                            onClick={() => editar(item)}
+                                            onClick={editar(item)}
+                                            className="btn btn-warning"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#modalEditar"
-                                            className="btn btn-warning btn-sm"
+                                            data-bs-target="#modaledicao"
                                         >
                                             Editar
                                         </button>
