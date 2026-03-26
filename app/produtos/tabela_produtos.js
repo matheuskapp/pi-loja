@@ -40,12 +40,25 @@ export function TabelaProdutos() {
 
         e.preventDefault()
         const objeto = {
-            observacao: observacao
+            nome: nome,
+            sku: sku,
+            preco: preco,
+            quantidade: quantidade,
+            descricao: descricao
         }
 
         const { error } = await supabase
             .from('produtos')
-            .insert(objeto)
+            .update(objeto)
+            .eq('id', editando) //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        console.log(error)
+        if (error == null) {
+            alert("Atualização realizada com sucesso!")
+            cancelaEdicao()
+            buscar()
+        } else {
+            alert("Dados inválidos! verifique os campos e tente novamente..")
+        }
     }
 
     function editar(objeto) {
@@ -207,7 +220,7 @@ export function TabelaProdutos() {
                             <div className="mb-3">
                                 {/* w-100 */}
                                 <label className="form-label w-100">
-                                    <input value={sku} onChange={e => alteraSku(e.target.value)}
+                                    <input disabled={editando != null} value={sku} onChange={e => alteraSku(e.target.value)}
                                         type="text"
                                         className="form-control"
                                         placeholder="SKU"
@@ -218,7 +231,7 @@ export function TabelaProdutos() {
                             <div className="mb-3">
                                 {/* w-100 */}
                                 <label className="form-label w-100">
-                                    <input value={preco} onChange={e => alteraPreco(e.target.value)}
+                                    <input  value={preco} onChange={e => alteraPreco(e.target.value)}
 
                                         type="text"
                                         className="form-control"
