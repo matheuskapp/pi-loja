@@ -1,7 +1,6 @@
 'use client';
 import { createClient } from '@supabase/supabase-js'
 
-// Create a single supabase client for interacting with your database
 const supabase = createClient('https://walrpbrbskwawykdrwna.supabase.co', 'sb_publishable_e6ELe320z3xGITtIk-2QVg_K3tLxQTa')
 import { useState } from "react";
 import "./botao_adicionar_funcionarios.css"

@@ -1,77 +1,7 @@
 'use client'
-import { useEffect, useState } from "react";
-import supabase from "../conexao/supabase";
 
 
-
-
-function TabelaClientes() {
-
-    const [listaClientes, alteraListaClientes] = useState([])
-
-    const [pesquisaClientes, alteraPesquisaClientes] = useState("")
-
-    //function editar
-    
-    const [editarUsuario, alteraEditarUsuario] = useState()
-    
-
-
-
-
-
-
-    async function buscar() {
-
-        const { data, error } = await supabase
-            .from('clientes')
-            .select()
-        console.log(data)
-        alteraListaClientes(data)
-
-    }
-
-    async function salvar(e) {
-        e.preventDefault()
-        const objeto = {
-            nome: nome,
-            data_nascimento: data_nascimento,
-            cpf: cpf,
-            telefone: telefone,
-            email: email,
-            endereco: endereco
-
-        }
-
-    }
-
-
-
-    async function pesquisar() {
-        const { data, error } = await supabase
-            .from('clientes')
-            .select('*')
-            .ilike('nome', '%' + pesquisaClientes + '%')
-        console.log(data)
-        console.log(error)
-
-        alteraListaClientes(data)
-
-    }
-
-    function editar(objeto) {
-
-        alteraEditarUsuario(objeto.id)
-        
-
-
-
-    }
-
-
-    useEffect(() => {
-        buscar()
-    }, [])
+function TabelaClientes({ listaClientes, pesquisar, pesquisaClientes, alteraPesquisaClientes, editar }) {
 
 
 
@@ -84,7 +14,7 @@ function TabelaClientes() {
                 <div className="row">
                     <div className="col-6">
                         <div className="input-group">
-                            <input onChange={e => alteraPesquisaClientes(e.target.value)}
+                            <input value={pesquisaClientes} onChange={e => alteraPesquisaClientes(e.target.value)}
                                 type="text"
                                 className="form-control"
                                 placeholder="Pesquisar Cliente.."
@@ -94,7 +24,7 @@ function TabelaClientes() {
                                 type="button col-10"
                                 id="button-addon2"
                             >
-                                🔍
+                                Pesquisar 🔍
                             </button>
                         </div>
                     </div>
@@ -107,44 +37,50 @@ function TabelaClientes() {
 
 
 
-            <table className="container py-5 bg-light text-align-left ms-4 rounded-5">
+            <div className="container py-5 bg-light ms-4 rounded-5">
 
-                <table class="table align-middle">
+                <table className="table align-middle">
 
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Data de Nascimento</th>
+                            <th>CPF</th>
+                            <th>Telefone</th>
+                            <th>E-mail</th>
+                            <th>Endereço</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
 
-
-
-                    <tr>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Data de Nascimento</th>
-                        <th scope="col">CPF</th>
-                        <th scope="col">Telefone</th>
-                        <th scope="col">E-mail</th>
-                        <th scope="col">Endereço</th>
-                        <th scope="col">Ações</th>
-                    </tr>
-                    <thead />
                     <tbody>
-
                         {
-                            listaClientes.map(
-
-                                item => <tr>
-
+                            listaClientes.map((item) => (
+                                <tr key={item.id}>
                                     <td>{item.nome}</td>
                                     <td>{item.data_nascimento}</td>
                                     <td>{item.cpf}</td>
                                     <td>{item.telefone}</td>
                                     <td>{item.email}</td>
                                     <td>{item.endereco}</td>
-                                    <td><button data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal" onClick={() => editar(item)}>Editar</button></td>
+                                    <td>
+                                        <button
+                                            onClick={() => editar(item)}
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalEditar"
+                                            className="btn btn-warning btn-sm"
+                                        >
+                                            Editar
+                                        </button>
+                                    </td>
                                 </tr>
-                            )
+                            ))
                         }
                     </tbody>
+
                 </table>
-            </table>
+
+            </div>
 
         </div>
 

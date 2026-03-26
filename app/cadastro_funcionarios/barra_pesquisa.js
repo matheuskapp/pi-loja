@@ -1,15 +1,15 @@
-export default function BarraPesquisa() {
+export default function BarraPesquisa({pesquisar,pesquisaFuncionarios,alteraPesquisaFuncionarios}) {
     return (
         <div className="barradepesquisa mb-3 p-5">
             <div className="row">
                 <div className="col-6">
                     <div className="input-group">
-                        <input
+                        <input value={pesquisaFuncionarios} onChange={e => alteraPesquisaFuncionarios(e.target.value)}
                             type="text"
                             className="form-control"
                             placeholder="Pesquisar"
                         />
-                        <button
+                        <button onClick={pesquisar}
                             className="btn btn-outline-secondary"
                             type="button"
                             id="button-addon2"
