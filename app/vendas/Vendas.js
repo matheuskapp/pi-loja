@@ -20,6 +20,7 @@ export default function Vendas() {
     const [buscaCliente, setBuscaCliente] = useState("");
     const [mostrarClientes, setMostrarClientes] = useState(false);
     const [mostrarProdutos, setMostrarProdutos] = useState(false);
+    const [mostrarFiltros, setMostrarFiltros] = useState(false);
 
     async function buscarClientes() {
         const { data } = await supabase
@@ -46,8 +47,11 @@ export default function Vendas() {
             return;
         }
 
-        const precoUnitario = prodSelecionado.preco;
-        const valorTotal = (precoUnitario * parseInt(quantidade)) - (parseFloat(desconto) || 0)
+        const precoUnitario = parseFloat(prodSelecionado.preco) || 0;
+        const qtd = parseInt(quantidade) || 0;
+        const desc = parseFloat(desconto) || 0;
+
+        const valorTotal = Number(((precoUnitario * qtd) - desc).toFixed(2));
 
         const objetos = {
             cliente: cliSelecionado.id,
@@ -278,45 +282,72 @@ export default function Vendas() {
                 </div>
             </div>
 
-            <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-3">
-                <h3 className="fw-bold mb-0">Vendas Recentes</h3>
+            <div className="card shadow-sm border-0 mb-4">
+                <div className="card-body">
+                    <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                        <h3 className="fw-bold mb-0">Vendas Recentes</h3>
 
-                <div className="d-flex gap-2 align-items-center flex-wrap">
-                    <input
-                        type="text"
-                        className="form-control form-control-sm border-secondary"
-                        placeholder="Pesquisar cliente..."
-                        value={buscaCliente}
-                        onChange={(e) => setBuscaCliente(e.target.value)}
-                        style={{ minWidth: '180px' }}
-                    />
+                        <button
+                            type="button"
+                            className="btn btn-outline-primary"
+                            onClick={() => setMostrarFiltros((prev) => !prev)}
+                        >
+                            {mostrarFiltros ? "Fechar filtros" : "Filtrar"}
+                        </button>
+                    </div>
 
-                    <select
-                        className="form-select form-select-sm border-secondary"
-                        value={filtroPagamento}
-                        onChange={(e) => setFiltroPagamento(e.target.value)}
-                        style={{ width: 'auto' }}
-                    >
-                        <option value="">Formas de Pagamento</option>
-                        <option value="Pix">Pix</option>
-                        <option value="Cartão de Débito">Cartão de Débito</option>
-                        <option value="Cartão de Crédito">Cartão de Crédito</option>
-                        <option value="Dinheiro">Dinheiro</option>
-                    </select>
+                    {mostrarFiltros && (
+                        <div className="bg-light p-3 rounded-3 border">
+                            <div className="row g-3">
+                                <div className="col-12 col-lg-6">
+                                    <label className="form-label fw-semibold text-secondary small">
+                                        Pesquisar Cliente
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control border-secondary shadow-sm"
+                                        placeholder="Digite o nome do cliente..."
+                                        value={buscaCliente}
+                                        onChange={(e) => setBuscaCliente(e.target.value)}
+                                    />
+                                </div>
 
-                    <select
-                        className="form-select form-select-sm border-secondary"
-                        value={ordemValor}
-                        onChange={(e) => setOrdemValor(e.target.value)}
-                        style={{ width: 'auto' }}
-                    >
-                        <option value="">Ordenar Valor</option>
-                        <option value="Crescente">Menor Valor (Crescente)</option>
-                        <option value="Decrescente">Maior Valor (Decrescente)</option>
-                    </select>
+                                <div className="col-12 col-md-6 col-lg-3">
+                                    <label className="form-label fw-semibold text-secondary small">
+                                        Forma de Pagamento
+                                    </label>
+                                    <select
+                                        className="form-select border-secondary shadow-sm"
+                                        value={filtroPagamento}
+                                        onChange={(e) => setFiltroPagamento(e.target.value)}
+                                    >
+                                        <option value="">Todas as formas</option>
+                                        <option value="Pix">Pix</option>
+                                        <option value="Cartão de Débito">Cartão de Débito</option>
+                                        <option value="Cartão de Crédito">Cartão de Crédito</option>
+                                        <option value="Dinheiro">Dinheiro</option>
+                                    </select>
+                                </div>
+
+                                <div className="col-12 col-md-6 col-lg-3">
+                                    <label className="form-label fw-semibold text-secondary small">
+                                        Ordenar por Valor
+                                    </label>
+                                    <select
+                                        className="form-select border-secondary shadow-sm"
+                                        value={ordemValor}
+                                        onChange={(e) => setOrdemValor(e.target.value)}
+                                    >
+                                        <option value="">Sem ordenação</option>
+                                        <option value="Crescente">Menor Valor (Crescente)</option>
+                                        <option value="Decrescente">Maior Valor (Decrescente)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
-
             <div className="table-responsive bg-white rounded shadow-sm p-3">
                 <table className="table table-hover">
                     <thead className="table-light">
