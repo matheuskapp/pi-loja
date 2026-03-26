@@ -14,8 +14,34 @@ function cadastroClientes() {
     const [listaClientes, alteraListaClientes] = useState([])
     const [pesquisaClientes, alteraPesquisaClientes] = useState("")
 
-    const [editarUsuario, alteraEditarUsuario] = useState()
+    const [editando, alteraEditando] = useState()
 
+    async function atualizar() {
+        e.preventDefault()
+
+        const objeto = {
+            nome: nome,
+            data_nascimento: data_nascimento,
+            cpf: cpf,
+            telefone: telefone,
+            email: email,
+            endereco: endereco,
+        }
+
+        const { error } = await supabase
+        .from('usuarios')
+        .update(objeto)
+        .eq('id', editando)
+
+
+        if (error == null){
+            alert("Atualização realizada com sucesso")
+            cancelaEdicao()
+            buscar()
+        }else{
+            alert("Verifique os campos e tente novamente!")
+        }
+    }
 
     async function buscar() {
 
@@ -39,30 +65,49 @@ function cadastroClientes() {
 
     }
 
-    
+    function editar(objeto) {
+        alteraEditando(objeto.id)
+        alteraNome(objeto.nome)
+        alteraData_Nascimento(objeto.data_nascimento)
+        alteraCpf(objeto.cpf)
+        alteraTelefone(objeto.telefone)
+        alteraEmail(objeto.email)
+        alteraEndereco(objeto.endereco)
+    }
+
+    function cancelaEdicao() {
+        alteraEditando(null)
+        alteraNome("")
+        alteraData_Nascimento()
+        alteraCpf("")
+        alteraTelefone()
+        alteraEmail("")
+        alteraEndereco("")
+    }
+
     useEffect(() => {
         buscar()
     }, [])
 
     return (
-        
-          <div className="row">
-                      <div className="col-2">
-          
-                          <BarraLateral/>
-          
-                      </div>
-          
-                      <div className="col-10">
-          
-                          
-                          <BotaoAdicionarClientes/>
-                          <TabelaClientes listaClientes={listaClientes} pesquisar={pesquisar} pesquisaClientes={pesquisaClientes} alteraPesquisaClientes={alteraPesquisaClientes} />
-                          
-          
-                      </div>
-                      
-                  </div>
+
+        <div className="row">
+            <div className="col-2">
+
+                <BarraLateral />
+
+            </div>
+
+            <div className="col-10">
+
+
+                <BotaoAdicionarClientes />
+                <TabelaClientes listaClientes={listaClientes} pesquisar={pesquisar} pesquisaClientes={pesquisaClientes} alteraPesquisaClientes={alteraPesquisaClientes} editar={editar} />
+                <CadastroClientes />
+
+            </div>
+
+        </div>
     );
 }
 

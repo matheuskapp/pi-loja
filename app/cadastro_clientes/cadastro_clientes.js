@@ -2,7 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "./cadastro_clientes.css"
 import BarraLateral from '../components/barra_lateral'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import supabase from '../conexao/supabase'
 
 export default function CadastroClientes() {
@@ -66,6 +66,8 @@ export default function CadastroClientes() {
         else alert("Dados inválidos, verifique os campos e tente novamente...")
     }
 
+    
+
 
 
 
@@ -82,7 +84,7 @@ export default function CadastroClientes() {
                 <div className="container-fluid" />
                 <h1>Cadastro de Clientes</h1>
 
-                <div class="modal" tabindex="-1">
+                <div className="modal fade" id="modalEditar">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">

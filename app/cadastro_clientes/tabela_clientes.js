@@ -1,7 +1,8 @@
 'use client'
 
 
-function TabelaClientes({listaClientes, pesquisar, pesquisaClientes, alteraPesquisaClientes}) {
+function TabelaClientes({ listaClientes, pesquisar, pesquisaClientes, alteraPesquisaClientes, editar }) {
+
 
 
     return (
@@ -23,7 +24,7 @@ function TabelaClientes({listaClientes, pesquisar, pesquisaClientes, alteraPesqu
                                 type="button col-10"
                                 id="button-addon2"
                             >
-                               Pesquisar 🔍
+                                Pesquisar 🔍
                             </button>
                         </div>
                     </div>
@@ -36,44 +37,50 @@ function TabelaClientes({listaClientes, pesquisar, pesquisaClientes, alteraPesqu
 
 
 
-            <table className="container py-5 bg-light text-align-left ms-4 rounded-5">
+            <div className="container py-5 bg-light ms-4 rounded-5">
 
-                <table class="table align-middle">
+                <table className="table align-middle">
 
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Data de Nascimento</th>
+                            <th>CPF</th>
+                            <th>Telefone</th>
+                            <th>E-mail</th>
+                            <th>Endereço</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
 
-
-
-                    <tr>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Data de Nascimento</th>
-                        <th scope="col">CPF</th>
-                        <th scope="col">Telefone</th>
-                        <th scope="col">E-mail</th>
-                        <th scope="col">Endereço</th>
-                        <th scope="col">Ações</th>
-                    </tr>
-                    <thead />
                     <tbody>
-
                         {
-                            listaClientes.map(
-
-                                item => <tr>
-
+                            listaClientes.map((item) => (
+                                <tr key={item.id}>
                                     <td>{item.nome}</td>
                                     <td>{item.data_nascimento}</td>
                                     <td>{item.cpf}</td>
                                     <td>{item.telefone}</td>
                                     <td>{item.email}</td>
                                     <td>{item.endereco}</td>
-                                    <td><button data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal">Editar</button></td>
+                                    <td>
+                                        <button
+                                            onClick={() => editar(item)}
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalEditar"
+                                            className="btn btn-warning btn-sm"
+                                        >
+                                            Editar
+                                        </button>
+                                    </td>
                                 </tr>
-                            )
+                            ))
                         }
                     </tbody>
+
                 </table>
-            </table>
+
+            </div>
 
         </div>
 
