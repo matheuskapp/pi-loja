@@ -1,13 +1,34 @@
+'use client'
 import 'bootstrap/dist/css/bootstrap.min.css'
-
+import supabase from '../conexao/supabase';
 import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient('https://walrpbrbskwawykdrwna.supabase.co', 'sb_publishable_e6ELe320z3xGITtIk-2QVg_K3tLxQTa')
-
 import BarraLateral from '../components/barra_lateral';
+import { useState } from 'react';
 
 
 export default function Login() {
+
+    const [email, alteraEmail] = useState("")
+    const [senha, alteraSenha] = useState("")
+
+    async function autenticar() {
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: senha,
+
+            
+        })
+        
+        if(data.user == null ){
+            alert("Dados inválidos...")
+            return
+        }
+
+        alert("Autenticado com sucesso!")
+        localStorage.setItem("id_usuario",data.user.id)
+    }
+
     return (
 
         <div>
@@ -30,8 +51,8 @@ export default function Login() {
                             <form onsubmit="salvar(event)">
 
                                 <div>
-                                    <label for="exampleInputPassword1" class="form-label">Usuário</label>
-                                    <input type="text" class="form-control" id="exampleInputPassword1" />
+                                    <label for="exampleInputPassword1" class="form-label">Email</label>
+                                    <input onChange={e => alteraEmail(e.target.value)} type="text" class="form-control" id="exampleInputPassword1" />
                                 </div>
 
                                 <br /> <br />
@@ -40,13 +61,13 @@ export default function Login() {
 
                                     <div>
                                         <label for="exampleInputPassword1" class="form-label">Senha</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword1" />
+                                        <input onChange={e => alteraSenha(e.target.value)} type="password" class="form-control" id="exampleInputPassword1" />
                                     </div>
                                     <br />
 
 
 
-                                    <button type="button" class="btn btn-outline-success me-3">Salvar</button>
+                                    <button onClick={autenticar} type="button" class="btn btn-outline-success me-3">Salvar</button>
                                     <button type="button" class="btn btn-outline-danger me-3">Cancelar</button>
 
 
