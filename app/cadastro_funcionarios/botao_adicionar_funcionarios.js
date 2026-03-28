@@ -9,22 +9,62 @@ import { Alert } from 'bootstrap';
 
 export function BotaoAdicionarFuncionarios() {
 
- const [nome, alteraNome] = useState("")
- const [email, alteraEmail] = useState ("")
- const [senha, alteraSenha] = useState ("")
-    
+    const [nome, alteraNome] = useState("")
+    const [cpf, alteraCpf] = useState("")
+    const [email, alteraEmail] = useState("")
+    const [senha, alteraSenha] = useState("")
+
+     async function cadastrar() {
+
+
+        // cadastrar no auth do supabase
+        const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: senha,
+        })
+
+        if(data == null){
+            alert("Dados Inválidos...")
+            return
+        }
+
+        //cadastrar na minha tabela de usuários
+
+        const obj = {
+            id: data.user.id,
+            nome: nome,
+            cpf: cpf,
+            
+        }
+        const resposta  = await supabase
+            .from('usuarios')
+            .insert(obj)
+
+        if(resposta.error == null){
+            alert("Cadastrado com sucesso!")
+            
+        }else{
+            alert("Verifique os dados inseridos e tente novamente")
+        }
+
+
+    }
 
     async function salvar() {
         const objetos = {
             nome: nome,
-            email: email,
-            senha: senha
+
         }
         console.log(objetos)
 
 
-        if (objetos.nome.length < 3){
+        if (objetos.nome.length < 3) {
             alert("O nome deve conter mais de 3 caracteres")
+            return
+        }
+
+        if (objetos.cpf.length < 3) {
+            alert("O nome deve conter mais de 11 caracteres")
             return
         }
 
@@ -37,13 +77,13 @@ export function BotaoAdicionarFuncionarios() {
 
         if (error == null) {
             alert("Funcionario cadastrado com sucesso!")
-           
+
         } else {
             alert("Dados invalidos, verifique os campos e tente novamente")
         }
     }
 
-    
+
     return (
         <div className="containerBotao mb-3 text-end">
 
@@ -103,9 +143,22 @@ export function BotaoAdicionarFuncionarios() {
                                 <div className="mb-3">
                                     {/* w-100 */}
                                     <label className="form-label w-100">
+                                        <input value={cpf} onChange={e => alteraCpf(e.target.value)}
+
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="CPF"
+                                        />
+                                    </label>
+                                </div>
+
+
+                                 <div className="mb-3">
+                                    {/* w-100 */}
+                                    <label className="form-label w-100">
                                         <input value={email} onChange={e => alteraEmail(e.target.value)}
 
-                                            type="email"
+                                            type="Email"
                                             className="form-control"
                                             placeholder="Email"
                                         />
@@ -113,20 +166,22 @@ export function BotaoAdicionarFuncionarios() {
                                 </div>
 
 
+
                                 <div className="mb-3">
                                     {/* w-100 */}
                                     <label className="form-label w-100">
-                                        <input  value={senha} onChange={e => alteraSenha(e.target.value)}
+                                        <input value={senha} onChange={e => alteraSenha(e.target.value)}
                                             type="password"
                                             className="form-control"
                                             placeholder="Senha"
                                         />
                                     </label>
                                 </div>
-
                                 
+                                
+
+
                             </div>
-                            {/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
 
 
 
@@ -140,10 +195,13 @@ export function BotaoAdicionarFuncionarios() {
                                     Fechar
                                 </button>
 
-                                <button onClick={salvar}
+                                <button onClick={cadastrar}
+
                                     type="button"
                                     className="btn btn-primary"
-                                >
+                                    data-bs-dismiss="modal"
+                                    
+                                >   
                                     Salvar
                                 </button>
                             </div>

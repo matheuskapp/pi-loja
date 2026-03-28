@@ -1,8 +1,9 @@
 'use client';
 import { useState } from "react";
 import supabase from "../conexao/supabase";
+import { BotaoAdicionarFuncionarios } from "./botao_adicionar_funcionarios";
 
-export function ListaFuncionarios({ listafuncionarios, alteraListaFuncionarios }) {
+export function ListaFuncionarios({ listafuncionarios, alteraListaFuncionarios,buscar }) {
    
     const [nome, alteraNome] = useState("")
     const [email, alteraEmail] = useState("")
@@ -192,6 +193,7 @@ export function ListaFuncionarios({ listafuncionarios, alteraListaFuncionarios }
                                 onClick={salvar}
                                 className="btn btn-primary"
                                 data-bs-dismiss="modal"
+                                
                             >
                                 Salvar
                             </button>
