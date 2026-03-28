@@ -2,7 +2,7 @@
 
 import BarraLateral from "../components/barra_lateral";
 import supabase from "../conexao/supabase";
-import CadastroClientes from "./teste";
+import CadastroClientes from "./cadastro_clientes_completo";
 
 
 
