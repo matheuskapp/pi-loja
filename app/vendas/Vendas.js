@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import supabase from "../conexao/supabase";
-import './FinalizarVenda.css'
+import './estilizar.css'
 
 export default function Vendas() {
     const [cliente, setCliente] = useState("");
@@ -157,7 +157,7 @@ export default function Vendas() {
 
     return (
         <>
-            <div className="card shadow-sm mb-5">
+            <div className="card shadow mb-5 border-0">
                 <div className="card-body">
                     <form onSubmit={salvar} className="row g-3">
 
@@ -311,7 +311,7 @@ export default function Vendas() {
                 </div>
             </div>
 
-            <div className="card shadow-sm border-0 mb-4">
+            <div className="card shadow border-0 mb-4">
                 <div className="card-body">
                     <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
                         <h3 className="fw-bold mb-0">Vendas Recentes</h3>
@@ -377,7 +377,8 @@ export default function Vendas() {
                     )}
                 </div>
             </div>
-            <div className="table-responsive bg-white rounded shadow-sm p-3">
+           
+            <div className="table-responsive bg-white rounded shadow p-3 border-0">
                 <table className="table table-hover">
                     <thead className="table-light">
                         <tr>
