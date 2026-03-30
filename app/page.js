@@ -1,127 +1,192 @@
-import Image from "next/image";
-
+'use client'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default function Home() {
-  return (
-    <div>
-    <h1>Cadastro de Clientes</h1>
+    return (
+        <div style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
 
-            <div className="container-fluid">
-                <div className="row">
+            {/* MENU SUPERIOR */}
+            <nav className="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
+                <div className="container">
 
-                    {/* MENU */}
-                    <div className="col-3 menu">
+                    <span className="navbar-brand fw-bold">
+                        Sistema Clientes
+                    </span>
 
-                        <div className="text-center mt-4">
-                            <img src="/logo.png" width="120" />
+                    <div className="ms-auto">
+
+                        <a href="/login" className="btn btn-primary px-3">
+                            Login
+                        </a>
+                    </div>
+
+                </div>
+            </nav>
+
+            {/* HERO */}
+            <div className="container py-5 text-center">
+                <h1 className="fw-bold display-5 mb-3">
+                    Gestão de Clientes de forma simples e eficiente
+                </h1>
+
+                <p className="text-muted fs-5 col-md-7 mx-auto">
+                    Centralize informações, agilize atendimentos e mantenha seus dados sempre organizados com uma plataforma prática e intuitiva.
+                </p>
+
+                <div className="mt-4">
+                    <a href="/login" className="btn btn-primary btn-lg px-4 me-2">
+                        Começar agora
+                    </a>
+
+                    <a href="/dashboard" className="btn btn-outline-secondary btn-lg px-4">
+                        Ver sistema
+                    </a>
+                </div>
+            </div>
+
+            {/* CARDS DE VALOR */}
+            <div className="container pb-5">
+                <div className="row text-center">
+
+                    <div className="col-md-4 mb-4">
+                        <div className="bg-white p-4 rounded-4 shadow-sm h-100">
+                            <h5 className="fw-bold">Organização</h5>
+                            <p className="text-muted">
+                                Todas as informações dos clientes centralizadas em um único lugar.
+                            </p>
                         </div>
+                    </div>
 
-                        <div class="menu-links list-group list-group-flush my-5">
+                    <div className="col-md-4 mb-4">
+                        <div className="bg-white p-4 rounded-4 shadow-sm h-100">
+                            <h5 className="fw-bold">Agilidade</h5>
+                            <p className="text-muted">
+                                Acesso rápido aos dados para otimizar o atendimento.
+                            </p>
+                        </div>
+                    </div>
 
-                            <ul className="menu-links">
-                                <li><a href="#" class="list-group-item-action">Vendas</a></li>
-                                <li><a href="#" class="list-group-item list-group-item-action ">Produtos</a></li>
-                                <li><a href="#" class="list-group-item list-group-item-action">Prdutos</a></li>
+                    <div className="col-md-4 mb-4">
+                        <div className="bg-white p-4 rounded-4 shadow-sm h-100">
+                            <h5 className="fw-bold">Controle</h5>
+                            <p className="text-muted">
+                                Atualização fácil garantindo dados sempre corretos.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <hr className="container" />
+
+            {/* CADASTRO */}
+            <div className="container py-5">
+                <div className="row align-items-center">
+
+                    <div className="col-md-6">
+                        <h4 className="fw-bold mb-3">Cadastro completo de clientes</h4>
+
+                        <p className="text-muted">
+                            O sistema permite registrar clientes com todas as informações necessárias,
+                            garantindo organização e facilidade de acesso.
+                        </p>
+                    </div>
+
+                    <div className="col-md-6">
+                        <div className="bg-white p-4 rounded-4 shadow-sm border">
+                            <small className="text-muted">Dados armazenados:</small>
+                            <ul className="mt-2 text-muted">
+                                <li>Nome completo</li>
+                                <li>CPF</li>
+                                <li>Telefone</li>
+                                <li>Email</li>
+                                <li>Endereço</li>
                             </ul>
-
                         </div>
-
-
-                        
-                        <hr />
-
-                        <div className="usuario">
-                            👤 Usuários
-                            <div className="admin">admin</div>
-                        </div>
-
-                        <div className="voltar">
-                            ⬅ Voltar
-                        </div>
-
-                    </div>
-
-
-                    {/* CONTEÚDO */}
-                    <div className="col-9 conteudo">
-
-                        <div className="titulo">
-                            Cadastro de clientes
-
-                            <form>
-                                <div class="input-group input-group-sm mb-3">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">Nome completo</span>
-                                    <input type="text" class="form-control" />
-                                </div>
-                                <div class="input-group input-group-sm mb-3">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">CPF</span>
-                                    <input type="number" class="form-control" />
-                                </div>
-                                <div class="input-group input-group-sm mb-3">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">Telefone</span>
-                                    <input class="form-control" />
-                                </div>
-                                <div class="input-group input-group-sm mb-3">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">E-mail</span>
-                                    <input type="Email" class="form-control" />
-                                </div>
-                                <div class="input-group input-group-sm mb-3">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">Endereço</span>
-                                    <input type="text" class="form-control" />
-                                </div>
-                                <button>Salvar</button>
-                            </form>
-                        </div>
-
                     </div>
 
                 </div>
             </div>
-            <form>
-                <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">Nome completo</span>
-                    <input type="text" class="form-control" />
-                </div>
-                <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">CPF</span>
-                    <input type="number" class="form-control" />
-                </div>
-                <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">Telefone</span>
-                    <input type="number" class="form-control" />
-                </div>
-                <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">E-mail</span>
-                    <input type="text" class="form-control" />
-                </div>
-                <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">Endereço</span>
-                    <input type="text" class="form-control" />
-                </div>
-                <button>Salvar Cliente</button>
-            </form>
-            <br></br>
-            <br></br>
 
+            <hr className="container" />
 
-            <div class="card">
-                <h3 class="text-center">📋 Clientes cadastrados</h3>
+            {/* BUSCA */}
+            <div className="container py-5">
+                <div className="row align-items-center flex-md-row-reverse">
 
-                <table lass="text-center" >
-                    <thead lass="text-center">
-                        <tr>
-                            <th>Cliente</th>
-                            <th>Contato</th>
-                            <th>Email</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelaClientes"></tbody>
-                </table>
+                    <div className="col-md-6">
+                        <h4 className="fw-bold mb-3">Busca rápida e eficiente</h4>
+
+                        <p className="text-muted">
+                            Localize clientes instantaneamente através do nome,
+                            facilitando consultas e atendimentos.
+                        </p>
+                    </div>
+
+                    <div className="col-md-6">
+                        <div className="bg-white p-4 rounded-4 shadow-sm border">
+                            <small className="text-muted">Funcionalidades:</small>
+                            <ul className="mt-2 text-muted">
+                                <li>Pesquisa por nome</li>
+                                <li>Resultados imediatos</li>
+                                <li>Interface simples</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
+            <hr className="container" />
 
+            {/* EDIÇÃO */}
+            <div className="container py-5">
+                <div className="row align-items-center">
 
-    </div>
-  );
+                    <div className="col-md-6">
+                        <h4 className="fw-bold mb-3">Atualização de dados</h4>
+
+                        <p className="text-muted">
+                            Edite e mantenha os dados dos clientes sempre atualizados
+                            com um processo simples e intuitivo.
+                        </p>
+                    </div>
+
+                    <div className="col-md-6">
+                        <div className="bg-white p-4 rounded-4 shadow-sm border">
+                            <small className="text-muted">Ações:</small>
+                            <ul className="mt-2 text-muted">
+                                <li>Editar informações</li>
+                                <li>Salvar alterações</li>
+                                <li>Atualização em tempo real</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            {/* CTA FINAL */}
+            <div className="container text-center py-5">
+                <h4 className="fw-bold mb-3">
+                    Comece a organizar seus clientes hoje mesmo
+                </h4>
+
+                <a href="/login" className="btn btn-dark btn-lg px-5">
+                    Acessar sistema
+                </a>
+            </div>
+
+            {/* FOOTER */}
+            <footer className="bg-white border-top">
+                <div className="container py-4 text-center text-muted">
+                    <small>
+                        © 2026 Sistema de Gestão de Clientes • Todos os direitos reservados
+                    </small>
+                </div>
+            </footer>
+
+        </div>
+    )
 }
