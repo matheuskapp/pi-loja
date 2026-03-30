@@ -26,11 +26,7 @@ export default function BarraLateral() {
                             <i className="bi bi-credit-card me-2"></i> Produtos
                         </Link>
                     </li>
-                    <li className="nav-item">
-                        <Link href="#" className="nav-link">
-                            <i className="bi bi-gear me-2"></i> Categorias
-                        </Link>
-                    </li>
+                    
                     <li className="nav-item">
                         <Link href="vendas" className="nav-link">
                             <i className="bi bi-gear me-2"></i> Vendas
