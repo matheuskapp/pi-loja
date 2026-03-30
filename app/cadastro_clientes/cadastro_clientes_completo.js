@@ -18,7 +18,7 @@ export default function CadastroClientes() {
     const [pesquisaClientes, alteraPesquisaClientes] = useState("")
     const [editando, alteraEditando] = useState(null)
 
-    
+
 
     async function buscarClientes() {
         const { data } = await supabase
@@ -32,7 +32,7 @@ export default function CadastroClientes() {
         const { data } = await supabase
             .from('clientes')
             .select('*')
-            .ilike('nome', '%' +  pesquisaClientes  + '%')
+            .ilike('nome', '%' + pesquisaClientes + '%')
 
         alteraListaClientes(data)
     }
@@ -60,6 +60,8 @@ export default function CadastroClientes() {
             alteraTelefone()
             alteraEmail("")
             alteraEndereco("")
+
+            
         }
     }
 
@@ -87,11 +89,16 @@ export default function CadastroClientes() {
             .from('clientes')
             .update(objeto)
             .eq('id', editando)
-            cancelaEdicao()
-            buscarClientes()
+        cancelaEdicao()
+        buscarClientes()
+
+
         if (error == null) {
+
             alert("Cliente atualizado!")
             buscarClientes()
+
+     
         }
     }
 
@@ -166,9 +173,9 @@ export default function CadastroClientes() {
 
                         </div>
 
-                        <div className="modal-footer">
+                        <div className="modal-footer" >
                             <button className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                            <button onClick={salvar} className="btn btn-primary">Salvar</button>
+                            <button onClick={salvar} className="btn btn-primary" data-bs-dismiss="modal">Salvar</button>
                         </div>
 
                     </div>
