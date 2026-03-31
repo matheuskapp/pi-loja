@@ -1,61 +1,247 @@
+'use client';
 
-export default function CadastroFuncionarios() {
-  return (
+import { useEffect, useState } from "react";
+import { createClient } from '@supabase/supabase-js'
 
 
-    <div className="row">
+const supabase = createClient(
+    'https://walrpbrbskwawykdrwna.supabase.co',
+    'sb_publishable_e6ELe320z3xGITtIk-2QVg_K3tLxQTa'
+)
 
-        {/* CONTEÚDO */}
-      <div className="col-10 ">
-        <div className="container-fluid">
+export default function PaginaFuncionarios() {
+
+    const [listaFuncionarios, alteraListaFuncionarios] = useState([])
+    const [pesquisaFuncionarios, alteraPesquisaFuncionarios] = useState("")
+
+    const [nome, alteraNome] = useState("")
+    const [cpf, alteraCpf] = useState("")
+    const [email, alteraEmail] = useState("")
+    const [senha, alteraSenha] = useState("")
+    const [editando, alteraEditando] = useState(null)
+
+    /* ================= FUNÇÕES ================= */
+
+    async function pesquisar() {
+        const { data } = await supabase
+            .from('usuarios')
+            .select()
+            .ilike('nome', `%${pesquisaFuncionarios}%`)
+
+        alteraListaFuncionarios(data)
+    }
+
+    async function buscar() {
+        const { data } = await supabase
+            .from('usuarios')
+            .select()
+
+        alteraListaFuncionarios(data)
+    }
+
+    async function cadastrar() {
+
+        const { data } = await supabase.auth.signUp({
+            email: email,
+            password: senha,
+        })
+
+        if (data == null) {
+            alert("Dados Inválidos...")
+            return
+        }
+
+        const obj = {
+            id: data.user.id,
+            nome: nome,
+            cpf: cpf,
+        }
+
+        const resposta = await supabase.from('usuarios').insert(obj)
+
+        if (resposta.error == null) {
+            alert("Cadastrado com sucesso!")
+            buscar()
+        } else {
+            alert("Erro ao cadastrar")
+        }
+    }
+
+    async function salvar(e) {
+        e.preventDefault()
+
+        const objeto = { nome: nome }
+
+        const { error } = await supabase
+            .from('usuarios')
+            .update(objeto)
+            .eq('id', editando)
+
+        if (error == null) {
+            alert("Atualizado com sucesso")
+            buscar()
+        } else {
+            alert("Erro ao atualizar")
+        }
+    }
+
+    function editar(obj) {
+        alteraEditando(obj.id)
+        alteraNome(obj.nome)
+        alteraEmail(obj.email)
+        alteraSenha(obj.senha)
+    }
+
+
+    useEffect(() => {
+        buscar()
+        pesquisar()
+    }, [])
+
+
+    /* ================= UI ================= */
+
+    return (
+        <div className="container">
+
+            {/* CABEÇALHO */}
+            <div className="row mb-4 fw-bold">
+                <h1>Cadastro Funcionarios</h1>
+            </div>
+
+            {/* BARRA PESQUISA */}
+            <div className="barradepesquisa mb-3 p-5">
+                <div className="row">
+
+                    <div className="col-6">
+                        <div className="input-group">
+                            <input
+                                value={pesquisaFuncionarios}
+                                onChange={e => alteraPesquisaFuncionarios(e.target.value)}
+                                className="form-control"
+                                placeholder="Pesquisar"
+                            />
+                            <button onClick={pesquisar} className="btn btn-outline-secondary">
+                                🔍
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="col-2"></div>
+
+                    <div className="col-4">
+                        <select className="form-select" defaultValue="">
+                            <option value="" hidden>Filtrar</option>
+                            <option value="1">Ativo</option>
+                            <option value="2">Inativo</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+            {/* BOTÃO ADD */}
+            <div className="text-end mb-3">
+                <button
+                    className="btn btn-gradient"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalAdd"
+                >
+                    + Adicionar Funcionario
+                </button>
+            </div>
+
+            {/* MODAL ADD */}
+            <div className="modal fade" id="modalAdd">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+
+                        <div className="modal-header">
+                            <h3>Novo Funcionario</h3>
+                            <button className="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div className="modal-body">
+                            <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control mb-2" placeholder="Nome" />
+                            <input value={cpf} onChange={e => alteraCpf(e.target.value)} className="form-control mb-2" placeholder="CPF" />
+                            <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control mb-2" placeholder="Email" />
+                            <input value={senha} onChange={e => alteraSenha(e.target.value)} type="password" className="form-control" placeholder="Senha" />
+                        </div>
+
+                        <div className="modal-footer">
+                            <button className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            <button onClick={cadastrar} className="btn btn-primary" data-bs-dismiss="modal">Salvar</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            {/* LISTA */}
+            <div className="container py-5 bg-light rounded-5">
+
+                <button onClick={buscar} className="btn btn-primary mb-3">🔄</button>
+
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Senha</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {listaFuncionarios.map((item, i) => (
+                            <tr key={i}>
+                                <td>{item.id}</td>
+                                <td>{item.nome}</td>
+                                <td>{item.email}</td>
+                                <td>****</td>
+
+                                <td>
+                                    <button
+                                        onClick={() => editar(item)}
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEdit"
+                                        className="btn btn-primary btn-sm me-2"
+                                    >
+                                        Editar
+                                    </button>
+
+                                    <button className="btn btn-danger btn-sm">
+                                        Excluir
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+
+            </div>
+
+            {/* MODAL EDIT */}
+            <div className="modal fade" id="modalEdit">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+
+                        <div className="modal-body">
+                            <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control mb-2" placeholder="Nome" />
+                            <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control mb-2" placeholder="Email" />
+                            <input value={senha} onChange={e => alteraSenha(e.target.value)} className="form-control" placeholder="Senha" />
+                        </div>
+
+                        <div className="modal-footer">
+                            <button className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            <button onClick={salvar} className="btn btn-primary" data-bs-dismiss="modal">Salvar</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
 
         </div>
-        <h1> Cadastro de Funcionarios </h1>
-
-        <form onsubmit="salvar(event)">
-
-          <label>
-            Nome Completo:
-            <input size="50" type="text" class="form-control" aria-label="Username"></input>
-
-          </label>
-
-          <br /> <br />
-
-          <form>
-            <div class="emailSenha">
-              <label for="exampleInputEmail1" class="form-label">Digite seu Email</label>
-              <input size="20" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
-
-            </div>
-            <div class="emailSenha">
-              <label for="exampleInputPassword1" class="form-label">Senha</label>
-              <input type="password" class="form-control" id="exampleInputPassword1" />
-            </div>
-            <br />
-            <select class="form-select form-select-lg mb-3" aria-label="Large select example">
-
-              <option value="1">Administrador</option>
-              <option value="2">Colaborador</option>
-
-            </select>
-            <button type="button" class="btn btn-outline-success me-3">Salvar</button>
-            <button type="button" class="btn btn-outline-danger me-3">Cancelar</button>
-          </form>
-
-          <br /><br />
-
-        </form>
-
-
-      </div>
-
-
-    </div>
-
-
-
-
-
-  );
+    );
 }

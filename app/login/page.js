@@ -1,13 +1,12 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import supabase from '../conexao/supabase';
-import { createClient } from '@supabase/supabase-js'
-
-import BarraLateral from '../components/barra_lateral';
+import { useRouter } from "next/navigation";
 import { useState } from 'react';
 
-
 export default function Login() {
+
+    const router = useRouter();
 
     const [email, alteraEmail] = useState("")
     const [senha, alteraSenha] = useState("")
@@ -16,81 +15,73 @@ export default function Login() {
         const { data, error } = await supabase.auth.signInWithPassword({
             email: email,
             password: senha,
-
-            
         })
-        
-        if(data.user == null ){
+
+        if (data.user == null) {
             alert("Dados inválidos...")
             return
         }
 
+        localStorage.setItem("id_usuario", data.user.id)
         alert("Autenticado com sucesso!")
-        localStorage.setItem("id_usuario",data.user.id)
+        router.push("/dashboard");
     }
 
     return (
+        <div className="container vh-100 d-flex align-items-center justify-content-center">
 
-        <div>
+            <div className="col-12 col-md-6 col-lg-4">
 
-            <div className="container-fluid">
-                <div className="row">
+                <div className="card shadow-lg border-0 rounded-4 p-4">
 
-                    <div className='col-2'>
-                        <BarraLateral />
-
+                    {/* Título */}
+                    <div className="text-center mb-4">
+                        <h2 className="fw-bold">Login</h2>
+                        <p className="text-muted">Acesse sua conta</p>
                     </div>
 
-                    {/* CONTEÚDO */}
-                    <div className="col-10 ">
+                    {/* Email */}
+                    <div className="mb-3">
+                        <label className="form-label">Email</label>
+                        <input
+                            onChange={e => alteraEmail(e.target.value)}
+                            type="email"
+                            className="form-control"
+                            placeholder="Digite seu email"
+                        />
+                    </div>
 
+                    {/* Senha */}
+                    <div className="mb-4">
+                        <label className="form-label">Senha</label>
+                        <input
+                            onChange={e => alteraSenha(e.target.value)}
+                            type="password"
+                            className="form-control"
+                            placeholder="Digite sua senha"
+                        />
+                    </div>
 
-                        <div className="titulo">
-                            <h1> Login </h1>
-                            <br />
-                            <form onsubmit="salvar(event)">
+                    {/* Botões */}
+                    <div className="d-flex justify-content-between">
+                        <button
+                            onClick={autenticar}
+                            className="btn btn-primary w-100 me-2"
+                        >
+                            Entrar
+                        </button>
 
-                                <div>
-                                    <label for="exampleInputPassword1" class="form-label">Email</label>
-                                    <input onChange={e => alteraEmail(e.target.value)} type="text" class="form-control" id="exampleInputPassword1" />
-                                </div>
-
-                                <br /> <br />
-
-                                <form>
-
-                                    <div>
-                                        <label for="exampleInputPassword1" class="form-label">Senha</label>
-                                        <input onChange={e => alteraSenha(e.target.value)} type="password" class="form-control" id="exampleInputPassword1" />
-                                    </div>
-                                    <br />
-
-
-
-                                    <button onClick={autenticar} type="button" class="btn btn-outline-success me-3">Salvar</button>
-                                    <button type="button" class="btn btn-outline-danger me-3">Cancelar</button>
-
-
-                                </form>
-
-                                <br /><br />
-
-                            </form>
-                        </div>
-
+                        <button
+                            className="btn btn-outline-secondary w-100"
+                        >
+                            Cancelar
+                        </button>
                     </div>
 
                 </div>
+
             </div>
 
-
-
-
-
         </div>
-
-
-
-
     );
 }
