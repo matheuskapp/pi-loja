@@ -183,7 +183,7 @@ export default function CadastroClientes() {
             </div>
 
 
-            <div className="container py-5 bg-light ms-4 rounded-5">
+            <div className="container py-5 bg-light ms-5 rounded-5">
                 <table className="table align-middle">
                     <thead>
                         <tr>
