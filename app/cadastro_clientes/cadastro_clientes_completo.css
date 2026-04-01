@@ -1,0 +1,13 @@
+.container{
+    .container-tabela {
+    text-align: center; /* centraliza o conteúdo */
+
+    padding: 20px; /* espaçamento interno opcional */
+
+    /* opcional: se quiser um leve fundo */
+    /* background-color: #f8f9fa; */
+
+    border-radius: 20px; /* cantos arredondados */
+}
+
+}
