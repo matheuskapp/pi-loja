@@ -129,13 +129,7 @@ export default function PaginaFuncionarios() {
 
                     <div className="col-2"></div>
 
-                    <div className="col-4">
-                        <select className="form-select" defaultValue="">
-                            <option value="" hidden>Filtrar</option>
-                            <option value="1">Ativo</option>
-                            <option value="2">Inativo</option>
-                        </select>
-                    </div>
+                   
 
                 </div>
             </div>
@@ -178,17 +172,16 @@ export default function PaginaFuncionarios() {
             </div>
 
             {/* LISTA */}
-            <div className="container py-5 bg-light rounded-5">
+            <div className="container py-3 bg-light rounded-5">
 
                 <button onClick={buscar} className="btn btn-primary mb-3">🔄</button>
 
                 <table className="table">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            
                             <th>Nome</th>
                             <th>Email</th>
-                            <th>Senha</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -196,24 +189,22 @@ export default function PaginaFuncionarios() {
                     <tbody>
                         {listaFuncionarios.map((item, i) => (
                             <tr key={i}>
-                                <td>{item.id}</td>
+                                
                                 <td>{item.nome}</td>
                                 <td>{item.email}</td>
-                                <td>****</td>
+                                
 
                                 <td>
                                     <button
                                         onClick={() => editar(item)}
                                         data-bs-toggle="modal"
                                         data-bs-target="#modalEdit"
-                                        className="btn btn-primary btn-sm me-2"
+                                        className="btn btn-primary btn-sm me-"
                                     >
                                         Editar
                                     </button>
 
-                                    <button className="btn btn-danger btn-sm">
-                                        Excluir
-                                    </button>
+                                   
                                 </td>
                             </tr>
                         ))}
@@ -230,8 +221,7 @@ export default function PaginaFuncionarios() {
                         <div className="modal-body">
                             <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control mb-2" placeholder="Nome" />
                             <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control mb-2" placeholder="Email" />
-                            <input value={senha} onChange={e => alteraSenha(e.target.value)} className="form-control" placeholder="Senha" />
-                        </div>
+                                                    </div>
 
                         <div className="modal-footer">
                             <button className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
