@@ -4,6 +4,7 @@ import "./cadastro_clientes.css"
 import "./botao_adicionar_clientes.css"
 import { useEffect, useState } from 'react'
 import supabase from '../conexao/supabase'
+import "./cadastro_clientes_completo.css"
 
 export default function CadastroClientes() {
 
@@ -61,7 +62,7 @@ export default function CadastroClientes() {
             alteraEmail("")
             alteraEndereco("")
 
-            
+
         }
     }
 
@@ -98,7 +99,7 @@ export default function CadastroClientes() {
             alert("Cliente atualizado!")
             buscarClientes()
 
-     
+
         }
     }
 
@@ -183,43 +184,56 @@ export default function CadastroClientes() {
             </div>
 
 
-            <div>
-                <table className="table table-hover align-middle bg-white rounded shadow-sm">
-                    <thead class="table-align">
-                        <tr>
-                            <th>Nome</th>
-                            <th >Data</th>
-                            <th>CPF</th>
-                            <th>Telefone</th>
-                            <th>Email</th>
-                            <th>Endereço</th>
-                            <th className="text-end">Ações</th>
-                        </tr>
-                    </thead>
+            <div >
 
-                    <tbody>
-                        {listaClientes.map((item) => (
-                            <tr key={item.id}>
-                                <td>{item.nome}</td>
-                                <td>{item.data_nascimento}</td>
-                                <td>{item.cpf}</td>
-                                <td>{item.telefone}</td>
-                                <td>{item.email}</td>
-                                <td>{item.endereco}</td>
-                                <td>
-                                    <button
-                                        onClick={() => editar(item)}
-                                        className="btn btn-warning"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modaledicao"
-                                    >
-                                        Editar
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                <div className="card shadow-sm border-10 rounded-10 d-inline-block">
+                    <div className="card-body">
+
+                        <table className="table align-middle">
+                            <thead className="text-muted">
+                                <tr>
+                                    <th className="text-center">Nome</th>
+                                    <th className="text-center">Data</th>
+                                    <th className="text-center">CPF</th>
+                                    <th className="text-center">Telefone</th>
+                                    <th className="text-center">Email</th>
+                                    <th className="text-center">Endereço</th>
+                                    <th className="text-center">Ações</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {listaClientes.map((item) => (
+                                    <tr key={item.id}>
+                                        <td className="text-center">{item.nome}</td>
+
+                                        <td className="text-center">
+                                            {new Date(item.data_nascimento).toLocaleDateString('pt-BR')}
+                                        </td>
+
+                                        <td className="text-center">{item.cpf}</td>
+                                        <td className="text-center">{item.telefone}</td>
+                                        <td className="text-center">{item.email}</td>
+                                        <td className="text-center">{item.endereco}</td>
+
+                                        <td className="text-center">
+                                            <button
+                                                onClick={() => editar(item)}
+                                                className="btn btn-primary btn-sm px-3"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modaledicao"
+                                            >
+                                                Editar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
             </div>
 
 
