@@ -38,7 +38,7 @@ export default function Home() {
                         Começar agora
                     </a>
 
-                                    </div>
+                  </div>
             </div>
 
             {/* CARDS DE VALOR */}
