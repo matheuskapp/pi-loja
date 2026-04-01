@@ -38,10 +38,7 @@ export default function Home() {
                         Começar agora
                     </a>
 
-                    <a href="/dashboard" className="btn btn-outline-secondary btn-lg px-4">
-                        Ver sistema
-                    </a>
-                </div>
+                  </div>
             </div>
 
             {/* CARDS DE VALOR */}

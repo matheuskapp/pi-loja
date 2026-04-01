@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from '@supabase/supabase-js'
+import "./cadastro_funcionarios.css"
 
 
 const supabase = createClient(
@@ -88,7 +89,7 @@ export default function PaginaFuncionarios() {
     function editar(obj) {
         alteraEditando(obj.id)
         alteraNome(obj.nome)
-        alteraEmail(obj.email)
+        alteraEmail(obj.Email)
         alteraSenha(obj.senha)
     }
 
@@ -129,19 +130,20 @@ export default function PaginaFuncionarios() {
 
                     <div className="col-2"></div>
 
-                   
+
 
                 </div>
             </div>
 
             {/* BOTÃO ADD */}
+
+            
             <div className="text-end mb-3">
                 <button
                     className="btn btn-gradient"
                     data-bs-toggle="modal"
                     data-bs-target="#modalAdd"
-                >
-                    + Adicionar Funcionario
+                >  + Adicionar Funcionario
                 </button>
             </div>
 
@@ -174,25 +176,24 @@ export default function PaginaFuncionarios() {
             {/* LISTA */}
             <div className="container py-3 bg-light rounded-5">
 
-                <button onClick={buscar} className="btn btn-primary mb-3">🔄</button>
-
                 <table className="table">
                     <thead>
                         <tr>
-                            
+
                             <th>Nome</th>
                             <th>Email</th>
-                            <th></th>
+                            <th>Ações</th>
+
                         </tr>
                     </thead>
 
                     <tbody>
                         {listaFuncionarios.map((item, i) => (
                             <tr key={i}>
-                                
+
                                 <td>{item.nome}</td>
                                 <td>{item.email}</td>
-                                
+
 
                                 <td>
                                     <button
@@ -204,7 +205,6 @@ export default function PaginaFuncionarios() {
                                         Editar
                                     </button>
 
-                                   
                                 </td>
                             </tr>
                         ))}
@@ -221,7 +221,7 @@ export default function PaginaFuncionarios() {
                         <div className="modal-body">
                             <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control mb-2" placeholder="Nome" />
                             <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control mb-2" placeholder="Email" />
-                                                    </div>
+                        </div>
 
                         <div className="modal-footer">
                             <button className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
