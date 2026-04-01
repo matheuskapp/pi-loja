@@ -1,38 +1,38 @@
 'use client'
 import DashBoard from "./DashBoard";
-import { useState } from "react";
 import BarraLateral from "../components/barra_lateral";
-import supabase from "../conexao/supabase";
-
-
 
 export default function dashboard() {
 
-  
-
-
-  
-
-
+  const dataAtual = new Date().toLocaleDateString('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
 
   return (
-
-
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", backgroundColor: "#f4f7f6", minHeight: "100vh" }}>
 
       <BarraLateral />
 
+      <main style={{ marginLeft: "260px", width: "100%", padding: "40px" }}>
 
-      <main style={{ marginLeft: "260px", width: "100%", padding: "24px" }}>
-
-        <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="d-flex justify-content-between align-items-center mb-5">
           <div>
-            <h2 className="fw-bold mb-1">Dashboard</h2>
-            <small className="text-muted">
-              Visão geral do seu negócio • 26/02/2026
-            </small>
+            <h1 className="fw-bold mb-1" style={{ letterSpacing: "-1px" }}>Dashboard</h1>
+            <p className="text-muted mb-0">
+              Gestão Boy+ Plus Size • <span className="fw-semibold text-dark">{dataAtual}</span>
+            </p>
           </div>
-
+          
+          <div className="d-flex gap-2">
+            <button className="btn btn-white shadow-sm border-0 rounded-3 px-3">
+              Relatório PDF
+            </button>
+            <button className="btn btn-primary shadow-sm rounded-3 px-4 fw-bold" onClick={() => window.location.reload()}>
+              Atualizar Dados
+            </button>
+          </div>
         </div>
         
         <DashBoard />
