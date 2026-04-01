@@ -183,17 +183,17 @@ export default function CadastroClientes() {
             </div>
 
 
-            <div className="container py-5 bg-light ms-5 rounded-5">
-                <table className="table align-middle">
-                    <thead>
+            <div>
+                <table className="table table-hover align-middle bg-white rounded shadow-sm">
+                    <thead class="table-align">
                         <tr>
                             <th>Nome</th>
-                            <th>Data</th>
+                            <th >Data</th>
                             <th>CPF</th>
                             <th>Telefone</th>
                             <th>Email</th>
                             <th>Endereço</th>
-                            <th>Ações</th>
+                            <th className="text-end">Ações</th>
                         </tr>
                     </thead>
 
