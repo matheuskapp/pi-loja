@@ -27,6 +27,8 @@ export default function Login() {
         router.push("/dashboard");
     }
 
+    
+
     return (
         <div className="container vh-100 d-flex align-items-center justify-content-center">
 
@@ -70,12 +72,14 @@ export default function Login() {
                         >
                             Entrar
                         </button>
-
-                        <button
-                            className="btn btn-outline-secondary w-100"
+                        
+                        <a href='homepage'
+                         className="btn btn-outline-secondary w-100 me-2"
+                            
                         >
                             Cancelar
-                        </button>
+                        </a>
+                       
                     </div>
 
                 </div>

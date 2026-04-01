@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from '@supabase/supabase-js'
+import "./cadastro_funcionarios.css"
 
 
 const supabase = createClient(
@@ -135,6 +136,8 @@ export default function PaginaFuncionarios() {
             </div>
 
             {/* BOTÃO ADD */}
+
+            
             <div className="text-end mb-3">
                 <button
                     className="btn btn-gradient"
@@ -179,6 +182,7 @@ export default function PaginaFuncionarios() {
 
                             <th>Nome</th>
                             <th>Email</th>
+                            <th>Ações</th>
 
                         </tr>
                     </thead>
