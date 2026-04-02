@@ -20,6 +20,15 @@ export function BotaoAdicionarProdutos() {
     const [quantidade, alteraQuantidade] = useState()
     const [descricao, alteraDescricao] = useState("")
 
+     async function buscar() {
+        const { data, error } = await supabase
+            .from('produtos')
+            .select()
+        console.log(data)
+        alteraProdutos(data)
+    }
+
+
     async function salvar() {
         const objetos = {
             nome: nome,
@@ -47,7 +56,7 @@ export function BotaoAdicionarProdutos() {
             alert("Digite uma descrição para o produto")
             return
         }
-        if (objetos.descricao.length > 10){
+        if (objetos.descricao.length > 100){
             alert("A descrição deve conter menos de 100 caracteres")
             return
         }
@@ -73,6 +82,8 @@ export function BotaoAdicionarProdutos() {
             // alteraDesconto("")
             alteraQuantidade("")
             alteraDescricao("")
+            buscar()
+            
         } else {
             alert("Dados invalidos, verifique os campos e tente novamente")
         }
@@ -199,6 +210,7 @@ export function BotaoAdicionarProdutos() {
                                 <button onClick={salvar}
                                     type="button"
                                     className="btn btn-primary"
+                                    data-bs-dismiss="modal"
                                 >
                                     Salvar
                                 </button>

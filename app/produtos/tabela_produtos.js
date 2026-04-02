@@ -308,9 +308,7 @@ export function TabelaProdutos() {
 
 
             <div class="container py-5 bg-light text-align-left ms-4 rounded-5">
-                <div class="col text-end">
-                    <button onClick={() => buscar()} class="btn btn-primary p-1 mb-2">🔄</button>
-                </div>
+                
                 <div class="card shadow-sm border-0 rounded-4">
                     <div class="card-body">
 
