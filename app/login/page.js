@@ -6,6 +6,11 @@ import { useState } from 'react';
 
 export default function Login() {
 
+
+    const [autenticado, alteraAutenticado] = useState(false)
+
+    const [usuario, alteraUsuario] = useState("")
+    
     const router = useRouter();
 
     const [email, alteraEmail] = useState("")
@@ -27,7 +32,7 @@ export default function Login() {
         router.push("/dashboard");
     }
 
-    
+
 
     return (
         <div className="container vh-100 d-flex align-items-center justify-content-center">
@@ -72,14 +77,14 @@ export default function Login() {
                         >
                             Entrar
                         </button>
-                        
+
                         <a href='homepage'
-                         className="btn btn-outline-secondary w-100 me-2"
-                            
+                            className="btn btn-outline-secondary w-100 me-2"
+
                         >
                             Cancelar
                         </a>
-                       
+
                     </div>
 
                 </div>

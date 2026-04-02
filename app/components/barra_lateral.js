@@ -12,15 +12,15 @@ export default function BarraLateral() {
 
                 <ul className="nav nav-pills flex-column">
                     <li className="nav-item">
-                        <Link href="login" className="nav-link">
+                        <Link href="dashboard" className="nav-link">
                             <i className="bi bi-grid me-2"></i> Inicio
                         </Link>
                     </li>
-                    <li className="nav-item">
+                    {/* <li className="nav-item">
                         <Link href="dashboard" className="nav-link">
                             <i className="bi bi-kanban me-2"></i> Dashboard
                         </Link>
-                    </li>
+                    </li> */}
                     <li className="nav-item">
                         <Link href="produtos" className="nav-link">
                             <i className="bi bi-credit-card me-2"></i> Produtos
