@@ -193,7 +193,7 @@ export default function ProdutosTeste() {
 
                             <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control mb-2" placeholder="Nome" />
 
-                            <input value={sku} onChange={e => alteraSku(e.target.value)} disabled={editando != null} className="form-control mb-2" placeholder="SKU" />
+                            <input value={sku} onChange={e => alteraSku(e.target.value)} disabled={editando != null} className="form-control mb-2" placeholder="SKU (Código interno)" />
 
                             <input value={preco} onChange={e => alteraPreco(e.target.value)} className="form-control mb-2" placeholder="Preço" />
 
