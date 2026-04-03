@@ -275,16 +275,7 @@ export default function Vendas() {
                             />
                         </div>
 
-                        <div className="col-md-2">
-                            <label className="form-label fw-bold">Desconto (R$)</label>
-                            <input
-                                type="number"
-                                step="0.01"
-                                className="form-control"
-                                value={desconto}
-                                onChange={(e) => setDesconto(e.target.value)}
-                            />
-                        </div>
+                        
 
                         <div className="col-md-2">
                             <label className="form-label fw-bold">Forma de Pagamento</label>
