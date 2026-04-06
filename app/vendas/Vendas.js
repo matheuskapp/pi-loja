@@ -7,7 +7,7 @@ import './estilizar.css'
 export default function Vendas() {
     const [cliente, setCliente] = useState("");
     const [produto, setProduto] = useState("");
-    const [quantidade, setQuantidade] = useState(""); // Quantidade da venda
+    const [quantidade, setQuantidade] = useState("");
     const [desconto, setDesconto] = useState("");
     const [forma_pagamento, setFormaPagamento] = useState("");
 
@@ -24,6 +24,7 @@ export default function Vendas() {
     const [estoqueDisponivel, setEstoqueDisponivel] = useState(null);
 
     const [pagina, setPagina] = useState(0);
+    const [totalPaginas, setTotalPaginas] = useState(1);
     const itensPorPagina = 30;
 
     async function buscarClientes() {
@@ -36,13 +37,12 @@ export default function Vendas() {
     async function buscarProdutos() {
         const { data } = await supabase
             .from("produtos")
-            // Alterado para 'quantidade' conforme o seu banco
             .select(`id, nome, preco, quantidade`);
         setListaProdutos(data || []);
     }
 
     async function salvar(e) {
-        e.preventDefault()
+        e.preventDefault();
 
         const cliSelecionado = listaClientes.find(c => c.nome === cliente);
         const prodSelecionado = listaProdutos.find(p => p.nome === produto);
@@ -52,24 +52,27 @@ export default function Vendas() {
             return;
         }
 
-        const qtdSelecionada = parseInt(quantidade) || 0; // O que foi digitado no input
-        const estoqueAtual = parseInt(prodSelecionado.quantidade) || 0; // O que veio do banco
+        const qtdSelecionada = Number(quantidade) || 0;
+        const estoqueAtual = Number(prodSelecionado.quantidade) || 0;
+        const desc = parseFloat(desconto) || 0;
 
-        // VERIFICAÇÃO 1: Impede a venda se não tiver estoque suficiente
+        if (qtdSelecionada <= 0) {
+            alert("A quantidade deve ser maior que zero.");
+            return;
+        }
+
         if (qtdSelecionada > estoqueAtual) {
             alert(`Estoque insuficiente! O produto "${prodSelecionado.nome}" tem apenas ${estoqueAtual} unidade(s) disponível(is).`);
             return;
         }
 
-        // VERIFICAÇÃO 2: Alerta se tiver apenas 1 no estoque
-        if (estoqueAtual === 1) {
-            alert("Atenção: Só tem um produto em estoque!");
-        }
-
         const precoUnitario = parseFloat(prodSelecionado.preco) || 0;
-        const desc = parseFloat(desconto) || 0;
-
         const valorTotal = Number(((precoUnitario * qtdSelecionada) - desc).toFixed(2));
+
+        if (valorTotal < 0) {
+            alert("O desconto não pode ser maior que o valor total da venda!");
+            return;
+        }
 
         const objetos = {
             cliente: cliSelecionado.id,
@@ -82,28 +85,27 @@ export default function Vendas() {
 
         const { error } = await supabase
             .from('vendas')
-            .insert([objetos])
+            .insert([objetos]);
 
         if (error == null) {
-            // ATUALIZAÇÃO DO ESTOQUE (COLUNA QUANTIDADE) NO BANCO DE DADOS
             const novoEstoque = estoqueAtual - qtdSelecionada;
             await supabase
                 .from('produtos')
-                .update({ quantidade: novoEstoque }) // Atualiza a coluna 'quantidade'
+                .update({ quantidade: novoEstoque })
                 .eq('id', prodSelecionado.id);
 
-            alert("VENDA cadastrada com sucesso!")
-            setCliente("")
-            setProduto("")
-            setQuantidade("")
-            setFormaPagamento("")
-            setDesconto("")
+            alert("VENDA cadastrada com sucesso!");
+            setCliente("");
+            setProduto("");
+            setQuantidade("");
+            setFormaPagamento("");
+            setDesconto("");
             setPagina(0);
             buscar();
             buscarProdutos();
         } else {
             console.error(error);
-            alert("Erro ao salvar venda.");
+            alert("Erro ao salvar venda. Verifique se a coluna no Supabase é do tipo 'numeric'.");
         }
     }
 
@@ -111,18 +113,20 @@ export default function Vendas() {
         const de = pagina * itensPorPagina;
         const ate = de + itensPorPagina - 1;
 
-        const { data, error } = await supabase
+        const { data, error, count } = await supabase
             .from('vendas')
             .select(`
                 *,
                 clientes (nome),
                 produtos (nome)
-            `)
+            `, { count: 'exact' })
             .order('created_at', { ascending: false })
             .range(de, ate);
 
         if (!error) {
             setListaVendas(data || []);
+            const calculoPaginas = Math.ceil(count / itensPorPagina);
+            setTotalPaginas(calculoPaginas || 1);
         }
     }
 
@@ -160,8 +164,6 @@ export default function Vendas() {
             <div className="card shadow mb-5 border-0">
                 <div className="card-body">
                     <form onSubmit={salvar} className="row g-3">
-
-                        {/* CLIENTE */}
                         <div className="col-md-12 position-relative">
                             <label className="form-label fw-bold">Cliente</label>
                             <input
@@ -174,29 +176,15 @@ export default function Vendas() {
                                     setMostrarClientes(true);
                                     setMostrarProdutos(false);
                                 }}
-                                onFocus={() => {
-                                    setMostrarClientes(true);
-                                    setMostrarProdutos(false);
-                                }}
-                                onBlur={() => {
-                                    setTimeout(() => setMostrarClientes(false), 150);
-                                }}
+                                onFocus={() => setMostrarClientes(true)}
+                                onBlur={() => setTimeout(() => setMostrarClientes(false), 150)}
                                 required
                             />
 
                             {mostrarClientes && (
-                                <div
-                                    className="list-group shadow-sm position-absolute w-100 bg-white"
-                                    style={{
-                                        zIndex: 10,
-                                        maxHeight: "180px",
-                                        overflowY: "auto"
-                                    }}
-                                >
+                                <div className="list-group shadow-sm position-absolute w-100 bg-white" style={{ zIndex: 10, maxHeight: "180px", overflowY: "auto" }}>
                                     {listaClientes
-                                        .filter((item) =>
-                                            item.nome.toLowerCase().includes(cliente.toLowerCase())
-                                        )
+                                        .filter((item) => item.nome.toLowerCase().includes(cliente.toLowerCase()))
                                         .map((item) => (
                                             <button
                                                 key={item.id}
@@ -214,7 +202,6 @@ export default function Vendas() {
                             )}
                         </div>
 
-                        {/* PRODUTO */}
                         <div className="col-md-6 position-relative">
                             <label className="form-label fw-bold">Produto</label>
                             <input
@@ -224,7 +211,7 @@ export default function Vendas() {
                                 value={produto}
                                 onChange={(e) => {
                                     setProduto(e.target.value);
-                                    setEstoqueDisponivel(null); // Reseta se o usuário apagar o nome
+                                    setEstoqueDisponivel(null);
                                     setMostrarProdutos(true);
                                 }}
                                 onFocus={() => setMostrarProdutos(true)}
@@ -243,7 +230,7 @@ export default function Vendas() {
                                                 className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                                                 onClick={() => {
                                                     setProduto(item.nome);
-                                                    setEstoqueDisponivel(item.quantidade); // Define o estoque aqui
+                                                    setEstoqueDisponivel(item.quantidade);
                                                     setMostrarProdutos(false);
                                                 }}
                                             >
@@ -254,7 +241,6 @@ export default function Vendas() {
                                 </div>
                             )}
 
-                            {/* MENSAGEM DE ESTOQUE */}
                             {estoqueDisponivel !== null && produto !== "" && (
                                 <div className="mt-1">
                                     <small className={`fw-bold ${estoqueDisponivel <= 0 ? 'text-danger' : estoqueDisponivel < 5 ? 'text-warning' : 'text-success'}`}>
@@ -270,21 +256,30 @@ export default function Vendas() {
                                 type="number"
                                 className="form-control"
                                 value={quantidade}
+                                min="1"
                                 onChange={(e) => setQuantidade(e.target.value)}
                                 required
                             />
                         </div>
 
-                        
+                        <div className="col-md-2">
+                            <label className="form-label fw-bold">Desconto (R$)</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                className="form-control"
+                                value={desconto}
+                                onChange={(e) => setDesconto(e.target.value)}
+                            />
+                        </div>
+
+
+
 
                         <div className="col-md-2">
                             <label className="form-label fw-bold">Forma de Pagamento</label>
-                            <select
-                                className="form-select"
-                                value={forma_pagamento}
-                                onChange={(e) => setFormaPagamento(e.target.value)}
-                                required
-                            >
+                            <select className="form-select" value={forma_pagamento} onChange={(e) => setFormaPagamento(e.target.value)} required>
                                 <option value="" disabled hidden>Selecione...</option>
                                 <option value="Pix">Pix</option>
                                 <option value="Cartão de Débito">Cartão de Débito</option>
@@ -294,9 +289,7 @@ export default function Vendas() {
                         </div>
 
                         <div className="col-12 text-end mt-4">
-                            <button type="submit" className="btn btn-primary px-5 btn-gradient">
-                                Finalizar Venda
-                            </button>
+                            <button type="submit" className="btn btn-primary px-5 btn-gradient">Finalizar Venda</button>
                         </div>
                     </form>
                 </div>
@@ -306,12 +299,7 @@ export default function Vendas() {
                 <div className="card-body">
                     <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
                         <h3 className="fw-bold mb-0">Vendas Recentes</h3>
-
-                        <button
-                            type="button"
-                            className="btn btn-outline-primary"
-                            onClick={() => setMostrarFiltros((prev) => !prev)}
-                        >
+                        <button type="button" className="btn btn-outline-primary" onClick={() => setMostrarFiltros((prev) => !prev)}>
                             {mostrarFiltros ? "Fechar filtros" : "Filtrar"}
                         </button>
                     </div>
@@ -320,27 +308,12 @@ export default function Vendas() {
                         <div className="bg-light p-3 rounded-3 border">
                             <div className="row g-3">
                                 <div className="col-12 col-lg-6">
-                                    <label className="form-label fw-semibold text-secondary small">
-                                        Pesquisar Cliente
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="form-control border-secondary shadow-sm"
-                                        placeholder="Digite o nome do cliente..."
-                                        value={buscaCliente}
-                                        onChange={(e) => setBuscaCliente(e.target.value)}
-                                    />
+                                    <label className="form-label fw-semibold text-secondary small">Pesquisar Cliente</label>
+                                    <input type="text" className="form-control border-secondary shadow-sm" placeholder="Digite o nome do cliente..." value={buscaCliente} onChange={(e) => setBuscaCliente(e.target.value)} />
                                 </div>
-
                                 <div className="col-12 col-md-6 col-lg-3">
-                                    <label className="form-label fw-semibold text-secondary small">
-                                        Forma de Pagamento
-                                    </label>
-                                    <select
-                                        className="form-select border-secondary shadow-sm"
-                                        value={filtroPagamento}
-                                        onChange={(e) => setFiltroPagamento(e.target.value)}
-                                    >
+                                    <label className="form-label fw-semibold text-secondary small">Forma de Pagamento</label>
+                                    <select className="form-select border-secondary shadow-sm" value={filtroPagamento} onChange={(e) => setFiltroPagamento(e.target.value)}>
                                         <option value="">Todas as formas</option>
                                         <option value="Pix">Pix</option>
                                         <option value="Cartão de Débito">Cartão de Débito</option>
@@ -348,16 +321,9 @@ export default function Vendas() {
                                         <option value="Dinheiro">Dinheiro</option>
                                     </select>
                                 </div>
-
                                 <div className="col-12 col-md-6 col-lg-3">
-                                    <label className="form-label fw-semibold text-secondary small">
-                                        Ordenar por Valor
-                                    </label>
-                                    <select
-                                        className="form-select border-secondary shadow-sm"
-                                        value={ordemValor}
-                                        onChange={(e) => setOrdemValor(e.target.value)}
-                                    >
+                                    <label className="form-label fw-semibold text-secondary small">Ordenar por Valor</label>
+                                    <select className="form-select border-secondary shadow-sm" value={ordemValor} onChange={(e) => setOrdemValor(e.target.value)}>
                                         <option value="">Sem ordenação</option>
                                         <option value="Crescente">Menor Valor (Crescente)</option>
                                         <option value="Decrescente">Maior Valor (Decrescente)</option>
@@ -368,7 +334,7 @@ export default function Vendas() {
                     )}
                 </div>
             </div>
-           
+
             <div className="table-responsive bg-white rounded shadow p-3 border-0">
                 <table className="table table-hover">
                     <thead className="table-light">
@@ -388,22 +354,18 @@ export default function Vendas() {
                                     <td>{item.clientes?.nome}</td>
                                     <td>{item.produtos?.nome}</td>
                                     <td>{item.quantidade}</td>
-                                    <td>R$ {item.desconto}</td>
+                                    <td>R$ {parseFloat(item.desconto || 0).toFixed(2)}</td>
                                     <td>
                                         <span className={`badge rounded-pill ${CorPagamento(item.forma_pagamento)}`}>
                                             {item.forma_pagamento}
                                         </span>
                                     </td>
-                                    <td className="fw-bold text-success">
-                                        R$ {item.total_compra}
-                                    </td>
+                                    <td className="fw-bold text-success">R$ {parseFloat(item.total_compra || 0).toFixed(2)}</td>
                                 </tr>
                             )
                         ) : (
                             <tr>
-                                <td colSpan="6" className="text-center text-muted py-3">
-                                    Nenhuma venda encontrada com esses filtros.
-                                </td>
+                                <td colSpan="6" className="text-center text-muted py-3">Nenhuma venda encontrada com esses filtros.</td>
                             </tr>
                         )}
                     </tbody>
@@ -411,17 +373,21 @@ export default function Vendas() {
 
                 <div className="d-flex justify-content-between align-items-center mt-3">
                     <button
-                        className="btn btn-outline-secondary btn-sm px-4"
+                        className="btn btn-outline-secondary btn-sm px-4 fw-bold"
                         onClick={() => setPagina(p => Math.max(0, p - 1))}
                         disabled={pagina === 0}
                     >
                         Anterior
                     </button>
-                    <span className="small fw-bold">Página {pagina + 1}</span>
+
+                    <span className="small fw-bold text-muted">
+                        Página {pagina + 1} de {totalPaginas}
+                    </span>
+
                     <button
-                        className="btn btn-outline-secondary btn-sm px-4"
+                        className="btn btn-outline-secondary btn-sm px-4 fw-bold"
                         onClick={() => setPagina(p => p + 1)}
-                        disabled={listaVendas.length < itensPorPagina}
+                        disabled={pagina + 1 >= totalPaginas}
                     >
                         Próximo
                     </button>
