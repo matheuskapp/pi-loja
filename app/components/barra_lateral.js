@@ -1,7 +1,24 @@
+'use client'
 import Link from "next/link";
 import "./barra_lateral.css"
+import { useRouter } from "next/navigation";
+import supabase from "../conexao/supabase";
+
+
+
+
 
 export default function BarraLateral() {
+
+    const router = useRouter();
+
+    async function sair() {
+        await supabase.auth.signOut();
+        localStorage.removeItem("id_usuario");
+        router.push("/login");
+    }
+
+
     return (
         <div className="containerBarraLateral">
 
@@ -51,7 +68,7 @@ export default function BarraLateral() {
                     </li>
                 </ul>
                 <div className="position-fixed bottom-0 start-0 mb-3 ms-1">
-                    <button type="button" class="btn btn-outline-dark">Sair</button>
+                    <button onClick={sair} type="button" class="btn btn-outline-dark">Sair</button>
                 </div>
             </div>
 
