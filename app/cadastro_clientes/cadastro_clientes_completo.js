@@ -34,6 +34,7 @@ export default function CadastroClientes() {
             .from('clientes')
             .select('*')
             .ilike('nome', '%' + pesquisaClientes + '%')
+            
 
         alteraListaClientes(data)
     }
@@ -114,8 +115,13 @@ export default function CadastroClientes() {
     }
 
     useEffect(() => {
-        buscarClientes()
-    }, [])
+        if(pesquisaClientes === ""){
+           buscarClientes()
+        }else{
+            pesquisar()
+        }
+    }, [pesquisaClientes])
+
 
     return (
         <div className="container mt-5">
