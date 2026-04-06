@@ -110,9 +110,14 @@ export function TabelaProdutos() {
     }
 
     useEffect(() => {
-        buscar()
-    }, [])
 
+    if (inputPesquisaProduto === "") {
+        buscar()
+    } else {
+        pesquisaProduto()
+    }
+
+}, [inputPesquisaProduto])
 
 
     return (

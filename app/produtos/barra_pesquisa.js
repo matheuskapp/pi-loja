@@ -20,6 +20,10 @@ export default function BarraPesquisa() {
         console.log("ERROR:", error)
     }
 
+
+
+    
+
     return (
         <div className="barradepesquisa mb-3 p-5">
             <div className="row">
