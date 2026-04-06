@@ -1,5 +1,5 @@
 'use client';
-
+import { ToastContainer, toast } from 'react-toastify';
 import { useEffect, useState } from "react";
 import { createClient } from '@supabase/supabase-js'
 import "./cadastro_funcionarios.css"
@@ -21,7 +21,7 @@ export default function PaginaFuncionarios() {
     const [senha, alteraSenha] = useState("")
     const [editando, alteraEditando] = useState(null)
 
-    /* ================= FUNÇÕES ================= */
+   
 
     async function pesquisar() {
         const { data } = await supabase
@@ -94,23 +94,26 @@ export default function PaginaFuncionarios() {
     }
 
 
-    useEffect(() => {
+   useEffect(() => {
+
+    if (pesquisaFuncionarios === "") {
         buscar()
+    } else {
         pesquisar()
-    }, [])
+    }
+
+}, [pesquisaFuncionarios])
 
 
-    /* ================= UI ================= */
 
     return (
         <div className="container">
 
-            {/* CABEÇALHO */}
+            
             <div className="row mb-4 fw-bold">
                 <h1>Cadastro Funcionarios</h1>
             </div>
 
-            {/* BARRA PESQUISA */}
             <div className="barradepesquisa mb-3 p-5">
                 <div className="row">
 
@@ -135,9 +138,7 @@ export default function PaginaFuncionarios() {
                 </div>
             </div>
 
-            {/* BOTÃO ADD */}
-
-            
+                       
             <div className="text-end mb-3">
                 <button
                     className="btn btn-gradient"
@@ -147,7 +148,7 @@ export default function PaginaFuncionarios() {
                 </button>
             </div>
 
-            {/* MODAL ADD */}
+         
             <div className="modal fade" id="modalAdd">
                 <div className="modal-dialog">
                     <div className="modal-content">
@@ -173,15 +174,15 @@ export default function PaginaFuncionarios() {
                 </div>
             </div>
 
-            {/* LISTA */}
+           
             <div className="container py-3 bg-light rounded-5">
 
                 <table className="table">
                     <thead>
                         <tr>
 
-                            <th>Nome</th>
-                            <th>Email</th>
+                            <th>Usuários</th>
+                            
                             <th>Ações</th>
 
                         </tr>
@@ -192,7 +193,7 @@ export default function PaginaFuncionarios() {
                             <tr key={i}>
 
                                 <td>{item.nome}</td>
-                                <td>{item.email}</td>
+                                
 
 
                                 <td>
@@ -213,7 +214,6 @@ export default function PaginaFuncionarios() {
 
             </div>
 
-            {/* MODAL EDIT */}
             <div className="modal fade" id="modalEdit">
                 <div className="modal-dialog">
                     <div className="modal-content">

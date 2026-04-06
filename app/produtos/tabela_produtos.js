@@ -110,9 +110,14 @@ export function TabelaProdutos() {
     }
 
     useEffect(() => {
-        buscar()
-    }, [])
 
+    if (inputPesquisaProduto === "") {
+        buscar()
+    } else {
+        pesquisaProduto()
+    }
+
+}, [inputPesquisaProduto])
 
 
     return (
@@ -282,7 +287,7 @@ export function TabelaProdutos() {
                             <button
                                 onClick={salvar}
                                 className="btn btn-primary"
-                                data-bs-dismiss="modal"
+                                
                             >
                                 Salvar
                             </button>

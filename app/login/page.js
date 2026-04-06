@@ -32,8 +32,6 @@ export default function Login() {
         router.push("/dashboard");
     }
 
-
-
     return (
         <div className="container vh-100 d-flex align-items-center justify-content-center">
 
@@ -41,13 +39,12 @@ export default function Login() {
 
                 <div className="card shadow-lg border-0 rounded-4 p-4">
 
-                    {/* Título */}
+                    
                     <div className="text-center mb-4">
                         <h2 className="fw-bold">Login</h2>
                         <p className="text-muted">Acesse sua conta</p>
                     </div>
 
-                    {/* Email */}
                     <div className="mb-3">
                         <label className="form-label">Email</label>
                         <input
@@ -58,7 +55,7 @@ export default function Login() {
                         />
                     </div>
 
-                    {/* Senha */}
+                  
                     <div className="mb-4">
                         <label className="form-label">Senha</label>
                         <input
@@ -69,7 +66,6 @@ export default function Login() {
                         />
                     </div>
 
-                    {/* Botões */}
                     <div className="d-flex justify-content-between">
                         <button
                             onClick={autenticar}

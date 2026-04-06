@@ -21,10 +21,26 @@ export default function DashBoard() {
   const [estoqueBaixo, setEstoqueBaixo] = useState([]);
   const [ticketMedio, setTicketMedio] = useState(0);
   const [dadosGrafico, setDadosGrafico] = useState([]);
+  const [caixaStatus, setCaixaStatus] = useState(null);
 
   const hoje = new Date();
   hoje.setHours(0, 0, 0, 0);
   const dataFiltro = hoje.toISOString();
+
+  async function buscaStatusCaixa() {
+    const { data, error } = await supabase
+      .from('caixas')
+      .select('*')
+      .eq('status', 'aberto')
+      .single();
+
+    if (error && error.code !== 'PGRST116') {
+      console.error("Erro caixa:", error);
+      return;
+    }
+
+    setCaixaStatus(data || null);
+  }
 
   async function buscaVendasHoje() {
     const { data, error } = await supabase
@@ -115,12 +131,12 @@ export default function DashBoard() {
     buscaVendasHoje();
     buscaMaisVendidos();
     buscaEstoqueBaixo();
+    buscaStatusCaixa();
   }, []);
 
   return (
     <div className="container-fluid px-0">
 
-      {/* CARDS DE RESUMO */}
       <div className="row g-4">
         <div className="col-md-3">
           <div className="card shadow-sm border-0 p-3 bg-white rounded-4 h-100">
@@ -143,10 +159,16 @@ export default function DashBoard() {
         </div>
 
         <div className="col-md-3">
-          <div className="card shadow-sm border-0 p-3 bg-white rounded-4 h-100">
+          <div className={`card shadow-sm border-0 p-3 rounded-4 h-100 ${caixaStatus ? 'bg-white' : 'bg-light'}`}>
             <h6 className="text-muted fw-bold">Caixa Atual</h6>
-            <h4 className="fw-bold text-secondary">--</h4>
-            <small className="text-muted">Aguardando abertura</small>
+            <h4 className={`fw-bold ${caixaStatus ? 'text-success' : 'text-secondary'}`}>
+              {caixaStatus 
+                ? (Number(caixaStatus.valor_inicial) + somaVendas).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+                : "Caixa Fechado"}
+            </h4>
+            <small className="text-muted">
+              {caixaStatus ? "Dinheiro em gaveta" : "Aguardando abertura"}
+            </small>
           </div>
         </div>
 
@@ -159,7 +181,6 @@ export default function DashBoard() {
         </div>
       </div>
 
-      {/* GRÁFICO PROFISSIONAL */}
       <div className="row mt-4">
         <div className="col-12">
           <div className="card shadow-sm border-0 p-4 bg-white rounded-4">
@@ -204,7 +225,6 @@ export default function DashBoard() {
         </div>
       </div>
 
-      {/* LISTAS INFERIORES */}
       <div className="row mt-4">
         <div className="col-md-6 mb-4">
           <div className="card shadow-sm border-0 p-4 bg-white rounded-4 h-100">
