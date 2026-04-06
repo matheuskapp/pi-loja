@@ -7,7 +7,7 @@ import './estilizar.css'
 export default function Vendas() {
     const [cliente, setCliente] = useState("");
     const [produto, setProduto] = useState("");
-    const [quantidade, setQuantidade] = useState(""); 
+    const [quantidade, setQuantidade] = useState("");
     const [desconto, setDesconto] = useState("");
     const [forma_pagamento, setFormaPagamento] = useState("");
 
@@ -42,7 +42,7 @@ export default function Vendas() {
     }
 
     async function salvar(e) {
-        e.preventDefault()
+        e.preventDefault();
 
         const cliSelecionado = listaClientes.find(c => c.nome === cliente);
         const prodSelecionado = listaProdutos.find(p => p.nome === produto);
@@ -52,22 +52,27 @@ export default function Vendas() {
             return;
         }
 
-        const qtdSelecionada = parseInt(quantidade) || 0;
-        const estoqueAtual = parseInt(prodSelecionado.quantidade) || 0;
+        const qtdSelecionada = Number(quantidade) || 0;
+        const estoqueAtual = Number(prodSelecionado.quantidade) || 0;
+        const desc = parseFloat(desconto) || 0;
+
+        if (qtdSelecionada <= 0) {
+            alert("A quantidade deve ser maior que zero.");
+            return;
+        }
 
         if (qtdSelecionada > estoqueAtual) {
             alert(`Estoque insuficiente! O produto "${prodSelecionado.nome}" tem apenas ${estoqueAtual} unidade(s) disponível(is).`);
             return;
         }
 
-        if (estoqueAtual === 1) {
-            alert("Atenção: Só tem um produto em estoque!");
-        }
-
         const precoUnitario = parseFloat(prodSelecionado.preco) || 0;
-        const desc = parseFloat(desconto) || 0;
-
         const valorTotal = Number(((precoUnitario * qtdSelecionada) - desc).toFixed(2));
+
+        if (valorTotal < 0) {
+            alert("O desconto não pode ser maior que o valor total da venda!");
+            return;
+        }
 
         const objetos = {
             cliente: cliSelecionado.id,
@@ -80,7 +85,7 @@ export default function Vendas() {
 
         const { error } = await supabase
             .from('vendas')
-            .insert([objetos])
+            .insert([objetos]);
 
         if (error == null) {
             const novoEstoque = estoqueAtual - qtdSelecionada;
@@ -89,18 +94,18 @@ export default function Vendas() {
                 .update({ quantidade: novoEstoque })
                 .eq('id', prodSelecionado.id);
 
-            alert("VENDA cadastrada com sucesso!")
-            setCliente("")
-            setProduto("")
-            setQuantidade("")
-            setFormaPagamento("")
-            setDesconto("")
+            alert("VENDA cadastrada com sucesso!");
+            setCliente("");
+            setProduto("");
+            setQuantidade("");
+            setFormaPagamento("");
+            setDesconto("");
             setPagina(0);
             buscar();
             buscarProdutos();
         } else {
             console.error(error);
-            alert("Erro ao salvar venda.");
+            alert("Erro ao salvar venda. Verifique se a coluna no Supabase é do tipo 'numeric'.");
         }
     }
 
@@ -247,12 +252,26 @@ export default function Vendas() {
 
                         <div className="col-md-2">
                             <label className="form-label fw-bold">Quantidade</label>
-                            <input type="number" className="form-control" value={quantidade} onChange={(e) => setQuantidade(e.target.value)} required />
+                            <input
+                                type="number"
+                                className="form-control"
+                                value={quantidade}
+                                min="1"
+                                onChange={(e) => setQuantidade(e.target.value)}
+                                required
+                            />
                         </div>
 
                         <div className="col-md-2">
                             <label className="form-label fw-bold">Desconto (R$)</label>
-                            <input type="number" step="0.01" className="form-control" value={desconto} onChange={(e) => setDesconto(e.target.value)} />
+                            <input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                className="form-control"
+                                value={desconto}
+                                onChange={(e) => setDesconto(e.target.value)}
+                            />
                         </div>
 
                         <div className="col-md-2">
@@ -312,7 +331,7 @@ export default function Vendas() {
                     )}
                 </div>
             </div>
-           
+
             <div className="table-responsive bg-white rounded shadow p-3 border-0">
                 <table className="table table-hover">
                     <thead className="table-light">
@@ -332,13 +351,13 @@ export default function Vendas() {
                                     <td>{item.clientes?.nome}</td>
                                     <td>{item.produtos?.nome}</td>
                                     <td>{item.quantidade}</td>
-                                    <td>R$ {item.desconto}</td>
+                                    <td>R$ {parseFloat(item.desconto || 0).toFixed(2)}</td>
                                     <td>
                                         <span className={`badge rounded-pill ${CorPagamento(item.forma_pagamento)}`}>
                                             {item.forma_pagamento}
                                         </span>
                                     </td>
-                                    <td className="fw-bold text-success">R$ {item.total_compra}</td>
+                                    <td className="fw-bold text-success">R$ {parseFloat(item.total_compra || 0).toFixed(2)}</td>
                                 </tr>
                             )
                         ) : (
@@ -349,7 +368,6 @@ export default function Vendas() {
                     </tbody>
                 </table>
 
-                {/* PAGINAÇÃO ATUALIZADA */}
                 <div className="d-flex justify-content-between align-items-center mt-3">
                     <button
                         className="btn btn-outline-secondary btn-sm px-4 fw-bold"
@@ -358,11 +376,11 @@ export default function Vendas() {
                     >
                         Anterior
                     </button>
-                    
+
                     <span className="small fw-bold text-muted">
                         Página {pagina + 1} de {totalPaginas}
                     </span>
-                    
+
                     <button
                         className="btn btn-outline-secondary btn-sm px-4 fw-bold"
                         onClick={() => setPagina(p => p + 1)}
