@@ -287,7 +287,7 @@ export function TabelaProdutos() {
                             <button
                                 onClick={salvar}
                                 className="btn btn-primary"
-                                data-bs-dismiss="modal"
+                                
                             >
                                 Salvar
                             </button>

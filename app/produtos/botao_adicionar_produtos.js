@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 
 // Create a single supabase client for interacting with your database
 const supabase = createClient('https://walrpbrbskwawykdrwna.supabase.co', 'sb_publishable_e6ELe320z3xGITtIk-2QVg_K3tLxQTa')
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./botao_adicionar_produtos.css";
 
 
@@ -19,6 +19,7 @@ export function BotaoAdicionarProdutos() {
     // const [desconto, alteraDesconto] = useState("")
     const [quantidade, alteraQuantidade] = useState()
     const [descricao, alteraDescricao] = useState("")
+    const [produtos, alteraProdutos] = useState([])
 
      async function buscar() {
         const { data, error } = await supabase
@@ -87,7 +88,12 @@ export function BotaoAdicionarProdutos() {
         } else {
             alert("Dados invalidos, verifique os campos e tente novamente")
         }
+        buscar()
     }
+
+    useEffect(() => {
+            buscar()
+        }, [])
 
     
     return (
@@ -210,7 +216,7 @@ export function BotaoAdicionarProdutos() {
                                 <button onClick={salvar}
                                     type="button"
                                     className="btn btn-primary"
-                                    data-bs-dismiss="modal"
+                                    
                                 >
                                     Salvar
                                 </button>

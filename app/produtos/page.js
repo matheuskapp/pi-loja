@@ -4,6 +4,7 @@ import BarraPesquisa from "./barra_pesquisa";
 import { BotaoAdicionarProdutos } from "./botao_adicionar_produtos";
 import { TabelaProdutos } from "./tabela_produtos";
 import Cabecalho from "./cabecalho";
+import ProdutosTeste from "./tabela_produtos2";
 
 
 
@@ -18,9 +19,7 @@ export default function Produtos() {
 
             <div className="col-10 mb-5 p-5">
 
-                <Cabecalho />
-                <BotaoAdicionarProdutos />
-                <TabelaProdutos />
+                <ProdutosTeste />
 
             </div>
             
