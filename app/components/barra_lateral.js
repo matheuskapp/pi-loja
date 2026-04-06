@@ -31,7 +31,7 @@ export default function BarraLateral() {
                             <i className="bi bi-credit-card me-2"></i> Caixa
                         </Link>
                     </li>
-                    
+
                     <li className="nav-item">
                         <Link href="vendas" className="nav-link">
                             <i className="bi bi-gear me-2"></i> Vendas
@@ -43,15 +43,18 @@ export default function BarraLateral() {
                             <i className="bi bi-gear me-2"></i> Funcionarios
                         </Link>
                     </li>
-               
-                    <li className="nav-item">
-                    <Link href="/cadastro_clientes" className="nav-link">
-                        <i className="bi bi-person-plus me-2"></i>Clientes
-                    </Link>
-                </li>
-            </ul>
 
-        </div >
+                    <li className="nav-item">
+                        <Link href="/cadastro_clientes" className="nav-link">
+                            <i className="bi bi-person-plus me-2"></i>Clientes
+                        </Link>
+                    </li>
+                </ul>
+                <div className="position-fixed bottom-0 start-0 mb-3 ms-1">
+                    <button type="button" class="btn btn-outline-dark">Sair</button>
+                </div>
+            </div>
+
         </div >
     )
 }
