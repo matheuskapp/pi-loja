@@ -1,5 +1,7 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 import "./cadastro_clientes.css"
 import "./botao_adicionar_clientes.css"
 import { useEffect, useState } from 'react'
@@ -19,8 +21,6 @@ export default function CadastroClientes() {
     const [pesquisaClientes, alteraPesquisaClientes] = useState("")
     const [editando, alteraEditando] = useState(null)
 
-
-
     async function buscarClientes() {
         const { data } = await supabase
             .from('clientes')
@@ -34,7 +34,6 @@ export default function CadastroClientes() {
             .from('clientes')
             .select('*')
             .ilike('nome', '%' + pesquisaClientes + '%')
-            
 
         alteraListaClientes(data)
     }
@@ -54,7 +53,7 @@ export default function CadastroClientes() {
             .insert(objetos)
 
         if (error == null) {
-            alert("Cliente cadastrado com sucesso!")
+            toast.success("Cliente cadastrado com sucesso!", { icon: "👤" })
             alteraListaClientes(listaClientes.concat(objetos))
             alteraNome("")
             alteraData_Nascimento("")
@@ -62,8 +61,6 @@ export default function CadastroClientes() {
             alteraTelefone()
             alteraEmail("")
             alteraEndereco("")
-
-
         }
     }
 
@@ -91,16 +88,13 @@ export default function CadastroClientes() {
             .from('clientes')
             .update(objeto)
             .eq('id', editando)
+
         cancelaEdicao()
         buscarClientes()
 
-
         if (error == null) {
-
-            alert("Cliente atualizado!")
+            toast.success("Cliente atualizado!", { icon: "✏️" })
             buscarClientes()
-
-
         }
     }
 
@@ -122,11 +116,9 @@ export default function CadastroClientes() {
         }
     }, [pesquisaClientes])
 
-
     return (
         <div className="container mt-5">
 
-            
             <div className="barradepesquisa mb-3 p-5">
                 <div className="row align-items-center">
 
@@ -158,8 +150,6 @@ export default function CadastroClientes() {
                 </div>
             </div>
 
-
-           
             <div className="modal fade" id="exampleModal">
                 <div className="modal-dialog">
                     <div className="modal-content">
@@ -170,14 +160,12 @@ export default function CadastroClientes() {
                         </div>
 
                         <div className="modal-body">
-
                             <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control mb-2" placeholder="Nome" />
                             <input value={data_nascimento} onChange={e => alteraData_Nascimento(e.target.value)} type="date" className="form-control mb-2" />
                             <input value={cpf} onChange={e => alteraCpf(e.target.value)} className="form-control mb-2" placeholder="CPF" />
                             <input value={telefone} onChange={e => alteraTelefone(e.target.value)} className="form-control mb-2" placeholder="Telefone" />
                             <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control mb-2" placeholder="Email" />
                             <input value={endereco} onChange={e => alteraEndereco(e.target.value)} className="form-control mb-2" placeholder="Endereço" />
-
                         </div>
 
                         <div className="modal-footer" >
@@ -189,9 +177,7 @@ export default function CadastroClientes() {
                 </div>
             </div>
 
-
-            <div >
-
+            <div>
                 <div className="card shadow-sm border-10 rounded-10 d-inline-block">
                     <div className="card-body">
 
@@ -212,11 +198,9 @@ export default function CadastroClientes() {
                                 {listaClientes.map((item) => (
                                     <tr key={item.id}>
                                         <td className="text-center">{item.nome}</td>
-
                                         <td className="text-center">
                                             {new Date(item.data_nascimento).toLocaleDateString('pt-BR')}
                                         </td>
-
                                         <td className="text-center">{item.cpf}</td>
                                         <td className="text-center">{item.telefone}</td>
                                         <td className="text-center">{item.email}</td>
@@ -239,11 +223,8 @@ export default function CadastroClientes() {
 
                     </div>
                 </div>
-
             </div>
 
-
-            {/* MODAL EDIÇÃO */}
             <div className="modal fade" id="modaledicao">
                 <div className="modal-dialog">
                     <div className="modal-content">
@@ -254,14 +235,12 @@ export default function CadastroClientes() {
                         </div>
 
                         <div className="modal-body">
-
                             <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control mb-2" />
                             <input value={data_nascimento} onChange={e => alteraData_Nascimento(e.target.value)} className="form-control mb-2" />
                             <input value={cpf} onChange={e => alteraCpf(e.target.value)} className="form-control mb-2" />
                             <input value={telefone} onChange={e => alteraTelefone(e.target.value)} className="form-control mb-2" />
                             <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control mb-2" />
                             <input value={endereco} onChange={e => alteraEndereco(e.target.value)} className="form-control mb-2" />
-
                         </div>
 
                         <div className="modal-footer">
@@ -277,6 +256,13 @@ export default function CadastroClientes() {
                     </div>
                 </div>
             </div>
+
+            
+            <ToastContainer
+                position="top-center"
+                autoClose={2500}
+                theme="dark"
+            />
 
         </div>
     )
