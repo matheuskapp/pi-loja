@@ -34,8 +34,14 @@ export default function ProdutosTeste() {
     }
 
     useEffect(() => {
-        buscar()
-    }, [])
+
+        if (inputPesquisaProduto === "") {
+            buscar()
+        } else {
+            pesquisaProduto()
+        }
+
+    }, [inputPesquisaProduto])
 
     // ---------------- PESQUISA ----------------
     async function pesquisaProduto() {
