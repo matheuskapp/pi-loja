@@ -126,7 +126,7 @@ export default function CadastroClientes() {
     return (
         <div className="container mt-5">
 
-            {/* 🔥 BOTÃO + PESQUISA NA MESMA LINHA */}
+            
             <div className="barradepesquisa mb-3 p-5">
                 <div className="row align-items-center">
 
@@ -159,7 +159,7 @@ export default function CadastroClientes() {
             </div>
 
 
-            {/* MODAL ADICIONAR */}
+           
             <div className="modal fade" id="exampleModal">
                 <div className="modal-dialog">
                     <div className="modal-content">

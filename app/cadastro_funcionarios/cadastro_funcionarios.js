@@ -159,9 +159,10 @@ export default function PaginaFuncionarios() {
                 </div>
             </div>
 
-            <div className="container py-3 bg-light rounded-5">
-                <table className="table">
-                    <thead>
+            <div cclassName="table-responsive bg-white rounded shadow p-3 border-0">
+                <table className="table table-hover">
+                     
+                    <thead className="table-light">
                         <tr>
                             <th>Usuários</th>
                             <th>Ações</th>
@@ -208,9 +209,10 @@ export default function PaginaFuncionarios() {
 
             {/* Toast bonito */}
             <ToastContainer
-                position="top-right"
+                position="top-center"
                 autoClose={2500}
                 theme="dark"
+               
             />
 
         </div>

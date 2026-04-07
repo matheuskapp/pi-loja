@@ -54,11 +54,11 @@ function TabelaClientes({ listaClientes, pesquisar, pesquisaClientes, alteraPesq
 
 
 
-            <div className="container py-5 bg-light ms-4 rounded-5">
+            <div className="table-responsive bg-white rounded shadow p-3 border-0">
+                <table className="table table-hover">
+                    
 
-                <table className="table align-middle">
-
-                    <thead>
+                    <thead className="table-light">
                         <tr>
                             <th>Nome</th>
                             <th>Data de Nascimento</th>
