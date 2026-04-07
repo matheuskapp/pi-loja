@@ -1,9 +1,9 @@
 'use client';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react";
 import { createClient } from '@supabase/supabase-js'
 import "./cadastro_funcionarios.css"
-
 
 const supabase = createClient(
     'https://walrpbrbskwawykdrwna.supabase.co',
@@ -20,8 +20,6 @@ export default function PaginaFuncionarios() {
     const [email, alteraEmail] = useState("")
     const [senha, alteraSenha] = useState("")
     const [editando, alteraEditando] = useState(null)
-
-   
 
     async function pesquisar() {
         const { data } = await supabase
@@ -48,7 +46,7 @@ export default function PaginaFuncionarios() {
         })
 
         if (data == null) {
-            alert("Dados Inválidos...")
+            toast.error("Dados inválidos...", { icon: "🚫" })
             return
         }
 
@@ -61,10 +59,10 @@ export default function PaginaFuncionarios() {
         const resposta = await supabase.from('usuarios').insert(obj)
 
         if (resposta.error == null) {
-            alert("Cadastrado com sucesso!")
+            toast.success("Cadastrado com sucesso!", { icon: "👨‍💼" })
             buscar()
         } else {
-            alert("Erro ao cadastrar")
+            toast.error("Erro ao cadastrar")
         }
     }
 
@@ -79,10 +77,10 @@ export default function PaginaFuncionarios() {
             .eq('id', editando)
 
         if (error == null) {
-            alert("Atualizado com sucesso")
+            toast.success("Atualizado com sucesso", { icon: "✏️" })
             buscar()
         } else {
-            alert("Erro ao atualizar")
+            toast.error("Erro ao atualizar")
         }
     }
 
@@ -93,30 +91,23 @@ export default function PaginaFuncionarios() {
         alteraSenha(obj.senha)
     }
 
-
-   useEffect(() => {
-
-    if (pesquisaFuncionarios === "") {
-        buscar()
-    } else {
-        pesquisar()
-    }
-
-}, [pesquisaFuncionarios])
-
-
+    useEffect(() => {
+        if (pesquisaFuncionarios === "") {
+            buscar()
+        } else {
+            pesquisar()
+        }
+    }, [pesquisaFuncionarios])
 
     return (
         <div className="container">
 
-            
             <div className="row mb-4 fw-bold">
                 <h1>Cadastro Funcionarios</h1>
             </div>
 
             <div className="barradepesquisa mb-3 p-5">
                 <div className="row">
-
                     <div className="col-6">
                         <div className="input-group">
                             <input
@@ -130,15 +121,10 @@ export default function PaginaFuncionarios() {
                             </button>
                         </div>
                     </div>
-
                     <div className="col-2"></div>
-
-
-
                 </div>
             </div>
 
-                       
             <div className="text-end mb-3">
                 <button
                     className="btn btn-gradient"
@@ -148,7 +134,6 @@ export default function PaginaFuncionarios() {
                 </button>
             </div>
 
-         
             <div className="modal fade" id="modalAdd">
                 <div className="modal-dialog">
                     <div className="modal-content">
@@ -174,28 +159,19 @@ export default function PaginaFuncionarios() {
                 </div>
             </div>
 
-           
             <div className="container py-3 bg-light rounded-5">
-
                 <table className="table">
                     <thead>
                         <tr>
-
                             <th>Usuários</th>
-                            
                             <th>Ações</th>
-
                         </tr>
                     </thead>
 
                     <tbody>
                         {listaFuncionarios.map((item, i) => (
                             <tr key={i}>
-
                                 <td>{item.nome}</td>
-                                
-
-
                                 <td>
                                     <button
                                         onClick={() => editar(item)}
@@ -205,13 +181,11 @@ export default function PaginaFuncionarios() {
                                     >
                                         Editar
                                     </button>
-
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-
             </div>
 
             <div className="modal fade" id="modalEdit">
@@ -231,6 +205,13 @@ export default function PaginaFuncionarios() {
                     </div>
                 </div>
             </div>
+
+            {/* Toast bonito */}
+            <ToastContainer
+                position="top-right"
+                autoClose={2500}
+                theme="dark"
+            />
 
         </div>
     );

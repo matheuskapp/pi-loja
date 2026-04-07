@@ -1,14 +1,14 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'react-toastify/dist/ReactToastify.css'; // IMPORTANTE
+import { ToastContainer, toast } from 'react-toastify';
 import supabase from '../conexao/supabase';
 import { useRouter } from "next/navigation";
 import { useState } from 'react';
 
 export default function Login() {
 
-
     const [autenticado, alteraAutenticado] = useState(false)
-
     const [usuario, alteraUsuario] = useState("")
     
     const router = useRouter();
@@ -22,14 +22,19 @@ export default function Login() {
             password: senha,
         })
 
-        if (data.user == null) {
-            alert("Dados inválidos...")
+        if (!data || !data.user) {
+            toast.error("Dados inválidos...", { icon: "🚫" })
             return
         }
 
         localStorage.setItem("id_usuario", data.user.id)
-        alert("Autenticado com sucesso!")
-        router.push("/dashboard");
+
+        toast.success("Autenticado com sucesso!", { icon: "✅" })
+
+        // pequeno delay pra dar tempo de aparecer
+        setTimeout(() => {
+            router.push("/dashboard");
+        }, 1500);
     }
 
     return (
@@ -39,7 +44,6 @@ export default function Login() {
 
                 <div className="card shadow-lg border-0 rounded-4 p-4">
 
-                    
                     <div className="text-center mb-4">
                         <h2 className="fw-bold">Login</h2>
                         <p className="text-muted">Acesse sua conta</p>
@@ -55,7 +59,6 @@ export default function Login() {
                         />
                     </div>
 
-                  
                     <div className="mb-4">
                         <label className="form-label">Senha</label>
                         <input
@@ -76,16 +79,20 @@ export default function Login() {
 
                         <a href='homepage'
                             className="btn btn-outline-secondary w-100 me-2"
-
                         >
                             Cancelar
                         </a>
-
                     </div>
 
                 </div>
 
             </div>
+
+            <ToastContainer
+                position="top-right"
+                autoClose={2500}
+                theme="dark"
+            />
 
         </div>
     );
