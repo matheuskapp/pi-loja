@@ -66,6 +66,11 @@ export default function BarraLateral() {
                             <i className="bi bi-person-plus me-2"></i>Clientes
                         </Link>
                     </li>
+                    <li className="nav-item">
+                        <Link href="/apresentacao" className="nav-link">
+                            <i className="bi bi-person-plus me-2"></i>FAQ
+                        </Link>
+                    </li>
                 </ul>
                 <div className="position-fixed bottom-0 start-0 mb-3 ms-1">
                     <button onClick={sair} type="button" class="btn btn-outline-dark">Sair</button>
