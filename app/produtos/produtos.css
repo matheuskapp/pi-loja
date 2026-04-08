@@ -1,0 +1,244 @@
+/* ===== BASE ===== */
+.pagina-produtos {
+    padding: 40px 48px;
+    min-height: 100vh;
+
+    /* 🔥 FUNDO NOVO (MUITO MAIS BONITO) */
+    background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+
+    font-family: 'Inter', sans-serif;
+    color: #0f172a;
+}
+
+/* ===== HEADER ===== */
+.topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.topo h2 {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+}
+
+/* ===== BOTÃO ADD ===== */
+.btn-add {
+    background: linear-gradient(135deg, #6366f1, #7c3aed);
+    border: none;
+    padding: 11px 20px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 500;
+    font-size: 14px;
+
+    box-shadow: 0 8px 22px rgba(99,102,241,0.25);
+    transition: all 0.25s ease;
+}
+
+.btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(99,102,241,0.35);
+}
+
+/* ===== SEARCH ===== */
+.search-container {
+    width: 440px;
+    display: flex;
+    align-items: center;
+
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 12px 16px;
+
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+
+    margin-bottom: 28px;
+}
+
+.search-container input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 14px;
+}
+
+.search-container button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* ===== CARD ===== */
+.table-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 8px 0;
+
+    border: 1px solid #e2e8f0;
+
+    /* 🔥 SOMBRA MELHOR */
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+}
+
+/* ===== TABLE ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead th {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    padding: 16px 24px;
+}
+
+tbody td {
+    padding: 18px 24px;
+    font-size: 14px;
+}
+
+/* LINHAS */
+tbody tr {
+    border-top: 1px solid #f1f5f9;
+    transition: all 0.15s ease;
+}
+
+tbody tr:hover {
+    background: #f8fafc;
+}
+
+/* ===== BADGE ===== */
+.badge-qty {
+    background: #ecfeff;
+    color: #0891b2;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* ===== BOTÃO EDIT ===== */
+.btn-edit {
+    background: #f1f5ff;
+    color: #4f46e5;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.btn-edit:hover {
+    background: #6366f1;
+    color: white;
+}
+
+/* ================================= */
+/* ===== MODAL PREMIUM ===== */
+/* ================================= */
+
+.modal-content {
+    border-radius: 20px;
+    border: none;
+
+    /* 🔥 MAIS PROFUNDO */
+    box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+}
+
+/* HEADER */
+.modal-header {
+    border-bottom: 1px solid #f1f5f9;
+    padding: 18px 22px;
+}
+
+.modal-header h5 {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+/* BODY */
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 24px;
+}
+
+/* INPUTS */
+.modal-body input {
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    padding: 12px 14px;
+    font-size: 14px;
+
+    background: #f8fafc;
+    transition: all 0.2s;
+}
+
+.modal-body input:focus {
+    background: #ffffff;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+    outline: none;
+}
+
+/* FOOTER */
+.modal-footer {
+    border-top: 1px solid #f1f5f9;
+    padding: 18px 22px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* CANCELAR */
+.modal-footer button:first-child {
+    background: #f1f5f9;
+    color: #334155;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.modal-footer button:first-child:hover {
+    background: #e2e8f0;
+}
+
+/* SALVAR */
+.modal-footer button:last-child {
+    background: linear-gradient(135deg, #6366f1, #7c3aed);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 500;
+
+    box-shadow: 0 8px 20px rgba(99,102,241,0.25);
+    transition: all 0.2s;
+}
+
+.modal-footer button:last-child:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 28px rgba(99,102,241,0.35);
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 768px) {
+    .search-container {
+        width: 100%;
+    }
+
+    .pagina-produtos {
+        padding: 24px;
+    }
+}
