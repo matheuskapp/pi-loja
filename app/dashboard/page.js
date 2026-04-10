@@ -26,9 +26,6 @@ export default function dashboard() {
           </div>
           
           <div className="d-flex gap-2">
-            <button className="btn btn-white shadow-sm border-0 rounded-3 px-3">
-              Relatório PDF
-            </button>
             <button className="btn btn-primary shadow-sm rounded-3 px-4 fw-bold" onClick={() => window.location.reload()}>
               Atualizar Dados
             </button>
