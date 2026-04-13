@@ -41,7 +41,20 @@ export default function CadastroClientes() {
         alteraListaClientes(data)
     }
 
+    const validarEmail = (email) => {
+        return /\S+@\S+\.\S+/.test(email);
+    };
+
     async function salvar() {
+        if (!nome || !cpf || !email) {
+            toast.error("Nome, CPF e E-mail são obrigatórios!", { icon: "⚠️" });
+            return;
+        }
+
+        if (email && !validarEmail(email)) {
+            toast.error("Formato de e-mail inválido!", { icon: "📧" });
+            return;
+        }
         const objetos = {
             nome: nome,
             data_nascimento: data_nascimento,

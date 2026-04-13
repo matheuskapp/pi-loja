@@ -42,7 +42,26 @@ export default function PaginaFuncionarios() {
         alteraListaFuncionarios(data)
     }
 
+    const validarEmail = (email) => {
+        return /\S+@\S+\.\S+/.test(email);
+    };
+
     async function cadastrar() {
+        // Validações
+        if (!nome || !cpf || !email || !senha) {
+            toast.error("Todos os campos são obrigatórios!", { icon: "⚠️" });
+            return;
+        }
+
+        if (!validarEmail(email)) {
+            toast.error("Formato de e-mail inválido!", { icon: "📧" });
+            return;
+        }
+
+        if (senha.length < 6) {
+            toast.error("A senha deve ter pelo menos 6 caracteres!", { icon: "🔐" });
+            return;
+        }
         const { data, error: authError } = await supabase.auth.signUp({
             email: email,
             password: senha,
@@ -63,6 +82,7 @@ export default function PaginaFuncionarios() {
             id: data.user.id,
             nome: nome,
             cpf: cpf,
+            email: email, // Salvar o e-mail também no perfil do banco de dados
             perfil: perfil,
             status: status
         }

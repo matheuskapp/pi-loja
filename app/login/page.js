@@ -17,41 +17,58 @@ export default function Login() {
     const [email, alteraEmail] = useState("")
     const [senha, alteraSenha] = useState("")
 
+    // Limpar sessões antigas ou inválidas ao carregar a página de login
+    // Isso evita o erro de "Invalid Refresh Token"
+    useEffect(() => {
+        const limparSessao = async () => {
+            await supabase.auth.signOut();
+            localStorage.removeItem("id_usuario");
+            localStorage.removeItem("perfil_usuario");
+        };
+        limparSessao();
+    }, []);
+
     async function autenticar() {
+        const emailLimpo = email.trim().toLowerCase();
+
         const { data, error } = await supabase.auth.signInWithPassword({
-            email: email,
+            email: emailLimpo,
             password: senha,
         })
 
         if (!data || !data.user) {
-            toast.error("Dados inválidos...", { icon: "🚫" })
+            toast.error("Erro na senha ou no usuário", { icon: "🚫" })
             return
         }
 
         // Buscar perfil e status no banco
-        const { data: perfilData, error: perfilError } = await supabase
+        const { data: perfis, error: perfilError } = await supabase
             .from('usuarios')
             .select('perfil, status')
-            .eq('id', data.user.id)
-            .single();
+            .eq('id', data.user.id);
 
-        // Se houver erro (como coluna faltando) ou perfil não existir,
-        // permitimos a entrada como fallback para não travar o usuário.
-        if (perfilError || !perfilData) {
-            console.warn("Perfil não encontrado ou erro no banco. Entrando como Admin por padrão.");
+        const perfilData = perfis && perfis.length > 0 ? perfis[0] : null;
+
+        // ACESSO DE EMERGÊNCIA: Se for o admin mestre, libera direto
+        if (emailLimpo === 'admin@admin.com') {
             localStorage.setItem("id_usuario", data.user.id);
-            localStorage.setItem("perfil_usuario", 'admin'); // Fallback para permitir que ele conserte o banco
-            
-            toast.info("Perfil não configurado no banco. Acesso liberado como Admin.");
+            localStorage.setItem("perfil_usuario", 'admin');
+            toast.success("Logado com sucesso!", { icon: "✅" });
             
             setTimeout(() => {
                 router.push("/dashboard");
-            }, 1500);
+            }, 1000);
+            return;
+        }
+
+        if (perfilError || !perfilData) {
+            toast.error("Não encontrado na base de dados tente novamente", { icon: "🚫" });
+            await supabase.auth.signOut();
             return;
         }
 
         if (perfilData.status === 'desligado') {
-            toast.error("Sua conta está inativa. Entre em contato com o administrador.", { icon: "⚠️" });
+            toast.error("Não encontrado na base de dados tente novamente", { icon: "⚠️" });
             await supabase.auth.signOut();
             return;
         }
@@ -59,12 +76,11 @@ export default function Login() {
         localStorage.setItem("id_usuario", data.user.id)
         localStorage.setItem("perfil_usuario", perfilData.perfil || 'funcionario')
 
-        toast.success("Autenticado com sucesso!", { icon: "✅" })
+        toast.success("Logado com sucesso!", { icon: "✅" })
 
-        // pequeno delay pra dar tempo de aparecer
         setTimeout(() => {
             router.push("/dashboard");
-        }, 1500);
+        }, 1000);
     }
 
     return (
