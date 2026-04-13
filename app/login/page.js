@@ -2,6 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'react-toastify/dist/ReactToastify.css'; // IMPORTANTE
 import { ToastContainer, toast } from 'react-toastify';
+import '../home.css';
 import supabase from '../conexao/supabase';
 import { useRouter } from "next/navigation";
 import { useState } from 'react';
@@ -38,7 +39,7 @@ export default function Login() {
     }
 
     return (
-        <div className="container vh-100 d-flex align-items-center justify-content-center">
+        <div className="container-fluid vh-100 d-flex align-items-center justify-content-center" style={{ background: "linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%)" }}>
 
             <div className="col-12 col-md-6 col-lg-4">
 
@@ -72,13 +73,15 @@ export default function Login() {
                     <div className="d-flex justify-content-between">
                         <button
                             onClick={autenticar}
-                            className="btn btn-primary w-100 me-2"
+                            className="btn w-100 me-2 text-white"
+                            style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)", border: "none" }}
                         >
                             Entrar
                         </button>
 
-                        <a href='homepage'
-                            className="btn btn-outline-secondary w-100 me-2"
+                        <a href='/'
+                            className="btn w-100"
+                            style={{ border: "1px solid #cbd5e1", color: "#475569", background: "transparent" }}
                         >
                             Cancelar
                         </a>

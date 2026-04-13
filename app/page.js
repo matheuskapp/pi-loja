@@ -1,187 +1,104 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import './home.css'
 
 export default function Home() {
     return (
-        <div style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
-
+        <div className="hero-wrapper">
             {/* MENU SUPERIOR */}
-            <nav className="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
-                <div className="container">
-
-                    <span className="navbar-brand fw-bold">
-                        Sistema Clientes
+            <nav className="navbar navbar-expand-lg glass-nav sticky-top py-3">
+                <div className="container d-flex align-items-center justify-content-between">
+                    <span className="navbar-brand-gradient">
+                        Boy+ Plus
                     </span>
-
-                    <div className="ms-auto">
-
-                        <a href="/login" className="btn btn-primary px-3">
+                    <div>
+                        <a href="/login" className="premium-btn" style={{ padding: "8px 24px", fontSize: "0.95rem" }}>
                             Login
                         </a>
                     </div>
-
                 </div>
             </nav>
 
-            {/* HERO */}
-            <div className="container py-5 text-center">
-                <h1 className="fw-bold display-5 mb-3">
-                    Gestão de Clientes de forma simples e eficiente
-                </h1>
+            {/* MAIN CONTENT */}
+            <main className="flex-grow-1 d-flex flex-column justify-content-center py-5">
+                
+                {/* HERO SECTION */}
+                <div className="container text-center mb-5 pb-4">
+                    <h1 className="hero-title mb-4 mx-auto" style={{ maxWidth: "800px" }}>
+                        Gestão inteligente para sua loja Plus Size
+                    </h1>
 
-                <p className="text-muted fs-5 col-md-7 mx-auto">
-                    Centralize informações, agilize atendimentos e mantenha seus dados sempre organizados com uma plataforma prática e intuitiva.
-                </p>
+                    <p className="text-muted fs-5 mx-auto mb-5" style={{ maxWidth: "600px", lineHeight: "1.6" }}>
+                        Tudo que você precisa para gerenciar vendas, estoque e clientes em uma plataforma elegante, minimalista e fácil de usar.
+                    </p>
 
-                <div className="mt-4">
-                    <a href="/login" className="btn btn-primary btn-lg px-4 me-2">
-                        Começar agora
-                    </a>
-
-                    
+                    <div className="d-flex justify-content-center gap-3">
+                        <a href="/login" className="premium-btn">
+                            Acessar Sistema
+                        </a>
+                        <a href="/apresentacao" className="outline-btn">
+                            Saiba mais
+                        </a>
+                    </div>
                 </div>
-            </div>
 
-            {/* CARDS DE VALOR */}
-            <div className="container pb-5">
-                <div className="row text-center">
-
-                    <div className="col-md-4 mb-4">
-                        <div className="bg-white p-4 rounded-4 shadow-sm h-100">
-                            <h5 className="fw-bold">Organização</h5>
-                            <p className="text-muted">
-                                Todas as informações dos clientes centralizadas em um único lugar.
-                            </p>
+                {/* CARDS DE VALOR */}
+                <div className="container mt-4">
+                    <div className="row g-4 justify-content-center">
+                        
+                        <div className="col-md-4">
+                            <div className="feature-card">
+                                <div className="feature-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                                      <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+                                    </svg>
+                                </div>
+                                <h4 className="fw-bold text-dark mb-3">Gestão de Vendas</h4>
+                                <p className="text-muted mb-0">
+                                    Controle o fluxo de caixa, registre vendas e acompanhe os resultados do seu negócio em tempo real.
+                                </p>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="col-md-4 mb-4">
-                        <div className="bg-white p-4 rounded-4 shadow-sm h-100">
-                            <h5 className="fw-bold">Agilidade</h5>
-                            <p className="text-muted">
-                                Acesso rápido aos dados para otimizar o atendimento.
-                            </p>
+                        <div className="col-md-4">
+                            <div className="feature-card">
+                                <div className="feature-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                                      <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                                    </svg>
+                                </div>
+                                <h4 className="fw-bold text-dark mb-3">Controle de Clientes</h4>
+                                <p className="text-muted mb-0">
+                                    Fidelize seu público mantendo os dados organizados. Registre histórico e preferências com segurança.
+                                </p>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="col-md-4 mb-4">
-                        <div className="bg-white p-4 rounded-4 shadow-sm h-100">
-                            <h5 className="fw-bold">Controle</h5>
-                            <p className="text-muted">
-                                Atualização fácil garantindo dados sempre corretos.
-                            </p>
+                        <div className="col-md-4">
+                            <div className="feature-card">
+                                <div className="feature-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                                      <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+                                    </svg>
+                                </div>
+                                <h4 className="fw-bold text-dark mb-3">Estoque Preciso</h4>
+                                <p className="text-muted mb-0">
+                                    Monitore as peças em tempo real. Evite furos e tenha informações atualizadas sobre os produtos.
+                                </p>
+                            </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
-            </div>
 
-            <hr className="container" />
-
-            {/* CADASTRO */}
-            <div className="container py-5">
-                <div className="row align-items-center">
-
-                    <div className="col-md-6">
-                        <h4 className="fw-bold mb-3">Cadastro completo de clientes</h4>
-
-                        <p className="text-muted">
-                            O sistema permite registrar clientes com todas as informações necessárias,
-                            garantindo organização e facilidade de acesso.
-                        </p>
-                    </div>
-
-                    <div className="col-md-6">
-                        <div className="bg-white p-4 rounded-4 shadow-sm border">
-                            <small className="text-muted">Dados armazenados:</small>
-                            <ul className="mt-2 text-muted">
-                                <li>Nome completo</li>
-                                <li>CPF</li>
-                                <li>Telefone</li>
-                                <li>Email</li>
-                                <li>Endereço</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <hr className="container" />
-
-            {/* BUSCA */}
-            <div className="container py-5">
-                <div className="row align-items-center flex-md-row-reverse">
-
-                    <div className="col-md-6">
-                        <h4 className="fw-bold mb-3">Busca rápida e eficiente</h4>
-
-                        <p className="text-muted">
-                            Localize clientes instantaneamente através do nome,
-                            facilitando consultas e atendimentos.
-                        </p>
-                    </div>
-
-                    <div className="col-md-6">
-                        <div className="bg-white p-4 rounded-4 shadow-sm border">
-                            <small className="text-muted">Funcionalidades:</small>
-                            <ul className="mt-2 text-muted">
-                                <li>Pesquisa por nome</li>
-                                <li>Resultados imediatos</li>
-                                <li>Interface simples</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <hr className="container" />
-
-            {/* EDIÇÃO */}
-            <div className="container py-5">
-                <div className="row align-items-center">
-
-                    <div className="col-md-6">
-                        <h4 className="fw-bold mb-3">Atualização de dados</h4>
-
-                        <p className="text-muted">
-                            Edite e mantenha os dados dos clientes sempre atualizados
-                            com um processo simples e intuitivo.
-                        </p>
-                    </div>
-
-                    <div className="col-md-6">
-                        <div className="bg-white p-4 rounded-4 shadow-sm border">
-                            <small className="text-muted">Ações:</small>
-                            <ul className="mt-2 text-muted">
-                                <li>Editar informações</li>
-                                <li>Salvar alterações</li>
-                                <li>Atualização em tempo real</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            {/* CTA FINAL */}
-            <div className="container text-center py-5">
-                <h4 className="fw-bold mb-3">
-                    Comece a organizar seus clientes hoje mesmo
-                </h4>
-
-                <a href="/login" className="btn btn-dark btn-lg px-5">
-                    Acessar sistema
-                </a>
-            </div>
+            </main>
 
             {/* FOOTER */}
-            <footer className="bg-white border-top">
-                <div className="container py-4 text-center text-muted">
-                    <small>
-                        © 2026 Sistema de Gestão de Clientes • Todos os direitos reservados
-                    </small>
+            <footer className="mt-auto py-4 text-center pb-5">
+                <div className="container">
+                    <p className="text-muted small mb-0 fw-medium">
+                        © {new Date().getFullYear()} Boy+ Plus • Todos os direitos reservados
+                    </p>
                 </div>
             </footer>
 
