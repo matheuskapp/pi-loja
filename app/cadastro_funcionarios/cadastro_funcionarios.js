@@ -91,6 +91,17 @@ export default function PaginaFuncionarios() {
         alteraSenha(obj.senha)
     }
 
+    function mascararCPF(cpfOculto) {
+        if (!cpfOculto) return "***.***.***-**";
+        // Limpa pra pegar só números
+        const num = cpfOculto.replace(/\D/g, ''); 
+        if (num.length === 11) {
+            // Exibe apenas o miolo do CPF por questões de LGPD
+            return `***.${num.substring(3, 6)}.${num.substring(6, 9)}-**`;
+        }
+        return `***.***.***-**`; // Fallback de proteção
+    }
+
     useEffect(() => {
         if (pesquisaFuncionarios === "") {
             buscar()
@@ -102,36 +113,39 @@ export default function PaginaFuncionarios() {
     return (
         <div className="container">
 
-            <div className="row mb-4 fw-bold">
-                <h1>Cadastro Funcionarios</h1>
+            <div className="d-flex justify-content-between align-items-center mb-4 mt-2">
+                <h1 className="fw-bold m-0 text-dark">Cadastro de Funcionários</h1>
             </div>
 
-            <div className="barradepesquisa mb-3 p-5">
-                <div className="row">
+            <div className="barradepesquisa mb-4 p-4 bg-white rounded-4 shadow-sm border-0 mt-3">
+                <div className="row align-items-center">
+
                     <div className="col-6">
                         <div className="input-group">
                             <input
                                 value={pesquisaFuncionarios}
                                 onChange={e => alteraPesquisaFuncionarios(e.target.value)}
                                 className="form-control"
-                                placeholder="Pesquisar"
+                                placeholder="Pesquisar Funcionário..."
                             />
-                            <button onClick={pesquisar} className="btn btn-outline-secondary">
-                                🔍
+                            <button onClick={pesquisar} className="btn btn-outline-secondary px-3">
+                                Pesquisar 🔍
                             </button>
                         </div>
                     </div>
-                    <div className="col-2"></div>
-                </div>
-            </div>
 
-            <div className="text-end mb-3">
-                <button
-                    className="btn btn-gradient"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalAdd"
-                >  + Adicionar Funcionario
-                </button>
+                    <div className="col-6 text-end">
+                        <button
+                            type="button"
+                            className="btn btn-gradient px-4 shadow-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalAdd"
+                        >
+                            + Adicionar Funcionário
+                        </button>
+                    </div>
+
+                </div>
             </div>
 
             <div className="modal fade" id="modalAdd">
@@ -159,34 +173,53 @@ export default function PaginaFuncionarios() {
                 </div>
             </div>
 
-            <div cclassName="table-responsive bg-white rounded shadow p-3 border-0">
-                <table className="table table-hover">
+            <div className="premium-table-container bg-white rounded-4 shadow-sm p-4 border-0">
+                <table className="table premium-table align-middle">
                      
-                    <thead className="table-light">
+                    <thead>
                         <tr>
-                            <th>Usuários</th>
-                            <th>Ações</th>
+                            <th className="ps-3 text-muted fw-semibold border-0">Funcionário</th>
+                            <th className="text-center text-muted fw-semibold border-0">Status</th>
+                            <th className="text-end pe-4 text-muted fw-semibold border-0">Ações</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {listaFuncionarios.map((item, i) => (
-                            <tr key={i}>
-                                <td>{item.nome}</td>
-                                <td>
+                            <tr key={i} className="hover-row custom-tr">
+                                <td className="ps-3 border-0">
+                                    <div className="d-flex align-items-center py-2">
+                                        <div className="avatar-circle me-3 shadow-sm">
+                                            {item.nome ? item.nome.charAt(0).toUpperCase() : 'U'}
+                                        </div>
+                                        <div>
+                                            <p className="fw-bold text-dark mb-0 fs-6">{item.nome}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td className="text-center border-0">
+                                    <span className="badge-premium badge-active">Ativo</span>
+                                </td>
+                                <td className="text-end pe-4 border-0">
                                     <button
                                         onClick={() => editar(item)}
                                         data-bs-toggle="modal"
                                         data-bs-target="#modalEdit"
-                                        className="btn btn-primary btn-sm me-"
+                                        className="btn btn-icon-edit scale-hover"
+                                        title="Editar"
                                     >
-                                        Editar
+                                        ✏️
                                     </button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+                {listaFuncionarios.length === 0 && (
+                    <div className="text-center py-5 text-muted">
+                        <p className="mb-0 fs-5 mt-2">Nenhum funcionário encontrado.</p>
+                    </div>
+                )}
             </div>
 
             <div className="modal fade" id="modalEdit">
@@ -211,8 +244,10 @@ export default function PaginaFuncionarios() {
             <ToastContainer
                 position="top-center"
                 autoClose={2500}
-                theme="dark"
-               
+                theme="light"
+                toastClassName="premium-toast"
+                hideProgressBar={false}
+                newestOnTop={true}
             />
 
         </div>

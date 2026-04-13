@@ -91,7 +91,7 @@ export default function Login() {
             <ToastContainer
                 position="top-center"
                 autoClose={2500}
-                theme="dark"
+                theme="light"
             />
 
         </div>

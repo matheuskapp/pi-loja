@@ -55,4 +55,100 @@ background-color: #18191a
  padding: 30px;
 }
 
+/* Premium UI Elements Extracted from Funcionários */
+.premium-table-container {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0px 8px 30px rgba(100, 116, 139, 0.08);
+}
 
+.premium-table {
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.premium-table thead th {
+    border-bottom: 2px solid #f1f5f9 !important;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-bottom: 12px;
+}
+
+.custom-tr {
+    background: #ffffff;
+    transition: all 0.25s ease;
+}
+
+.custom-tr:hover {
+    background-color: #fafbfc !important;
+    transform: scale(1.005);
+    box-shadow: inset 4px 0 0px #6366f1;
+}
+
+.premium-table tbody td {
+    padding: 12px 12px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.premium-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.avatar-circle {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+    color: #4338ca;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.btn-icon-edit {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 8px 10px;
+    color: #475569;
+    transition: all 0.2s ease;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.btn-icon-edit:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.scale-hover {
+    transition: transform 0.2s;
+}
+
+.scale-hover:hover {
+    transform: scale(1.1);
+}
+
+/* Premium Toastify Customization */
+.premium-toast {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(241, 245, 249, 1) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08) !important;
+    color: #1e293b !important;
+    font-weight: 500 !important;
+    padding: 16px !important;
+    font-family: inherit !important;
+}
+
+.Toastify__progress-bar {
+    background: linear-gradient(90deg, #6366f1, #8b5cf6) !important;
+    height: 4px !important;
+    border-radius: 0 0 16px 16px;
+}

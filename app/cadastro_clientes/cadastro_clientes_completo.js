@@ -19,6 +19,7 @@ export default function CadastroClientes() {
 
     const [listaClientes, alteraListaClientes] = useState([])
     const [pesquisaClientes, alteraPesquisaClientes] = useState("")
+    const [colunaFiltro, alteraColunaFiltro] = useState("nome")
     const [editando, alteraEditando] = useState(null)
 
     async function buscarClientes() {
@@ -33,7 +34,7 @@ export default function CadastroClientes() {
         const { data } = await supabase
             .from('clientes')
             .select('*')
-            .ilike('nome', '%' + pesquisaClientes + '%')
+            .ilike(colunaFiltro, '%' + pesquisaClientes + '%')
 
         alteraListaClientes(data)
     }
@@ -108,6 +109,15 @@ export default function CadastroClientes() {
         alteraEndereco("")
     }
 
+    function mascararCPF(cpfOculto) {
+        if (!cpfOculto) return "***.***.***-**";
+        const num = cpfOculto.replace(/\D/g, ''); 
+        if (num.length === 11) {
+            return `***.${num.substring(3, 6)}.${num.substring(6, 9)}-**`;
+        }
+        return `***.***.***-**`; 
+    }
+
     useEffect(() => {
         if(pesquisaClientes === ""){
            buscarClientes()
@@ -119,24 +129,39 @@ export default function CadastroClientes() {
     return (
         <div className="container mt-5">
 
-            <div className="barradepesquisa mb-3 p-5">
+            <div className="d-flex justify-content-between align-items-center mb-4 mt-2">
+                <h1 className="fw-bold m-0 text-dark">Cadastro de Clientes</h1>
+            </div>
+
+            <div className="barradepesquisa mb-3 p-4 bg-white rounded-4 shadow-sm border-0">
                 <div className="row align-items-center">
 
-                    <div className="col-6">
-                        <div className="input-group">
+                    <div className="col-7">
+                        <div className="input-group shadow-sm rounded-3">
+                            <select
+                                className="form-select bg-light text-secondary fw-medium"
+                                style={{ maxWidth: "140px", border: "1px solid #dee2e6" }}
+                                value={colunaFiltro}
+                                onChange={e => alteraColunaFiltro(e.target.value)}
+                            >
+                                <option value="nome">Por Nome</option>
+                                <option value="cpf">Por CPF</option>
+                                <option value="email">Por E-mail</option>
+                                <option value="telefone">Por Telefone</option>
+                            </select>
                             <input
                                 value={pesquisaClientes}
                                 onChange={e => alteraPesquisaClientes(e.target.value)}
                                 className="form-control"
-                                placeholder="Pesquisar Cliente.."
+                                placeholder={`Digite para pesquisar...`}
                             />
-                            <button onClick={pesquisar} className="btn btn-outline-secondary">
-                                Pesquisar 🔍
+                            <button onClick={pesquisar} className="btn border bg-light text-primary px-3">
+                                <i className="bi bi-search"></i> Pesquisar
                             </button>
                         </div>
                     </div>
 
-                    <div className="col-6 text-end">
+                    <div className="col-5 text-end">
                         <button
                             type="button"
                             className="btn btn-gradient"
@@ -160,7 +185,7 @@ export default function CadastroClientes() {
                         </div>
 
                         <div className="modal-body">
-                            <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control mb-2" placeholder="Nome" />
+                            <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control mb-2" placeholder="Nome Completo" />
                             <input value={data_nascimento} onChange={e => alteraData_Nascimento(e.target.value)} type="date" className="form-control mb-2" />
                             <input value={cpf} onChange={e => alteraCpf(e.target.value)} className="form-control mb-2" placeholder="CPF" />
                             <input value={telefone} onChange={e => alteraTelefone(e.target.value)} className="form-control mb-2" placeholder="Telefone" />
@@ -177,52 +202,62 @@ export default function CadastroClientes() {
                 </div>
             </div>
 
-            <div>
-                <div className="card shadow-sm border-10 rounded-10 d-inline-block">
-                    <div className="card-body">
+            <div className="premium-table-container bg-white rounded-4 shadow-sm p-4 border-0 mt-3">
+                <table className="table premium-table align-middle">
+                     
+                    <thead>
+                        <tr>
+                            <th className="ps-3 text-muted fw-semibold border-0">Cliente</th>
+                            <th className="text-center text-muted fw-semibold border-0">Data Nasc.</th>
+                            <th className="text-center text-muted fw-semibold border-0">CPF</th>
+                            <th className="text-center text-muted fw-semibold border-0">Telefone</th>
+                            <th className="text-end pe-4 text-muted fw-semibold border-0">Ações</th>
+                        </tr>
+                    </thead>
 
-                        <table className="table align-middle">
-                            <thead className="text-muted">
-                                <tr>
-                                    <th className="text-center">Nome</th>
-                                    <th className="text-center">Data</th>
-                                    <th className="text-center">CPF</th>
-                                    <th className="text-center">Telefone</th>
-                                    <th className="text-center">Email</th>
-                                    <th className="text-center">Endereço</th>
-                                    <th className="text-center">Ações</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {listaClientes.map((item) => (
-                                    <tr key={item.id}>
-                                        <td className="text-center">{item.nome}</td>
-                                        <td className="text-center">
-                                            {new Date(item.data_nascimento).toLocaleDateString('pt-BR')}
-                                        </td>
-                                        <td className="text-center">{item.cpf}</td>
-                                        <td className="text-center">{item.telefone}</td>
-                                        <td className="text-center">{item.email}</td>
-                                        <td className="text-center">{item.endereco}</td>
-
-                                        <td className="text-center">
-                                            <button
-                                                onClick={() => editar(item)}
-                                                className="btn btn-primary btn-sm px-3"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#modaledicao"
-                                            >
-                                                Editar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-
+                    <tbody>
+                        {listaClientes.map((item, i) => (
+                            <tr key={i} className="hover-row custom-tr">
+                                <td className="ps-3 border-0">
+                                    <div className="d-flex align-items-center py-2">
+                                        <div className="avatar-circle me-3 shadow-sm">
+                                            {item.nome ? item.nome.charAt(0).toUpperCase() : 'C'}
+                                        </div>
+                                        <div>
+                                            <p className="fw-bold text-dark mb-0 fs-6">{item.nome}</p>
+                                            <small className="text-muted">{item.email || item.Email || "Sem e-mail"}</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td className="text-center text-secondary border-0">
+                                    {item.data_nascimento ? new Date(item.data_nascimento).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : '-'}
+                                </td>
+                                <td className="text-center text-secondary fw-medium border-0">
+                                    {mascararCPF(item.cpf)}
+                                </td>
+                                <td className="text-center text-secondary border-0">
+                                    {item.telefone || '-'}
+                                </td>
+                                <td className="text-end pe-4 border-0">
+                                    <button
+                                        onClick={() => editar(item)}
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modaledicao"
+                                        className="btn btn-icon-edit scale-hover"
+                                        title="Editar"
+                                    >
+                                        ✏️
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                {listaClientes.length === 0 && (
+                    <div className="text-center py-5 text-muted">
+                        <p className="mb-0 fs-5 mt-2">Nenhum cliente encontrado.</p>
                     </div>
-                </div>
+                )}
             </div>
 
             <div className="modal fade" id="modaledicao">
@@ -235,12 +270,12 @@ export default function CadastroClientes() {
                         </div>
 
                         <div className="modal-body">
-                            <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control mb-2" />
-                            <input value={data_nascimento} onChange={e => alteraData_Nascimento(e.target.value)} className="form-control mb-2" />
-                            <input value={cpf} onChange={e => alteraCpf(e.target.value)} className="form-control mb-2" />
-                            <input value={telefone} onChange={e => alteraTelefone(e.target.value)} className="form-control mb-2" />
-                            <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control mb-2" />
-                            <input value={endereco} onChange={e => alteraEndereco(e.target.value)} className="form-control mb-2" />
+                            <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control mb-2" placeholder="Nome Completo" />
+                            <input value={data_nascimento} onChange={e => alteraData_Nascimento(e.target.value)} type="date" className="form-control mb-2" />
+                            <input value={cpf} onChange={e => alteraCpf(e.target.value)} className="form-control mb-2" placeholder="CPF" />
+                            <input value={telefone} onChange={e => alteraTelefone(e.target.value)} className="form-control mb-2" placeholder="Telefone" />
+                            <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control mb-2" placeholder="Email" />
+                            <input value={endereco} onChange={e => alteraEndereco(e.target.value)} className="form-control mb-2" placeholder="Endereço" />
                         </div>
 
                         <div className="modal-footer">
@@ -261,7 +296,10 @@ export default function CadastroClientes() {
             <ToastContainer
                 position="top-center"
                 autoClose={2500}
-                theme="dark"
+                theme="light"
+                toastClassName="premium-toast"
+                hideProgressBar={false}
+                newestOnTop={true}
             />
 
         </div>

@@ -5,87 +5,82 @@ import BarraLateral from '../components/barra_lateral'
 const secoes = [
     {
         icone: "bi-grid",
-        titulo: "Dashboard",
+        titulo: "Dashboard (Seu Painel de Destaques)",
         numero: "01",
-        tag: "visão geral",
-        descricao: "Acompanhe vendas, caixa e estoque em tempo real",
+        tag: "Início",
+        descricao: "É a primeira tela que você vê. Um resumo rápido de como a loja está indo hoje.",
         passos: [
-            "Acesse pelo menu lateral em Inicio",
-            "Veja o total de vendas do dia, ticket médio e saldo do caixa",
-            "Acompanhe o gráfico de fluxo de vendas por hora",
-            "Monitore os 5 produtos mais vendidos e alertas de estoque baixo",
-            "Clique em Atualizar Dados para recarregar as informações"
+            "O que ver primeiro? Confira o card 'Total de Vendas' para saber quanto a loja já faturou hoje.",
+            "Ticket Médio: Esse valor mostra, em média, quanto cada cliente tem gastado na loja hoje. Ajuda a definir metas!",
+            "Gráficos: O gráfico central desenha as vendas ao longo das horas. Bom para descobrir o horário 'de pico'.",
+            "Fique de olho: A seção 'Alerta de Estoque' é super importante. Ela mostra produtos que estão a um passo de acabar.",
+            "Dica de Ouro: Sempre que abrir a tela, você pode clicar no botão 'Atualizar Dados' lá no topo."
         ]
     },
     {
         icone: "bi-box-seam",
-        titulo: "Produtos",
+        titulo: "Produtos (Catálogo Virtual)",
         numero: "02",
-        tag: "catálogo",
-        descricao: "Gerencie todo o catálogo de produtos da loja",
+        tag: "Gestão do Estoque",
+        descricao: "Onde todo o estoque ganha vida. Cadastre e administre tudo que será vendido no caixa.",
         passos: [
-            "Acesse pelo menu lateral em Produtos",
-            "Use a barra de pesquisa para buscar um produto pelo nome",
-            "Clique em + Adicionar Produto para cadastrar um novo item",
-            "Preencha: Nome, SKU, Preço, Descrição e Quantidade",
-            "Para editar, clique no botão Editar na linha do produto",
-            "O SKU não pode ser alterado após o cadastro"
+            "Para onde olho?: O botão azul '+ Adicionar Produto' cadastra novas peças. Tenha os dados do produto em mãos.",
+            "Código SKU: Toda vez que for cadastrar um produto, crie ou adicione o código SKU único (ex: BST-M-01) - ele não pode mudar.",
+            "Correções: Achou um erro na descrição de um produto? Clique no botão 'Editar' que fica do lado dele na tabela.",
+            "Na barra de pesquisa lá no topo, você digita o nome do produto e a tabela fará a filtragem instantaneamente pra você."
         ]
     },
     {
         icone: "bi-cart3",
-        titulo: "Vendas",
+        titulo: "Vendas (Ponto de Venda)",
         numero: "03",
-        tag: "operação",
-        descricao: "Registre e acompanhe todas as vendas realizadas",
+        tag: "Bater pedido",
+        descricao: "É o coração da loja! Aqui você fecha pedidos e entrega as peças ao cliente no balcão.",
         passos: [
-            "Acesse pelo menu lateral em Vendas",
-            "Selecione o produto, cliente, quantidade e forma de pagamento",
-            "Aplique descontos quando necessário antes de finalizar",
-            "Cada venda é registrada automaticamente no caixa"
+            "Atenção: Você NÃO vai conseguir fechar uma venda se a página do 'Caixa' não estiver aberta no dia. Fique ligado!",
+            "Como vender: Primeiro busque o produto que o cliente escolheu e digite quantas vai levar.",
+            "Selecionando Clientes: Você pode buscar clientes já cadastrados pelo banco de dados ou fazer vendas sem cliente específico.",
+            "Descontos: O sistema permite inserir um botão de desconto no valor (útil para pagamentos à vista).",
+            "Dinheiro entra na hora: Qualquer venda feita nesta página entra automaticamente para o lucro diário do seu Caixa."
         ]
     },
     {
         icone: "bi-cash-stack",
-        titulo: "Caixa",
+        titulo: "Caixa (Controle Financeiro)",
         numero: "04",
-        tag: "financeiro",
-        descricao: "Abertura, controle e fechamento do caixa diário",
+        tag: "Giro Diário",
+        descricao: "Para não haver furos financeiros. Você abre pela manhã e o encerra no fim do turno.",
         passos: [
-            "Acesse pelo menu lateral em Caixa",
-            "Informe o fundo de troco e clique em Abrir Caixa",
-            "Use os filtros Hoje, 7 Dias e 30 Dias para ver o histórico",
-            "Clique em Ver para visualizar os detalhes de cada venda",
-            "Use a paginação para navegar entre as vendas",
-            "Ao fim do expediente, clique em Fechar Dia"
+            "A primeira coisa do dia: Quando você chegar, insira o valor inicial que já tem na gaveta (Troco) e clique em 'Abrir Caixa'.",
+            "Fique Atento: Na tabela aparecerá todo o registro do dinheiro que circulou. Vendas batidas aparecem magicamente na lista.",
+            "Transparência: A lista paginada te dará uma auditoria de todos os horários e formas de pagamento que seu funcionário usou.",
+            "O fim do dia: Clicando em 'Fechar Dia', o sistema entende que aquela jornada de faturamento foi interrompida com segurança."
         ]
     },
     {
         icone: "bi-person-plus",
-        titulo: "Clientes",
+        titulo: "Clientes (Cartela e Fidelidade)",
         numero: "05",
-        tag: "cadastro",
-        descricao: "Cadastre e gerencie os clientes da loja",
+        tag: "Relacionamento",
+        descricao: "Área reservada para você registrar os compradores frequentes ou captar contatos.",
         passos: [
-            "Acesse pelo menu lateral em Clientes",
-            "Clique em + Adicionar Cliente para cadastrar",
-            "Preencha: Nome, CPF, Telefone, Email e Endereço",
-            "Use a barra de pesquisa para localizar pelo nome",
-            "Clique em Editar para atualizar os dados"
+            "Como funciona: Clique em '+ Adicionar Cliente' e cadastre o novo freguês colocando Nome, CPF e meios de comunicação.",
+            "Onde é usado?: Ter o cliente salvo faz com que, lá na hora do 'Ponto de Venda', você só precise buscar o nome dele rápido.",
+            "Organização: A lista de clientes pode crescer muito, portanto, conte com a lupa na barra de pesquisa para achar quem precisa.",
+            "Sempre que o cliente solicitar atualização de telefone ou e-mail, entre nesta aba e clique no botão de lapis para Editar."
         ]
     },
     {
         icone: "bi-people",
-        titulo: "Funcionários",
+        titulo: "Funcionários (Acesso Privado)",
         numero: "06",
-        tag: "acesso",
-        descricao: "Gerencie usuários e acessos ao sistema",
+        tag: "Permissões",
+        descricao: "Onde o administrador cadastra os usuários (vendedores e caixas) que acessarão a loja.",
         passos: [
-            "Acesse pelo menu lateral em Funcionários",
-            "Clique em + Adicionar Funcionário para criar acesso",
-            "Preencha Nome, CPF, Email e Senha",
-            "O sistema cria o login automaticamente",
-            "Clique em Editar para atualizar os dados"
+            "Restrito: Este menu define quem consegue entrar no painel. Novos funcionários terão que dar e-mail e senha à você aqui.",
+            "Autenticação Segura: Cadastrando a pessoa aqui, o site gera o passe-livre de autenticação automática no Banco de Dados.",
+            "Importante LGPD: A tabela de usuários esconde parte do CPF com asteriscos, respeitando as leis de proteção da internet.",
+            "Bloqueios: Lembre-se, o site te bloqueia de acessar abas que precisam de funcionário logado caso tente burlar a segurança."
         ]
     }
 ]

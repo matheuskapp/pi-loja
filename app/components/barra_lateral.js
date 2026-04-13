@@ -39,41 +39,40 @@ export default function BarraLateral() {
                         </Link>
                     </li> */}
                     <li className="nav-item">
-                        <Link href="produtos" className="nav-link">
-                            <i className="bi bi-credit-card me-2"></i> Produtos
+                        <Link href="/produtos" className="nav-link">
+                            <i className="bi bi-box-seam me-2"></i> Produtos
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link href="caixa" className="nav-link">
-                            <i className="bi bi-credit-card me-2"></i> Caixa
+                        <Link href="/caixa" className="nav-link">
+                            <i className="bi bi-cash-stack me-2"></i> Caixa
                         </Link>
-                    </li>
-
-                    <li className="nav-item">
-                        <Link href="vendas" className="nav-link">
-                            <i className="bi bi-gear me-2"></i> Vendas
-                        </Link>
-
                     </li>
                     <li className="nav-item">
-                        <Link href="cadastro_funcionarios" className="nav-link">
-                            <i className="bi bi-gear me-2"></i> Funcionarios
+                        <Link href="/vendas" className="nav-link">
+                            <i className="bi bi-cart3 me-2"></i> Vendas
                         </Link>
                     </li>
-
+                    <li className="nav-item">
+                        <Link href="/cadastro_funcionarios" className="nav-link">
+                            <i className="bi bi-people me-2"></i> Funcionários
+                        </Link>
+                    </li>
                     <li className="nav-item">
                         <Link href="/cadastro_clientes" className="nav-link">
-                            <i className="bi bi-person-plus me-2"></i>Clientes
+                            <i className="bi bi-person-plus me-2"></i> Clientes
                         </Link>
                     </li>
                     <li className="nav-item">
                         <Link href="/apresentacao" className="nav-link">
-                            <i className="bi bi-person-plus me-2"></i>FAQ
+                            <i className="bi bi-patch-question me-2"></i> FAQ / Ajuda
                         </Link>
                     </li>
                 </ul>
-                <div className="position-fixed bottom-0 start-0 mb-3 ms-1">
-                    <button onClick={sair} type="button" class="btn btn-outline-dark">Sair</button>
+                <div className="mt-auto pt-5 pb-3">
+                    <button onClick={sair} type="button" className="btn btn-light text-danger fw-bold w-100 d-flex align-items-center justify-content-center py-2 rounded-3 shadow-sm align-middle" style={{ border: "1px solid #ffe4e6", backgroundColor: "#fff5f5" }}>
+                        <i className="bi bi-box-arrow-left me-2 fs-5"></i> Sair do Sistema
+                    </button>
                 </div>
             </div>
 
