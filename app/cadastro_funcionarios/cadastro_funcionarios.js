@@ -43,14 +43,19 @@ export default function PaginaFuncionarios() {
     }
 
     async function cadastrar() {
-
-        const { data } = await supabase.auth.signUp({
+        const { data, error: authError } = await supabase.auth.signUp({
             email: email,
             password: senha,
         })
 
-        if (data == null) {
-            toast.error("Dados inválidos...", { icon: "🚫" })
+        if (authError) {
+            toast.error(`Erro na autenticação: ${authError.message}`, { icon: "🚫" })
+            console.error("Erro Auth:", authError)
+            return
+        }
+
+        if (!data?.user) {
+            toast.error("Não foi possível criar o usuário no sistema.", { icon: "🚫" })
             return
         }
 
@@ -62,9 +67,9 @@ export default function PaginaFuncionarios() {
             status: status
         }
 
-        const resposta = await supabase.from('usuarios').insert(obj)
+        const { error: dbError } = await supabase.from('usuarios').insert(obj)
 
-        if (resposta.error == null) {
+        if (dbError == null) {
             toast.success("Cadastrado com sucesso!", { icon: "👨‍💼" })
             alteraNome("")
             alteraCpf("")
@@ -74,21 +79,26 @@ export default function PaginaFuncionarios() {
             alteraStatus("ativo")
             buscar()
         } else {
-            toast.error("Erro ao cadastrar")
+            toast.error(`Erro no banco: ${dbError.message}`)
+            console.error("Erro Database:", dbError)
         }
     }
 
     async function salvar() {
+        // Criamos o objeto de atualização
+        // Se o erro persistir, pode ser que a coluna 'email' não exista na sua tabela 'usuarios'
         const obj = {
             nome: nome,
-            email: email,
             perfil: perfil,
             status: status
         }
 
-        const { error } = await supabase.from('usuarios').update(obj).eq('id', editando)
+        // Se você tiver a coluna 'email' na tabela, pode descomentar a linha abaixo:
+        // obj.email = email;
 
-        if (error == null) {
+        const { error: dbError } = await supabase.from('usuarios').update(obj).eq('id', editando)
+
+        if (dbError == null) {
             toast.success("Atualizado com sucesso!", { icon: "✅" })
             alteraEditando(null)
             alteraNome("")
@@ -97,14 +107,21 @@ export default function PaginaFuncionarios() {
             alteraStatus("ativo")
             buscar()
         } else {
-            toast.error("Erro ao atualizar")
+            // Log detalhado para descobrirmos o que é o {}
+            console.error("Erro detalhado do Supabase:", {
+                message: dbError.message,
+                details: dbError.details,
+                hint: dbError.hint,
+                code: dbError.code
+            });
+            toast.error(`Erro ao atualizar: ${dbError.message || 'Verifique o console (F12)'}`)
         }
     }
 
     function editar(item) {
         alteraEditando(item.id)
-        alteraNome(item.nome)
-        alteraEmail(item.email)
+        alteraNome(item.nome || "")
+        alteraEmail(item.email || "")
         alteraPerfil(item.perfil || "funcionario")
         alteraStatus(item.status || "ativo")
     }

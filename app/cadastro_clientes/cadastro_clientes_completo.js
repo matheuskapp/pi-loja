@@ -69,12 +69,12 @@ export default function CadastroClientes() {
 
     function editar(objeto) {
         alteraEditando(objeto.id)
-        alteraNome(objeto.nome)
-        alteraData_Nascimento(objeto.data_nascimento)
-        alteraCpf(objeto.cpf)
-        alteraTelefone(objeto.telefone)
-        alteraEmail(objeto.email)
-        alteraEndereco(objeto.endereco)
+        alteraNome(objeto.nome || "")
+        alteraData_Nascimento(objeto.data_nascimento || "")
+        alteraCpf(objeto.cpf || "")
+        alteraTelefone(objeto.telefone || "")
+        alteraEmail(objeto.email || "")
+        alteraEndereco(objeto.endereco || "")
     }
 
     async function atualizar() {

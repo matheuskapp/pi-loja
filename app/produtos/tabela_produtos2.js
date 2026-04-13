@@ -86,11 +86,11 @@ export default function ProdutosTeste() {
 
     function editar(objeto) {
         alteraEditando(objeto.id)
-        alteraNome(objeto.nome)
-        alteraSku(objeto.sku)
-        alteraPreco(objeto.preco)
-        alteraQuantidade(objeto.quantidade)
-        alteraDescricao(objeto.descricao)
+        alteraNome(objeto.nome || "")
+        alteraSku(objeto.sku || "")
+        alteraPreco(objeto.preco || "")
+        alteraQuantidade(objeto.quantidade || "")
+        alteraDescricao(objeto.descricao || "")
     }
 
     function limparCampos() {
