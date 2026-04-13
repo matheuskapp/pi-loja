@@ -127,10 +127,15 @@ export default function CadastroClientes() {
     }, [pesquisaClientes])
 
     return (
-        <div className="container mt-5">
+        <div className="w-100">
 
-            <div className="d-flex justify-content-between align-items-center mb-4 mt-2">
-                <h1 className="fw-bold m-0 text-dark">Cadastro de Clientes</h1>
+            <div className="d-flex justify-content-between align-items-center mb-5 mt-2">
+                <div>
+                    <h1 className="fw-bold mb-1 text-dark" style={{ letterSpacing: "-1px" }}>Clientes</h1>
+                    <p className="text-muted mb-0">
+                        Gestão de Clientes Boy+ Plus • <span className="fw-semibold text-dark">Fidelização e Histórico</span>
+                    </p>
+                </div>
             </div>
 
             <div className="barradepesquisa mb-3 p-4 bg-white rounded-4 shadow-sm border-0">
