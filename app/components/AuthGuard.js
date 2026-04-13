@@ -20,12 +20,20 @@ export default function AuthGuard({ children }) {
 
     // 2. Se for privada, checar o identificador do usuário no localStorage
     const idUsuario = localStorage.getItem('id_usuario');
+    const perfil = localStorage.getItem('perfil_usuario');
 
     if (!idUsuario) {
       // Força voltar pro login e não mostra a tela
       setAutorizado(false);
       router.replace('/login');
     } else {
+      // 3. Regra de Perfil: Cadastro de Funcionários só para Admin
+      if (pathname.includes('/cadastro_funcionarios') && perfil !== 'admin') {
+        setAutorizado(false);
+        router.replace('/dashboard');
+        return;
+      }
+
       // Liberado
       setAutorizado(true);
     }

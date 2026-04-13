@@ -94,12 +94,18 @@ export default function GestaoCaixa() {
             <BarraLateral />
             <main style={{ marginLeft: "260px", width: "100%", padding: "40px" }}>
                 
-                <div className="d-flex justify-content-between align-items-center mb-4">
-                    <h2 className="fw-bold">Gestão Financeira</h2>
-                    <div className="btn-group shadow-sm bg-white rounded-3">
-                        <button className={`btn btn-sm ${filtroDias === '0' ? 'btn-primary' : 'btn-light'}`} onClick={() => {setFiltroDias('0'); setPagina(0);}}>Hoje</button>
-                        <button className={`btn btn-sm ${filtroDias === '7' ? 'btn-primary' : 'btn-light'}`} onClick={() => {setFiltroDias('7'); setPagina(0);}}>7 Dias</button>
-                        <button className={`btn btn-sm ${filtroDias === '30' ? 'btn-primary' : 'btn-light'}`} onClick={() => {setFiltroDias('30'); setPagina(0);}}>30 Dias</button>
+                <div className="d-flex justify-content-between align-items-center mb-5">
+                    <div>
+                        <h1 className="fw-bold mb-1 text-dark" style={{ letterSpacing: "-1px" }}>Gestão Financeira</h1>
+                        <p className="text-muted mb-0">
+                            Controle de Caixa Boy+ Plus • <span className="fw-semibold text-dark">Fluxo e Histórico</span>
+                        </p>
+                    </div>
+
+                    <div className="btn-group shadow-sm bg-white rounded-3 p-1">
+                        <button className={`btn btn-sm px-3 ${filtroDias === '0' ? 'btn-primary' : 'btn-light border-0'}`} onClick={() => {setFiltroDias('0'); setPagina(0);}}>Hoje</button>
+                        <button className={`btn btn-sm px-3 ${filtroDias === '7' ? 'btn-primary' : 'btn-light border-0'}`} onClick={() => {setFiltroDias('7'); setPagina(0);}}>7 Dias</button>
+                        <button className={`btn btn-sm px-3 ${filtroDias === '30' ? 'btn-primary' : 'btn-light border-0'}`} onClick={() => {setFiltroDias('30'); setPagina(0);}}>30 Dias</button>
                     </div>
                 </div>
 

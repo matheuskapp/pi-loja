@@ -26,6 +26,7 @@ export default function CadastroClientes() {
         const { data } = await supabase
             .from('clientes')
             .select('*')
+            .order('id', { ascending: false })
 
         alteraListaClientes(data)
     }
@@ -35,6 +36,7 @@ export default function CadastroClientes() {
             .from('clientes')
             .select('*')
             .ilike(colunaFiltro, '%' + pesquisaClientes + '%')
+            .order('id', { ascending: false })
 
         alteraListaClientes(data)
     }
@@ -184,8 +186,8 @@ export default function CadastroClientes() {
                 <div className="modal-dialog">
                     <div className="modal-content">
 
-                        <div className="modal-header">
-                            <h3>Novo Cliente</h3>
+                        <div className="modal-header border-0 pb-0">
+                            <h5 className="fw-bold">Novo Cliente</h5>
                             <button className="btn-close" data-bs-dismiss="modal"></button>
                         </div>
 
@@ -269,8 +271,8 @@ export default function CadastroClientes() {
                 <div className="modal-dialog">
                     <div className="modal-content">
 
-                        <div className="modal-header">
-                            <h3>Edição de Cliente</h3>
+                        <div className="modal-header border-0 pb-0">
+                            <h5 className="fw-bold">Edição de Cliente</h5>
                             <button className="btn-close" data-bs-dismiss="modal"></button>
                         </div>
 

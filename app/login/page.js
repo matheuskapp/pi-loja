@@ -28,7 +28,26 @@ export default function Login() {
             return
         }
 
+        // Buscar perfil e status no banco
+        const { data: perfilData, error: perfilError } = await supabase
+            .from('usuarios')
+            .select('perfil, status')
+            .eq('id', data.user.id)
+            .single();
+
+        if (perfilError || !perfilData) {
+            toast.error("Erro ao carregar perfil do usuário.");
+            return;
+        }
+
+        if (perfilData.status === 'desligado') {
+            toast.error("Sua conta está inativa. Entre em contato com o administrador.", { icon: "⚠️" });
+            await supabase.auth.signOut();
+            return;
+        }
+
         localStorage.setItem("id_usuario", data.user.id)
+        localStorage.setItem("perfil_usuario", perfilData.perfil || 'funcionario')
 
         toast.success("Autenticado com sucesso!", { icon: "✅" })
 

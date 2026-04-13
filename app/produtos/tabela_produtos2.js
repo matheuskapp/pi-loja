@@ -21,7 +21,7 @@ export default function ProdutosTeste() {
     const [inputPesquisaProduto, alteraInputPesquisaProduto] = useState("")
 
     async function buscar() {
-        const { data } = await supabase.from('produtos').select()
+        const { data } = await supabase.from('produtos').select().order('id', { ascending: false })
         alteraProdutos(data)
     }
 
@@ -38,6 +38,7 @@ export default function ProdutosTeste() {
             .from('produtos')
             .select('*')
             .ilike('nome', '%' + inputPesquisaProduto + '%')
+            .order('id', { ascending: false })
 
         alteraProdutos(data)
     }
@@ -105,17 +106,24 @@ export default function ProdutosTeste() {
         <div className="pagina-produtos">
 
             {/* TOPO */}
-            <div className="topo">
-                <h2>Produtos</h2>
+            <div className="d-flex justify-content-between align-items-center mb-5 mt-2">
+                <div>
+                    <h1 className="fw-bold mb-1 text-dark" style={{ letterSpacing: "-1px" }}>Produtos</h1>
+                    <p className="text-muted mb-0">
+                        Catálogo Boy+ Plus • <span className="fw-semibold text-dark">Estoque e Variedades</span>
+                    </p>
+                </div>
 
-                <button
-                    className="btn-add"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalProduto"
-                    onClick={limparCampos}
-                >
-                    + Adicionar
-                </button>
+                <div className="text-end">
+                    <button
+                        className="btn btn-gradient px-4 shadow-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalProduto"
+                        onClick={limparCampos}
+                    >
+                        + Adicionar Produto
+                    </button>
+                </div>
             </div>
 
             {/* PESQUISA */}

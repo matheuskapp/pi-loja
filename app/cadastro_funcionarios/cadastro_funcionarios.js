@@ -19,6 +19,8 @@ export default function PaginaFuncionarios() {
     const [cpf, alteraCpf] = useState("")
     const [email, alteraEmail] = useState("")
     const [senha, alteraSenha] = useState("")
+    const [perfil, alteraPerfil] = useState("funcionario")
+    const [status, alteraStatus] = useState("ativo")
     const [editando, alteraEditando] = useState(null)
 
     async function pesquisar() {
@@ -26,6 +28,7 @@ export default function PaginaFuncionarios() {
             .from('usuarios')
             .select()
             .ilike('nome', `%${pesquisaFuncionarios}%`)
+            .order('id', { ascending: false })
 
         alteraListaFuncionarios(data)
     }
@@ -34,6 +37,7 @@ export default function PaginaFuncionarios() {
         const { data } = await supabase
             .from('usuarios')
             .select()
+            .order('id', { ascending: false })
 
         alteraListaFuncionarios(data)
     }
@@ -54,41 +58,55 @@ export default function PaginaFuncionarios() {
             id: data.user.id,
             nome: nome,
             cpf: cpf,
+            perfil: perfil,
+            status: status
         }
 
         const resposta = await supabase.from('usuarios').insert(obj)
 
         if (resposta.error == null) {
             toast.success("Cadastrado com sucesso!", { icon: "👨‍💼" })
+            alteraNome("")
+            alteraCpf("")
+            alteraEmail("")
+            alteraSenha("")
+            alteraPerfil("funcionario")
+            alteraStatus("ativo")
             buscar()
         } else {
             toast.error("Erro ao cadastrar")
         }
     }
 
-    async function salvar(e) {
-        e.preventDefault()
+    async function salvar() {
+        const obj = {
+            nome: nome,
+            email: email,
+            perfil: perfil,
+            status: status
+        }
 
-        const objeto = { nome: nome }
-
-        const { error } = await supabase
-            .from('usuarios')
-            .update(objeto)
-            .eq('id', editando)
+        const { error } = await supabase.from('usuarios').update(obj).eq('id', editando)
 
         if (error == null) {
-            toast.success("Atualizado com sucesso", { icon: "✏️" })
+            toast.success("Atualizado com sucesso!", { icon: "✅" })
+            alteraEditando(null)
+            alteraNome("")
+            alteraEmail("")
+            alteraPerfil("funcionario")
+            alteraStatus("ativo")
             buscar()
         } else {
             toast.error("Erro ao atualizar")
         }
     }
 
-    function editar(obj) {
-        alteraEditando(obj.id)
-        alteraNome(obj.nome)
-        alteraEmail(obj.Email)
-        alteraSenha(obj.senha)
+    function editar(item) {
+        alteraEditando(item.id)
+        alteraNome(item.nome)
+        alteraEmail(item.email)
+        alteraPerfil(item.perfil || "funcionario")
+        alteraStatus(item.status || "ativo")
     }
 
     function mascararCPF(cpfOculto) {
@@ -157,8 +175,8 @@ export default function PaginaFuncionarios() {
                 <div className="modal-dialog">
                     <div className="modal-content">
 
-                        <div className="modal-header">
-                            <h3>Novo Funcionario</h3>
+                        <div className="modal-header border-0 pb-0">
+                            <h5 className="fw-bold">Novo Funcionário</h5>
                             <button className="btn-close" data-bs-dismiss="modal"></button>
                         </div>
 
@@ -166,7 +184,24 @@ export default function PaginaFuncionarios() {
                             <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control mb-2" placeholder="Nome" />
                             <input value={cpf} onChange={e => alteraCpf(e.target.value)} className="form-control mb-2" placeholder="CPF" />
                             <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control mb-2" placeholder="Email" />
-                            <input value={senha} onChange={e => alteraSenha(e.target.value)} type="password" className="form-control" placeholder="Senha" />
+                            <input value={senha} onChange={e => alteraSenha(e.target.value)} type="password" className="form-control mb-3" placeholder="Senha" />
+                            
+                            <div className="row g-2">
+                                <div className="col-md-6">
+                                    <label className="small text-muted mb-1 fw-bold">Nível de Acesso</label>
+                                    <select className="form-select shadow-sm" value={perfil} onChange={e => alteraPerfil(e.target.value)}>
+                                        <option value="funcionario">Funcionário</option>
+                                        <option value="admin">Administrador</option>
+                                    </select>
+                                </div>
+                                <div className="col-md-6">
+                                    <label className="small text-muted mb-1 fw-bold">Status</label>
+                                    <select className="form-select shadow-sm" value={status} onChange={e => alteraStatus(e.target.value)}>
+                                        <option value="ativo">Ativo</option>
+                                        <option value="desligado">Desligado</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="modal-footer">
@@ -203,7 +238,14 @@ export default function PaginaFuncionarios() {
                                     </div>
                                 </td>
                                 <td className="text-center border-0">
-                                    <span className="badge-premium badge-active">Ativo</span>
+                                    <span style={{ fontSize: '11px', letterSpacing: '0.05em' }} className={`badge rounded-pill px-3 py-2 fw-bold text-uppercase ${item.perfil === 'admin' ? 'bg-primary text-white' : 'bg-light text-dark border'}`}>
+                                        {item.perfil === 'admin' ? '🗝️ Admin' : '👤 Staff'}
+                                    </span>
+                                </td>
+                                <td className="text-center border-0">
+                                    <span style={{ fontSize: '11px', letterSpacing: '0.05em' }} className={`badge rounded-pill px-3 py-2 fw-bold text-uppercase ${item.status === 'ativo' ? 'bg-success-soft text-success border border-success' : 'bg-danger-soft text-danger border border-danger'}`}>
+                                        {item.status === 'ativo' ? '● Ativo' : '○ Desligado'}
+                                    </span>
                                 </td>
                                 <td className="text-end pe-4 border-0">
                                     <button
@@ -230,17 +272,37 @@ export default function PaginaFuncionarios() {
             <div className="modal fade" id="modalEdit">
                 <div className="modal-dialog">
                     <div className="modal-content">
+                        <div className="modal-header border-0 pb-0">
+                            <h5 className="fw-bold">Editar Funcionário</h5>
+                            <button className="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
 
                         <div className="modal-body">
                             <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control mb-2" placeholder="Nome" />
-                            <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control mb-2" placeholder="Email" />
+                            <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control mb-3" placeholder="Email" />
+                            
+                            <div className="row g-2">
+                                <div className="col-md-6">
+                                    <label className="small text-muted mb-1 fw-bold">Nível de Acesso</label>
+                                    <select className="form-select shadow-sm" value={perfil} onChange={e => alteraPerfil(e.target.value)}>
+                                        <option value="funcionario">Funcionário</option>
+                                        <option value="admin">Administrador</option>
+                                    </select>
+                                </div>
+                                <div className="col-md-6">
+                                    <label className="small text-muted mb-1 fw-bold">Status</label>
+                                    <select className="form-select shadow-sm" value={status} onChange={e => alteraStatus(e.target.value)}>
+                                        <option value="ativo">Ativo</option>
+                                        <option value="desligado">Desligado</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="modal-footer">
                             <button className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                             <button onClick={salvar} className="btn btn-primary" data-bs-dismiss="modal">Salvar</button>
                         </div>
-
                     </div>
                 </div>
             </div>

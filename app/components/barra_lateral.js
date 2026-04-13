@@ -1,20 +1,23 @@
 'use client'
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import "./barra_lateral.css"
 import { useRouter } from "next/navigation";
 import supabase from "../conexao/supabase";
 
-
-
-
-
 export default function BarraLateral() {
-
     const router = useRouter();
+    const [perfil, setPerfil] = useState("");
+
+    useEffect(() => {
+        const p = localStorage.getItem("perfil_usuario");
+        if (p) setPerfil(p);
+    }, []);
 
     async function sair() {
         await supabase.auth.signOut();
         localStorage.removeItem("id_usuario");
+        localStorage.removeItem("perfil_usuario");
         router.push("/login");
     }
 
@@ -53,11 +56,15 @@ export default function BarraLateral() {
                             <i className="bi bi-cart3 me-2"></i> Vendas
                         </Link>
                     </li>
-                    <li className="nav-item">
-                        <Link href="/cadastro_funcionarios" className="nav-link">
-                            <i className="bi bi-people me-2"></i> Funcionários
-                        </Link>
-                    </li>
+                    
+                    {perfil === 'admin' && (
+                        <li className="nav-item">
+                            <Link href="/cadastro_funcionarios" className="nav-link">
+                                <i className="bi bi-people me-2"></i> Funcionários
+                            </Link>
+                        </li>
+                    )}
+
                     <li className="nav-item">
                         <Link href="/cadastro_clientes" className="nav-link">
                             <i className="bi bi-person-plus me-2"></i> Clientes
