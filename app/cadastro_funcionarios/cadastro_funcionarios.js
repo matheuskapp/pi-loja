@@ -337,11 +337,6 @@ export default function PaginaFuncionarios() {
                                 <label className="form-label small fw-bold text-muted">NOME COMPLETO</label>
                                 <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control bg-light border-0" />
                             </div>
-                            <div className="mb-3">
-                                <label className="form-label small fw-bold text-muted">EMAIL</label>
-                                <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control bg-light border-0" />
-                            </div>
-                            
                             <div className="row">
                                 <div className="col-md-6 mb-3">
                                     <label className="form-label small fw-bold text-muted">NÍVEL DE ACESSO</label>
