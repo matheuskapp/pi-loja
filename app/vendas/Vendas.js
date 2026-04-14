@@ -97,7 +97,7 @@ export default function Vendas() {
                 .update({ quantidade: novoEstoque })
                 .eq('id', prodSelecionado.id);
 
-            toast.success("VENDA cadastrada com sucesso!", { icon: "💰" });
+            toast.success("cadastrada com sucesso!", { icon: "💰" });
             setCliente("");
             setProduto("");
             setQuantidade("");
