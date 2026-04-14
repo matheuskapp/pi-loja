@@ -22,24 +22,39 @@ export default function PaginaFuncionarios() {
     const [perfil, alteraPerfil] = useState("funcionario")
     const [status, alteraStatus] = useState("ativo")
     const [editando, alteraEditando] = useState(null)
+    const [idPrioridade, setIdPrioridade] = useState(null)
 
-    async function pesquisar() {
+    async function pesquisar(prioId = null) {
+        const idAlvo = prioId || idPrioridade;
         const { data } = await supabase
             .from('usuarios')
             .select()
             .ilike('nome', `%${pesquisaFuncionarios}%`)
             .order('id', { ascending: false })
 
-        alteraListaFuncionarios(data)
+        const ordenado = (data || []).sort((a, b) => {
+            if (String(a.id) === String(idAlvo)) return -1;
+            if (String(b.id) === String(idAlvo)) return 1;
+            return 0;
+        });
+
+        alteraListaFuncionarios(ordenado)
     }
 
-    async function buscar() {
+    async function buscar(prioId = null) {
+        const idAlvo = prioId || idPrioridade;
         const { data } = await supabase
             .from('usuarios')
             .select()
             .order('id', { ascending: false })
 
-        alteraListaFuncionarios(data)
+        const ordenado = (data || []).sort((a, b) => {
+            if (String(a.id) === String(idAlvo)) return -1;
+            if (String(b.id) === String(idAlvo)) return 1;
+            return 0;
+        });
+
+        alteraListaFuncionarios(ordenado)
     }
 
     const validarEmail = (email) => {
@@ -119,13 +134,15 @@ export default function PaginaFuncionarios() {
         const { error: dbError } = await supabase.from('usuarios').update(obj).eq('id', editando)
 
         if (dbError == null) {
+            const idPrio = editando;
             toast.success("Atualizado com sucesso!", { icon: "✅" })
+            setIdPrioridade(idPrio)
             alteraEditando(null)
             alteraNome("")
             alteraEmail("")
             alteraPerfil("funcionario")
             alteraStatus("ativo")
-            buscar()
+            buscar(idPrio)
         } else {
             // Log detalhado para descobrirmos o que é o {}
             console.error("Erro detalhado do Supabase:", {
@@ -166,134 +183,84 @@ export default function PaginaFuncionarios() {
     }, [pesquisaFuncionarios])
 
     return (
-        <div className="w-100">
+        <div className="pagina-funcionarios">
 
-            <div className="d-flex justify-content-between align-items-center mb-5 mt-2">
+            <div className="header-section">
                 <div>
                     <h1 className="fw-bold mb-1 text-dark" style={{ letterSpacing: "-1px" }}>Funcionários</h1>
                     <p className="text-muted mb-0">
-                        Gestão de equipe Boy+ Plus • <span className="fw-semibold text-dark">Cadastro e Permissões</span>
+                       <span className="fw-semibold text-dark">Cadastro e Permissões</span>
                     </p>
                 </div>
             </div>
 
-            <div className="barradepesquisa mb-4 p-4 bg-white rounded-4 shadow-sm border-0 mt-3">
-                <div className="row align-items-center">
-
-                    <div className="col-6">
-                        <div className="input-group">
-                            <input
-                                value={pesquisaFuncionarios}
-                                onChange={e => alteraPesquisaFuncionarios(e.target.value)}
-                                className="form-control"
-                                placeholder="Pesquisar Funcionário..."
-                            />
-                            <button onClick={pesquisar} className="btn btn-outline-secondary px-3">
-                                Pesquisar 🔍
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="col-6 text-end">
-                        <button
-                            type="button"
-                            className="btn btn-gradient px-4 shadow-sm"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalAdd"
-                        >
-                            + Adicionar Funcionário
-                        </button>
-                    </div>
-
+            <div className="actions-bar">
+                <div className="search-container">
+                    <input
+                        value={pesquisaFuncionarios}
+                        onChange={e => alteraPesquisaFuncionarios(e.target.value)}
+                        placeholder="Pesquisar funcionários..."
+                    />
+                    <button onClick={pesquisar}>🔍</button>
                 </div>
+
+                <button
+                    type="button"
+                    className="btn btn-gradient px-4"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalAdd"
+                >
+                    + Adicionar Funcionário
+                </button>
             </div>
 
-            <div className="modal fade" id="modalAdd">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-
-                        <div className="modal-header border-0 pb-0">
-                            <h5 className="fw-bold">Novo Funcionário</h5>
-                            <button className="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-
-                        <div className="modal-body">
-                            <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control mb-2" placeholder="Nome" />
-                            <input value={cpf} onChange={e => alteraCpf(e.target.value)} className="form-control mb-2" placeholder="CPF" />
-                            <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control mb-2" placeholder="Email" />
-                            <input value={senha} onChange={e => alteraSenha(e.target.value)} type="password" className="form-control mb-3" placeholder="Senha" />
-                            
-                            <div className="row g-2">
-                                <div className="col-md-6">
-                                    <label className="small text-muted mb-1 fw-bold">Nível de Acesso</label>
-                                    <select className="form-select shadow-sm" value={perfil} onChange={e => alteraPerfil(e.target.value)}>
-                                        <option value="funcionario">Funcionário</option>
-                                        <option value="admin">Administrador</option>
-                                    </select>
-                                </div>
-                                <div className="col-md-6">
-                                    <label className="small text-muted mb-1 fw-bold">Status</label>
-                                    <select className="form-select shadow-sm" value={status} onChange={e => alteraStatus(e.target.value)}>
-                                        <option value="ativo">Ativo</option>
-                                        <option value="desligado">Desligado</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="modal-footer">
-                            <button className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                            <button onClick={cadastrar} className="btn btn-primary" data-bs-dismiss="modal">Salvar</button>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <div className="premium-table-container bg-white rounded-4 shadow-sm p-4 border-0">
-                <table className="table premium-table align-middle">
-                     
+            <div className="table-card">
+                <table className="premium-table align-middle">
                     <thead>
                         <tr>
-                            <th className="ps-3 text-muted fw-semibold border-0">Funcionário</th>
-                            <th className="text-center text-muted fw-semibold border-0">Status</th>
-                            <th className="text-end pe-4 text-muted fw-semibold border-0">Ações</th>
+                            <th className="ps-4">FUNCIONÁRIO</th>
+                            <th className="text-center">ACESSO</th>
+                            <th className="text-center">STATUS</th>
+                            <th className="text-end pe-4">AÇÕES</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {listaFuncionarios.map((item, i) => (
-                            <tr key={i} className="hover-row custom-tr">
-                                <td className="ps-3 border-0">
-                                    <div className="d-flex align-items-center py-2">
-                                        <div className="avatar-circle me-3 shadow-sm">
+                            <tr key={item.id || i}>
+                                <td className="ps-4">
+                                    <div className="d-flex align-items-center py-1">
+                                        <div className="avatar-circle me-3">
                                             {item.nome ? item.nome.charAt(0).toUpperCase() : 'U'}
                                         </div>
                                         <div>
                                             <p className="fw-bold text-dark mb-0 fs-6">{item.nome}</p>
+                                            <small className="text-muted">{item.email || "Sem e-mail"}</small>
                                         </div>
                                     </div>
                                 </td>
-                                <td className="text-center border-0">
-                                    <span style={{ fontSize: '11px', letterSpacing: '0.05em' }} className={`badge rounded-pill px-3 py-2 fw-bold text-uppercase ${item.perfil === 'admin' ? 'bg-primary text-white' : 'bg-light text-dark border'}`}>
-                                        {item.perfil === 'admin' ? '🗝️ Admin' : '👤 Staff'}
+                                <td className="text-center">
+                                    <span className={`badge-premium ${item.perfil === 'admin' ? 'bg-primary text-white' : 'bg-light text-dark border'}`}>
+                                        {item.perfil === 'admin' ? '🗝️ Admin' : '👤 Funcionário'}
                                     </span>
                                 </td>
-                                <td className="text-center border-0">
-                                    <span style={{ fontSize: '11px', letterSpacing: '0.05em' }} className={`badge rounded-pill px-3 py-2 fw-bold text-uppercase ${item.status === 'ativo' ? 'bg-success-soft text-success border border-success' : 'bg-danger-soft text-danger border border-danger'}`}>
-                                        {item.status === 'ativo' ? '● Ativo' : '○ Desligado'}
+                                <td className="text-center">
+                                    <span className={`badge-premium ${item.status === 'ativo' ? 'bg-success-soft' : 'bg-danger-soft'}`}>
+                                        {item.status === 'ativo' ? '● Ativo' : '○ Inativo'}
                                     </span>
                                 </td>
-                                <td className="text-end pe-4 border-0">
-                                    <button
-                                        onClick={() => editar(item)}
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalEdit"
-                                        className="btn btn-icon-edit scale-hover"
-                                        title="Editar"
-                                    >
-                                        ✏️
-                                    </button>
+                                <td className="text-end pe-4">
+                                    <div className="d-flex justify-content-end">
+                                        <button
+                                            onClick={() => editar(item)}
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalEdit"
+                                            className="btn-icon-edit"
+                                            title="Editar"
+                                        >
+                                            ✏️
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
@@ -306,45 +273,100 @@ export default function PaginaFuncionarios() {
                 )}
             </div>
 
-            <div className="modal fade" id="modalEdit">
+            {/* MODAL ADD */}
+            <div className="modal fade" id="modalAdd">
                 <div className="modal-dialog">
                     <div className="modal-content">
-                        <div className="modal-header border-0 pb-0">
-                            <h5 className="fw-bold">Editar Funcionário</h5>
+                        <div className="modal-header">
+                            <h5 className="fw-bold m-0">Novo Funcionário</h5>
                             <button className="btn-close" data-bs-dismiss="modal"></button>
                         </div>
-
                         <div className="modal-body">
-                            <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control mb-2" placeholder="Nome" />
-                            <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control mb-3" placeholder="Email" />
+                            <div className="mb-3">
+                                <label className="form-label small fw-bold text-muted">NOME COMPLETO</label>
+                                <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control bg-light border-0" placeholder="Ex: Lucas Abreu" />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label small fw-bold text-muted">CPF</label>
+                                <input value={cpf} onChange={e => alteraCpf(e.target.value)} className="form-control bg-light border-0" placeholder="000.000.000-00" />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label small fw-bold text-muted">EMAIL</label>
+                                <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control bg-light border-0" placeholder="exemplo@loja.com" />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label small fw-bold text-muted">SENHA</label>
+                                <input value={senha} onChange={e => alteraSenha(e.target.value)} type="password" className="form-control bg-light border-0" placeholder="Mínimo 6 caracteres" />
+                            </div>
                             
-                            <div className="row g-2">
-                                <div className="col-md-6">
-                                    <label className="small text-muted mb-1 fw-bold">Nível de Acesso</label>
-                                    <select className="form-select shadow-sm" value={perfil} onChange={e => alteraPerfil(e.target.value)}>
+                            <div className="row">
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label small fw-bold text-muted">NÍVEL DE ACESSO</label>
+                                    <select className="form-select bg-light border-0" value={perfil} onChange={e => alteraPerfil(e.target.value)}>
                                         <option value="funcionario">Funcionário</option>
                                         <option value="admin">Administrador</option>
                                     </select>
                                 </div>
-                                <div className="col-md-6">
-                                    <label className="small text-muted mb-1 fw-bold">Status</label>
-                                    <select className="form-select shadow-sm" value={status} onChange={e => alteraStatus(e.target.value)}>
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label small fw-bold text-muted">STATUS</label>
+                                    <select className="form-select bg-light border-0" value={status} onChange={e => alteraStatus(e.target.value)}>
                                         <option value="ativo">Ativo</option>
                                         <option value="desligado">Desligado</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
-
                         <div className="modal-footer">
-                            <button className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                            <button onClick={salvar} className="btn btn-primary" data-bs-dismiss="modal">Salvar</button>
+                            <button className="btn btn-light px-4" data-bs-dismiss="modal">Fechar</button>
+                            <button onClick={cadastrar} className="btn btn-gradient px-4" data-bs-dismiss="modal">Salvar Acesso</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Toast bonito */}
+            {/* MODAL EDIT */}
+            <div className="modal fade" id="modalEdit">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="fw-bold m-0">Editar Funcionário</h5>
+                            <button className="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="mb-3">
+                                <label className="form-label small fw-bold text-muted">NOME COMPLETO</label>
+                                <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control bg-light border-0" />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label small fw-bold text-muted">EMAIL</label>
+                                <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control bg-light border-0" />
+                            </div>
+                            
+                            <div className="row">
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label small fw-bold text-muted">NÍVEL DE ACESSO</label>
+                                    <select className="form-select bg-light border-0" value={perfil} onChange={e => alteraPerfil(e.target.value)}>
+                                        <option value="funcionario">Funcionário</option>
+                                        <option value="admin">Administrador</option>
+                                    </select>
+                                </div>
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label small fw-bold text-muted">STATUS</label>
+                                    <select className="form-select bg-light border-0" value={status} onChange={e => alteraStatus(e.target.value)}>
+                                        <option value="ativo">Ativo</option>
+                                        <option value="desligado">Desligado</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button className="btn btn-light px-4" data-bs-dismiss="modal">Fechar</button>
+                            <button onClick={salvar} className="btn btn-gradient px-4" data-bs-dismiss="modal">Atualizar Dados</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <ToastContainer
                 position="top-center"
                 autoClose={2500}

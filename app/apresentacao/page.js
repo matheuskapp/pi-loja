@@ -85,20 +85,20 @@ const secoes = [
     }
 ]
 
-function getDelay(i) {
-    const linha = Math.floor(i / 2)
-    const col = i % 2
-    return linha * 100 + col * 55
-}
-
 export default function Ajuda() {
     const [aberto, setAberto] = useState(null)
     const [visiveis, setVisiveis] = useState([])
     const [passosVisiveis, setPassosVisiveis] = useState({})
 
     useEffect(() => {
+        const delays = secoes.map((_, i) => {
+            const linha = Math.floor(i / 2)
+            const col = i % 2
+            return linha * 100 + col * 55
+        });
+
         secoes.forEach((_, i) => {
-            setTimeout(() => setVisiveis(v => [...v, i]), getDelay(i))
+            setTimeout(() => setVisiveis(v => [...v, i]), delays[i])
         })
     }, [])
 
@@ -112,7 +112,9 @@ export default function Ajuda() {
     }
 
     return (
-        <>
+        <div style={{ display: "flex", backgroundColor: "var(--bg-body)", minHeight: "100vh" }}>
+            <BarraLateral />
+
             <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap');
 
@@ -178,29 +180,21 @@ export default function Ajuda() {
                     font-weight: 400;
                     max-width: 380px;
                 }
-                .hero-badge {
-                    position: absolute;
-                    bottom: 32px; right: 40px;
-                    font-family: 'DM Mono', monospace;
-                    font-size: 11px;
-                    color: rgba(255,255,255,0.35);
-                    letter-spacing: 0.05em;
-                }
 
                 /* ── GRID ── */
                 .ajuda-grid {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
-                    gap: 10px;
+                    gap: 12px;
                     align-items: start;
                 }
 
                 /* ── CARD ── */
                 .ajuda-item {
                     border-radius: 18px;
-                    border: 1px solid #e8e8f0;
+                    border: 1px solid var(--border-color);
                     overflow: hidden;
-                    background: #fff;
+                    background: var(--bg-card);
                     transition: border-color 0.2s, box-shadow 0.2s;
                 }
                 .col-left {
@@ -212,14 +206,13 @@ export default function Ajuda() {
                     transition: opacity 0.5s ease, transform 0.5s cubic-bezier(.22,.68,0,1.15), border-color 0.2s, box-shadow 0.2s;
                 }
                 .ajuda-item.visivel { opacity: 1; transform: translateY(0); }
-                .ajuda-item:hover { border-color: #c7c7e0; box-shadow: 0 6px 28px rgba(99,102,241,0.08); }
+                .ajuda-item:hover { border-color: #6366f1; box-shadow: var(--shadow-main); }
                 .ajuda-item.ativo {
                     border-color: #6366f1;
-                    box-shadow: 0 6px 32px rgba(99,102,241,0.15);
+                    box-shadow: var(--shadow-main);
                     grid-column: span 2;
                 }
 
-                /* ── TOPO COLORIDO DO CARD ── */
                 .card-accent {
                     height: 3px;
                     background: linear-gradient(90deg, #6366f1, #0d6efd);
@@ -230,7 +223,6 @@ export default function Ajuda() {
                 .ajuda-item.ativo .card-accent,
                 .ajuda-item:hover .card-accent { transform: scaleX(1); }
 
-                /* ── BOTÃO ── */
                 .ajuda-btn {
                     width: 100%; background: transparent; border: none;
                     padding: 20px 22px 18px;
@@ -240,12 +232,12 @@ export default function Ajuda() {
 
                 .ajuda-numero {
                     font-family: 'DM Mono', monospace;
-                    font-size: 10px; color: #bbb; min-width: 20px; flex-shrink: 0;
+                    font-size: 10px; color: var(--text-muted); min-width: 20px; flex-shrink: 0;
                 }
 
                 .ajuda-icone-wrap {
                     width: 38px; height: 38px; border-radius: 10px;
-                    background: #f3f3fb;
+                    background: var(--input-bg);
                     display: flex; align-items: center; justify-content: center;
                     flex-shrink: 0;
                     transition: background 0.25s, transform 0.2s;
@@ -260,31 +252,29 @@ export default function Ajuda() {
 
                 .ajuda-tag {
                     font-family: 'DM Mono', monospace;
-                    font-size: 10px; color: #a5b4fc;
-                    background: #eef2ff;
+                    font-size: 10px; color: #6366f1;
+                    background: rgba(99, 102, 241, 0.1);
                     padding: 2px 8px; border-radius: 99px;
                     display: inline-block; margin-bottom: 3px;
                 }
                 .ajuda-item.ativo .ajuda-tag { background: #e0e7ff; color: #6366f1; }
 
-                .ajuda-titulo { font-size: 14px; font-weight: 600; color: #1a1a2e; margin: 0; line-height: 1.3; }
-                .ajuda-sub { font-size: 12px; color: #aaa; margin: 2px 0 0; }
+                .ajuda-titulo { font-size: 14px; font-weight: 600; color: var(--text-main); margin: 0; line-height: 1.3; }
+                .ajuda-sub { font-size: 12px; color: var(--text-muted); margin: 2px 0 0; }
 
                 .ajuda-seta {
-                    font-size: 13px; color: #ccc; margin-left: auto; flex-shrink: 0;
+                    font-size: 13px; color: var(--text-muted); margin-left: auto; flex-shrink: 0;
                     transition: transform 0.3s cubic-bezier(.4,0,.2,1), color 0.2s;
                 }
                 .ajuda-item.ativo .ajuda-seta { transform: rotate(180deg); color: #6366f1; }
 
-                /* ── CORPO ── */
                 .ajuda-corpo {
                     overflow: hidden;
                     transition: max-height 0.4s cubic-bezier(.4,0,.2,1);
                 }
-                .ajuda-linha { height: 1px; background: #f0f0f8; margin: 0 22px; }
+                .ajuda-linha { height: 1px; background: var(--border-color); margin: 0 22px; }
                 .ajuda-passos { padding: 18px 22px 22px; }
 
-                /* layout de 2 colunas nos passos quando expandido */
                 .ajuda-item.ativo .passos-grid {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
@@ -293,7 +283,7 @@ export default function Ajuda() {
 
                 .passo-item {
                     display: flex; align-items: flex-start; gap: 10px;
-                    padding: 9px 0; border-bottom: 1px solid #f3f3fb;
+                    padding: 9px 0; border-bottom: 1px solid var(--border-color);
                     opacity: 0; transform: translateX(-8px);
                     transition: opacity 0.28s ease, transform 0.28s ease;
                 }
@@ -309,15 +299,14 @@ export default function Ajuda() {
                     flex-shrink: 0; margin-top: 2px;
                 }
 
-                .passo-texto { font-size: 13px; color: #555; line-height: 1.6; margin: 0; }
+                .passo-texto { font-size: 13px; color: var(--text-main); line-height: 1.6; margin: 0; }
 
-                /* ── DICA ── */
                 .dica-rodape {
                     display: flex; align-items: flex-start; gap: 14px;
                     padding: 18px 22px;
-                    background: linear-gradient(135deg, #eef2ff, #eff6ff);
-                    border: 1px solid #e0e7ff;
-                    border-radius: 16px; margin-top: 10px;
+                    background: var(--input-bg);
+                    border: 1px solid var(--border-color);
+                    border-radius: 16px; margin-top: 20px;
                     opacity: 0;
                     animation: fadeDown 0.45s ease 0.8s forwards;
                 }
@@ -325,24 +314,20 @@ export default function Ajuda() {
                 @keyframes fadeDown { to { opacity: 1; transform: translateY(0); } }
 
                 .rodape-txt {
-                    font-size: 11px; color: #ccc; text-align: center; margin-top: 40px;
+                    font-size: 11px; color: var(--text-muted); text-align: center; margin-top: 40px;
                     font-family: 'DM Mono', monospace;
                     opacity: 0;
                     animation: fadeDown 0.45s ease 1s forwards;
                 }
 
-                .page-header {
-                    opacity: 0; transform: translateY(-10px);
-                    animation: fadeDown 0.45s ease 0.05s forwards;
+                @media (max-width: 768px) {
+                    .ajuda-grid { grid-template-columns: 1fr; }
+                    .ajuda-item.ativo .passos-grid { grid-template-columns: 1fr; }
                 }
             `}</style>
 
-            <div className="ajuda-root" style={{ display: "flex", backgroundColor: "#f5f5fb", minHeight: "100vh" }}>
-                <BarraLateral />
-
-                <main style={{ marginLeft: "260px", width: "100%", padding: "40px 48px", maxWidth: "980px" }}>
-
-                    {/* HERO */}
+            <main style={{ marginLeft: "260px", width: "100%", padding: "40px 48px", maxWidth: "1200px" }}>
+                <div className="ajuda-root">
                     <div className="hero">
                         <div className="hero-noise"></div>
                         <div className="hero-orb hero-orb-1"></div>
@@ -355,10 +340,8 @@ export default function Ajuda() {
                         <p className="hero-sub">
                             Selecione um módulo abaixo e veja o passo a passo completo de cada funcionalidade.
                         </p>
-                        
                     </div>
 
-                    {/* GRID */}
                     <div className="ajuda-grid">
                         {secoes.map((s, i) => {
                             const estaAberto = aberto === i
@@ -390,7 +373,7 @@ export default function Ajuda() {
 
                                     <div
                                         className="ajuda-corpo"
-                                        style={{ maxHeight: estaAberto ? `${s.passos.length * 80}px` : "0px" }}
+                                        style={{ maxHeight: estaAberto ? `800px` : "0px" }}
                                     >
                                         <div className="ajuda-linha"></div>
                                         <div className="ajuda-passos">
@@ -412,19 +395,15 @@ export default function Ajuda() {
                         })}
                     </div>
 
-                    {/* DICA */}
                     <div className="dica-rodape">
                         <i className="bi bi-lightbulb" style={{ fontSize: "16px", color: "#6366f1", flexShrink: 0, marginTop: "1px" }}></i>
-                        <p style={{ fontSize: "13px", color: "#6366f1", margin: 0, lineHeight: 1.6 }}>
-                            <strong>Dica:</strong> Sempre abra o caixa antes de registrar vendas.
+                        <p style={{ fontSize: "13px", color: "var(--text-main)", margin: 0, lineHeight: 1.6 }}>
+                            <strong>Dica:</strong> Sempre abra o caixa antes de registrar vendas. 
                             Produtos com menos de 10 unidades aparecem como alerta no Dashboard.
                         </p>
                     </div>
-
-                   
-
-                </main>
-            </div>
-        </>
+                </div>
+            </main>
+        </div>
     )
 }

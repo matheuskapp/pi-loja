@@ -1,29 +1,13 @@
-
 import BarraLateral from "../components/barra_lateral";
-import BarraPesquisa from "./barra_pesquisa";
-import { BotaoAdicionarProdutos } from "./botao_adicionar_produtos";
-import { TabelaProdutos } from "./tabela_produtos";
-import Cabecalho from "./cabecalho";
 import ProdutosTeste from "./tabela_produtos2";
-
-
 
 export default function Produtos() {
     return (
-        <div className="row">
-            <div className="col-2">
-
-                <BarraLateral/>
-
-            </div>
-
-            <div className="col-10 mb-5 p-5">
-
+        <div style={{ display: "flex", backgroundColor: "var(--bg-body)", minHeight: "100vh" }}>
+            <BarraLateral />
+            <main style={{ marginLeft: "260px", width: "100%", padding: "40px" }}>
                 <ProdutosTeste />
-
-            </div>
-            
+            </main>
         </div>
-
     );
 }

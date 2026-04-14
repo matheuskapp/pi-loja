@@ -12,8 +12,8 @@ export default function CadastroClientes() {
 
     const [nome, alteraNome] = useState("")
     const [data_nascimento, alteraData_Nascimento] = useState("")
-    const [cpf, alteraCpf] = useState()
-    const [telefone, alteraTelefone] = useState()
+    const [cpf, alteraCpf] = useState("")
+    const [telefone, alteraTelefone] = useState("")
     const [email, alteraEmail] = useState("")
     const [endereco, alteraEndereco] = useState("")
 
@@ -21,24 +21,39 @@ export default function CadastroClientes() {
     const [pesquisaClientes, alteraPesquisaClientes] = useState("")
     const [colunaFiltro, alteraColunaFiltro] = useState("nome")
     const [editando, alteraEditando] = useState(null)
+    const [idPrioridade, setIdPrioridade] = useState(null)
 
-    async function buscarClientes() {
+    async function buscarClientes(prioId = null) {
+        const idAlvo = prioId || idPrioridade;
         const { data } = await supabase
             .from('clientes')
             .select('*')
             .order('id', { ascending: false })
+        
+        const ordenado = (data || []).sort((a, b) => {
+            if (String(a.id) === String(idAlvo)) return -1;
+            if (String(b.id) === String(idAlvo)) return 1;
+            return 0;
+        });
 
-        alteraListaClientes(data)
+        alteraListaClientes(ordenado)
     }
 
-    async function pesquisar() {
+    async function pesquisar(prioId = null) {
+        const idAlvo = prioId || idPrioridade;
         const { data } = await supabase
             .from('clientes')
             .select('*')
             .ilike(colunaFiltro, '%' + pesquisaClientes + '%')
             .order('id', { ascending: false })
 
-        alteraListaClientes(data)
+        const ordenado = (data || []).sort((a, b) => {
+            if (String(a.id) === String(idAlvo)) return -1;
+            if (String(b.id) === String(idAlvo)) return 1;
+            return 0;
+        });
+
+        alteraListaClientes(ordenado)
     }
 
     const validarEmail = (email) => {
@@ -70,11 +85,11 @@ export default function CadastroClientes() {
 
         if (error == null) {
             toast.success("Cliente cadastrado com sucesso!", { icon: "👤" })
-            alteraListaClientes(listaClientes.concat(objetos))
+            buscarClientes()
             alteraNome("")
             alteraData_Nascimento("")
-            alteraCpf()
-            alteraTelefone()
+            alteraCpf("")
+            alteraTelefone("")
             alteraEmail("")
             alteraEndereco("")
         }
@@ -105,12 +120,12 @@ export default function CadastroClientes() {
             .update(objeto)
             .eq('id', editando)
 
-        cancelaEdicao()
-        buscarClientes()
-
         if (error == null) {
+            const idPrio = editando;
             toast.success("Cliente atualizado!", { icon: "✏️" })
-            buscarClientes()
+            setIdPrioridade(idPrio)
+            cancelaEdicao()
+            buscarClientes(idPrio)
         }
     }
 
@@ -142,132 +157,95 @@ export default function CadastroClientes() {
     }, [pesquisaClientes])
 
     return (
-        <div className="w-100">
+        <div className="pagina-clientes">
 
-            <div className="d-flex justify-content-between align-items-center mb-5 mt-2">
+            <div className="header-section">
                 <div>
                     <h1 className="fw-bold mb-1 text-dark" style={{ letterSpacing: "-1px" }}>Clientes</h1>
                     <p className="text-muted mb-0">
-                        Gestão de Clientes Boy+ Plus • <span className="fw-semibold text-dark">Fidelização e Histórico</span>
+                       <span className="fw-semibold text-dark">Fidelização e Histórico</span>
                     </p>
                 </div>
             </div>
 
-            <div className="barradepesquisa mb-3 p-4 bg-white rounded-4 shadow-sm border-0">
-                <div className="row align-items-center">
-
-                    <div className="col-7">
-                        <div className="input-group shadow-sm rounded-3">
-                            <select
-                                className="form-select bg-light text-secondary fw-medium"
-                                style={{ maxWidth: "140px", border: "1px solid #dee2e6" }}
-                                value={colunaFiltro}
-                                onChange={e => alteraColunaFiltro(e.target.value)}
-                            >
-                                <option value="nome">Por Nome</option>
-                                <option value="cpf">Por CPF</option>
-                                <option value="email">Por E-mail</option>
-                                <option value="telefone">Por Telefone</option>
-                            </select>
-                            <input
-                                value={pesquisaClientes}
-                                onChange={e => alteraPesquisaClientes(e.target.value)}
-                                className="form-control"
-                                placeholder={`Digite para pesquisar...`}
-                            />
-                            <button onClick={pesquisar} className="btn border bg-light text-primary px-3">
-                                <i className="bi bi-search"></i> Pesquisar
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="col-5 text-end">
-                        <button
-                            type="button"
-                            className="btn btn-gradient"
-                            data-bs-toggle="modal"
-                            data-bs-target="#exampleModal"
-                        >
-                            + Adicionar Cliente
-                        </button>
-                    </div>
-
+            <div className="actions-bar">
+                <div className="search-container">
+                    <select
+                        value={colunaFiltro}
+                        onChange={e => alteraColunaFiltro(e.target.value)}
+                    >
+                        <option value="nome">Nome</option>
+                        <option value="cpf">CPF</option>
+                        <option value="email">E-mail</option>
+                        <option value="telefone">Telefone</option>
+                    </select>
+                    <input
+                        value={pesquisaClientes}
+                        onChange={e => alteraPesquisaClientes(e.target.value)}
+                        placeholder={`Pesquisar...`}
+                    />
+                    <button onClick={pesquisar}>
+                        🔍
+                    </button>
                 </div>
+
+                <button
+                    type="button"
+                    className="btn btn-gradient"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                >
+                    + Adicionar Cliente
+                </button>
             </div>
 
-            <div className="modal fade" id="exampleModal">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-
-                        <div className="modal-header border-0 pb-0">
-                            <h5 className="fw-bold">Novo Cliente</h5>
-                            <button className="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-
-                        <div className="modal-body">
-                            <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control mb-2" placeholder="Nome Completo" />
-                            <input value={data_nascimento} onChange={e => alteraData_Nascimento(e.target.value)} type="date" className="form-control mb-2" />
-                            <input value={cpf} onChange={e => alteraCpf(e.target.value)} className="form-control mb-2" placeholder="CPF" />
-                            <input value={telefone} onChange={e => alteraTelefone(e.target.value)} className="form-control mb-2" placeholder="Telefone" />
-                            <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control mb-2" placeholder="Email" />
-                            <input value={endereco} onChange={e => alteraEndereco(e.target.value)} className="form-control mb-2" placeholder="Endereço" />
-                        </div>
-
-                        <div className="modal-footer" >
-                            <button className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                            <button onClick={salvar} className="btn btn-primary" data-bs-dismiss="modal">Salvar</button>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <div className="premium-table-container bg-white rounded-4 shadow-sm p-4 border-0 mt-3">
-                <table className="table premium-table align-middle">
-                     
+            <div className="table-card">
+                <table className="premium-table">
                     <thead>
                         <tr>
-                            <th className="ps-3 text-muted fw-semibold border-0">Cliente</th>
-                            <th className="text-center text-muted fw-semibold border-0">Data Nasc.</th>
-                            <th className="text-center text-muted fw-semibold border-0">CPF</th>
-                            <th className="text-center text-muted fw-semibold border-0">Telefone</th>
-                            <th className="text-end pe-4 text-muted fw-semibold border-0">Ações</th>
+                            <th className="ps-4">CLIENTE</th>
+                            <th className="text-center">DATA NASC.</th>
+                            <th className="text-center">CPF</th>
+                            <th className="text-center">TELEFONE</th>
+                            <th className="text-end pe-4">AÇÕES</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {listaClientes.map((item, i) => (
-                            <tr key={i} className="hover-row custom-tr">
-                                <td className="ps-3 border-0">
-                                    <div className="d-flex align-items-center py-2">
-                                        <div className="avatar-circle me-3 shadow-sm">
+                            <tr key={item.id || i}>
+                                <td className="ps-4">
+                                    <div className="d-flex align-items-center py-1">
+                                        <div className="avatar-circle me-3">
                                             {item.nome ? item.nome.charAt(0).toUpperCase() : 'C'}
                                         </div>
                                         <div>
                                             <p className="fw-bold text-dark mb-0 fs-6">{item.nome}</p>
-                                            <small className="text-muted">{item.email || item.Email || "Sem e-mail"}</small>
+                                            <small className="text-muted">{item.email || "Sem e-mail"}</small>
                                         </div>
                                     </div>
                                 </td>
-                                <td className="text-center text-secondary border-0">
+                                <td className="text-center text-secondary">
                                     {item.data_nascimento ? new Date(item.data_nascimento).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : '-'}
                                 </td>
-                                <td className="text-center text-secondary fw-medium border-0">
+                                <td className="text-center text-secondary fw-medium">
                                     {mascararCPF(item.cpf)}
                                 </td>
-                                <td className="text-center text-secondary border-0">
+                                <td className="text-center text-secondary">
                                     {item.telefone || '-'}
                                 </td>
-                                <td className="text-end pe-4 border-0">
-                                    <button
-                                        onClick={() => editar(item)}
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modaledicao"
-                                        className="btn btn-icon-edit scale-hover"
-                                        title="Editar"
-                                    >
-                                        ✏️
-                                    </button>
+                                <td className="text-end pe-4">
+                                    <div className="d-flex justify-content-end">
+                                        <button
+                                            onClick={() => editar(item)}
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modaledicao"
+                                            className="btn-icon-edit"
+                                            title="Editar"
+                                        >
+                                            ✏️
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
@@ -280,39 +258,98 @@ export default function CadastroClientes() {
                 )}
             </div>
 
-            <div className="modal fade" id="modaledicao">
+            {/* MODAL CADASTRO */}
+            <div className="modal fade" id="exampleModal">
                 <div className="modal-dialog">
                     <div className="modal-content">
-
-                        <div className="modal-header border-0 pb-0">
-                            <h5 className="fw-bold">Edição de Cliente</h5>
+                        <div className="modal-header">
+                            <h5 className="fw-bold m-0">Novo Cliente</h5>
                             <button className="btn-close" data-bs-dismiss="modal"></button>
                         </div>
-
                         <div className="modal-body">
-                            <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control mb-2" placeholder="Nome Completo" />
-                            <input value={data_nascimento} onChange={e => alteraData_Nascimento(e.target.value)} type="date" className="form-control mb-2" />
-                            <input value={cpf} onChange={e => alteraCpf(e.target.value)} className="form-control mb-2" placeholder="CPF" />
-                            <input value={telefone} onChange={e => alteraTelefone(e.target.value)} className="form-control mb-2" placeholder="Telefone" />
-                            <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control mb-2" placeholder="Email" />
-                            <input value={endereco} onChange={e => alteraEndereco(e.target.value)} className="form-control mb-2" placeholder="Endereço" />
+                            <div className="mb-3">
+                                <label className="form-label small fw-bold text-muted">NOME COMPLETO</label>
+                                <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control form-control-lg bg-light border-0 fs-6" placeholder="Ex: João Silva" />
+                            </div>
+                            <div className="row">
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label small fw-bold text-muted">DATA NASCIMENTO</label>
+                                    <input value={data_nascimento} onChange={e => alteraData_Nascimento(e.target.value)} type="date" className="form-control bg-light border-0" />
+                                </div>
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label small fw-bold text-muted">CPF</label>
+                                    <input value={cpf} onChange={e => alteraCpf(e.target.value)} className="form-control bg-light border-0" placeholder="000.000.000-00" />
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label small fw-bold text-muted">TELEFONE</label>
+                                    <input value={telefone} onChange={e => alteraTelefone(e.target.value)} className="form-control bg-light border-0" placeholder="(00) 00000-0000" />
+                                </div>
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label small fw-bold text-muted">EMAIL</label>
+                                    <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control bg-light border-0" placeholder="exemplo@email.com" />
+                                </div>
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label small fw-bold text-muted">ENDEREÇO</label>
+                                <input value={endereco} onChange={e => alteraEndereco(e.target.value)} className="form-control bg-light border-0" placeholder="Rua, Número, Bairro, Cidade" />
+                            </div>
                         </div>
-
                         <div className="modal-footer">
-                            <button onClick={cancelaEdicao} className="btn btn-secondary" data-bs-dismiss="modal">
-                                Fechar
-                            </button>
-
-                            <button onClick={atualizar} className="btn btn-primary" data-bs-dismiss="modal">
-                                Salvar
-                            </button>
+                            <button className="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
+                            <button onClick={salvar} className="btn btn-gradient px-4" data-bs-dismiss="modal">Salvar Cliente</button>
                         </div>
-
                     </div>
                 </div>
             </div>
 
-            
+            {/* MODAL EDIÇÃO */}
+            <div className="modal fade" id="modaledicao">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="fw-bold m-0">Editar Cliente</h5>
+                            <button className="btn-close" data-bs-dismiss="modal" onClick={cancelaEdicao}></button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="mb-3">
+                                <label className="form-label small fw-bold text-muted">NOME COMPLETO</label>
+                                <input value={nome} onChange={e => alteraNome(e.target.value)} className="form-control form-control-lg bg-light border-0 fs-6" />
+                            </div>
+                            <div className="row">
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label small fw-bold text-muted">DATA NASCIMENTO</label>
+                                    <input value={data_nascimento} onChange={e => alteraData_Nascimento(e.target.value)} type="date" className="form-control bg-light border-0" />
+                                </div>
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label small fw-bold text-muted">CPF</label>
+                                    <input value={cpf} onChange={e => alteraCpf(e.target.value)} className="form-control bg-light border-0" />
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label small fw-bold text-muted">TELEFONE</label>
+                                    <input value={telefone} onChange={e => alteraTelefone(e.target.value)} className="form-control bg-light border-0" />
+                                </div>
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label small fw-bold text-muted">EMAIL</label>
+                                    <input value={email} onChange={e => alteraEmail(e.target.value)} className="form-control bg-light border-0" />
+                                </div>
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label small fw-bold text-muted">ENDEREÇO</label>
+                                <input value={endereco} onChange={e => alteraEndereco(e.target.value)} className="form-control bg-light border-0" />
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button onClick={cancelaEdicao} className="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
+                            <button onClick={atualizar} className="btn btn-gradient px-4" data-bs-dismiss="modal">Salvar Alterações</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <ToastContainer
                 position="top-center"
                 autoClose={2500}

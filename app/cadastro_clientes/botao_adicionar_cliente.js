@@ -10,10 +10,10 @@ export function BotaoAdicionarClientes() {
 
     const [nome, alteraNome] = useState("")
     const [data_nascimento, alteraDataNascimento] = useState("")
-    const [cpf, alteraCpf] = useState()
-    const [telefone, alteraTelefone] = useState()
-    const [email, alteraEmail] = useState()
-    const [endereco, alteraEndereco] = useState()
+    const [cpf, alteraCpf] = useState("")
+    const [telefone, alteraTelefone] = useState("")
+    const [email, alteraEmail] = useState("")
+    const [endereco, alteraEndereco] = useState("")
 
 
     async function salvar() {
@@ -39,10 +39,10 @@ export function BotaoAdicionarClientes() {
         if (error == null) {
             alert("Cliente cadastrado com sucesso!")
             alteraNome("")
-            alteraDataNascimento()
-            alteraCpf()
-            alteraTelefone()
-            alteraEmail()
+            alteraDataNascimento("")
+            alteraCpf("")
+            alteraTelefone("")
+            alteraEmail("")
             alteraEndereco("")
 
         }

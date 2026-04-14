@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import supabase from "../conexao/supabase";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 import './estilizar.css'
 
 export default function Vendas() {
@@ -22,6 +24,7 @@ export default function Vendas() {
     const [mostrarProdutos, setMostrarProdutos] = useState(false);
     const [mostrarFiltros, setMostrarFiltros] = useState(false);
     const [estoqueDisponivel, setEstoqueDisponivel] = useState(null);
+    const [idPrioridade, setIdPrioridade] = useState(null);
 
     const [pagina, setPagina] = useState(0);
     const [totalPaginas, setTotalPaginas] = useState(1);
@@ -48,7 +51,7 @@ export default function Vendas() {
         const prodSelecionado = listaProdutos.find(p => p.nome === produto);
 
         if (!cliSelecionado || !prodSelecionado) {
-            alert("Por favor, selecione um Cliente e um Produto válidos da lista.");
+            toast.error("Por favor, selecione um Cliente e um Produto válidos da lista.", { icon: "👤" });
             return;
         }
 
@@ -57,12 +60,12 @@ export default function Vendas() {
         const desc = parseFloat(desconto) || 0;
 
         if (qtdSelecionada <= 0) {
-            alert("A quantidade deve ser maior que zero.");
+            toast.warning("A quantidade deve ser maior que zero.", { icon: "🔢" });
             return;
         }
 
         if (qtdSelecionada > estoqueAtual) {
-            alert(`Estoque insuficiente! O produto "${prodSelecionado.nome}" tem apenas ${estoqueAtual} unidade(s) disponível(is).`);
+            toast.error(`Estoque insuficiente! O produto "${prodSelecionado.nome}" tem apenas ${estoqueAtual} unidade(s) disponível(is).`, { icon: "⚠️" });
             return;
         }
 
@@ -70,7 +73,7 @@ export default function Vendas() {
         const valorTotal = Number(((precoUnitario * qtdSelecionada) - desc).toFixed(2));
 
         if (valorTotal < 0) {
-            alert("O desconto não pode ser maior que o valor total da venda!");
+            toast.error("O desconto não pode ser maior que o valor total da venda!", { icon: "💸" });
             return;
         }
 
@@ -94,22 +97,23 @@ export default function Vendas() {
                 .update({ quantidade: novoEstoque })
                 .eq('id', prodSelecionado.id);
 
-            alert("VENDA cadastrada com sucesso!");
+            toast.success("VENDA cadastrada com sucesso!", { icon: "💰" });
             setCliente("");
             setProduto("");
             setQuantidade("");
             setFormaPagamento("");
             setDesconto("");
             setPagina(0);
-            buscar();
+            buscar(error == null ? objetos.id : null);
             buscarProdutos();
         } else {
             console.error(error);
-            alert("Erro ao salvar venda. Verifique se a coluna no Supabase é do tipo 'numeric'.");
+            toast.error("Erro ao salvar venda. Verifique se a coluna no Supabase é do tipo 'numeric'.");
         }
     }
 
-    async function buscar() {
+    async function buscar(prioId = null) {
+        const idAlvo = prioId || idPrioridade;
         const de = pagina * itensPorPagina;
         const ate = de + itensPorPagina - 1;
 
@@ -120,11 +124,16 @@ export default function Vendas() {
                 clientes (nome),
                 produtos (nome)
             `, { count: 'exact' })
-            .order('created_at', { ascending: false })
+            .order('id', { ascending: false })
             .range(de, ate);
 
         if (!error) {
-            setListaVendas(data || []);
+            const ordenado = (data || []).sort((a, b) => {
+                if (String(a.id) === String(idAlvo)) return -1;
+                if (String(b.id) === String(idAlvo)) return 1;
+                return 0;
+            });
+            setListaVendas(ordenado);
             const calculoPaginas = Math.ceil(count / itensPorPagina);
             setTotalPaginas(calculoPaginas || 1);
         }
@@ -160,14 +169,17 @@ export default function Vendas() {
         });
 
     return (
-        <>
-            <div className="card shadow mb-5 border-0">
-                <div className="card-body">
+        <div className="pagina-vendas">
+            <div className="card shadow mb-5 border-0 rounded-4 overflow-hidden">
+                <div className="p-4 bg-white border-bottom">
+                    <h5 className="fw-bold mb-0">Nova Venda</h5>
+                </div>
+                <div className="card-body p-4 bg-white">
                     <form onSubmit={salvar} className="row g-3">
                         <div className="col-md-12 position-relative">
-                            <label className="form-label fw-bold">Cliente</label>
+                            <label className="form-label small fw-bold text-muted">CLIENTE</label>
                             <input
-                                className="form-control mb-2"
+                                className="form-control bg-light border-0 py-2"
                                 type="text"
                                 placeholder="Selecione ou digite o nome..."
                                 value={cliente}
@@ -182,14 +194,14 @@ export default function Vendas() {
                             />
 
                             {mostrarClientes && (
-                                <div className="list-group shadow-sm position-absolute w-100 bg-white" style={{ zIndex: 10, maxHeight: "180px", overflowY: "auto" }}>
+                                <div className="list-group shadow position-absolute w-100 bg-white" style={{ zIndex: 10, maxHeight: "180px", overflowY: "auto", top: '100%' }}>
                                     {listaClientes
                                         .filter((item) => item.nome.toLowerCase().includes(cliente.toLowerCase()))
                                         .map((item) => (
                                             <button
                                                 key={item.id}
                                                 type="button"
-                                                className="list-group-item list-group-item-action"
+                                                className="list-group-item list-group-item-action border-0 py-2"
                                                 onClick={() => {
                                                     setCliente(item.nome);
                                                     setMostrarClientes(false);
@@ -203,9 +215,9 @@ export default function Vendas() {
                         </div>
 
                         <div className="col-md-6 position-relative">
-                            <label className="form-label fw-bold">Produto</label>
+                            <label className="form-label small fw-bold text-muted">PRODUTO</label>
                             <input
-                                className="form-control"
+                                className="form-control bg-light border-0 py-2"
                                 type="text"
                                 placeholder="Selecione ou digite o produto..."
                                 value={produto}
@@ -220,14 +232,14 @@ export default function Vendas() {
                             />
 
                             {mostrarProdutos && (
-                                <div className="list-group shadow-sm position-absolute w-100 bg-white" style={{ zIndex: 10, maxHeight: "180px", overflowY: "auto" }}>
+                                <div className="list-group shadow position-absolute w-100 bg-white" style={{ zIndex: 10, maxHeight: "180px", overflowY: "auto", top: '100%' }}>
                                     {listaProdutos
                                         .filter((item) => item.nome.toLowerCase().includes(produto.toLowerCase()))
                                         .map((item) => (
                                             <button
                                                 key={item.id}
                                                 type="button"
-                                                className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                                                className="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0 py-2"
                                                 onClick={() => {
                                                     setProduto(item.nome);
                                                     setEstoqueDisponivel(item.quantidade);
@@ -242,8 +254,8 @@ export default function Vendas() {
                             )}
 
                             {estoqueDisponivel !== null && produto !== "" && (
-                                <div className="mt-1">
-                                    <small className={`fw-bold ${estoqueDisponivel <= 0 ? 'text-danger' : estoqueDisponivel < 5 ? 'text-warning' : 'text-success'}`}>
+                                <div className="mt-2">
+                                    <small className={`fw-bold px-2 py-1 rounded ${estoqueDisponivel <= 0 ? 'bg-danger-subtle text-danger' : estoqueDisponivel < 5 ? 'bg-warning-subtle text-warning' : 'bg-success-subtle text-success'}`}>
                                         {estoqueDisponivel <= 0 ? "⚠️ Esgotado" : `📦 Disponível: ${estoqueDisponivel}`}
                                     </small>
                                 </div>
@@ -251,10 +263,10 @@ export default function Vendas() {
                         </div>
 
                         <div className="col-md-2">
-                            <label className="form-label fw-bold">Quantidade</label>
+                            <label className="form-label small fw-bold text-muted">QUANTIDADE</label>
                             <input
                                 type="number"
-                                className="form-control"
+                                className="form-control bg-light border-0 py-2"
                                 value={quantidade}
                                 min="1"
                                 onChange={(e) => setQuantidade(e.target.value)}
@@ -263,23 +275,20 @@ export default function Vendas() {
                         </div>
 
                         <div className="col-md-2">
-                            <label className="form-label fw-bold">Desconto (R$)</label>
+                            <label className="form-label small fw-bold text-muted">DESCONTO (R$)</label>
                             <input
                                 type="number"
                                 step="0.01"
                                 min="0"
-                                className="form-control"
+                                className="form-control bg-light border-0 py-2"
                                 value={desconto}
                                 onChange={(e) => setDesconto(e.target.value)}
                             />
                         </div>
 
-
-
-
                         <div className="col-md-2">
-                            <label className="form-label fw-bold">Forma de Pagamento</label>
-                            <select className="form-select" value={forma_pagamento} onChange={(e) => setFormaPagamento(e.target.value)} required>
+                            <label className="form-label small fw-bold text-muted">PAGAMENTO</label>
+                            <select className="form-select bg-light border-0 py-2" value={forma_pagamento} onChange={(e) => setFormaPagamento(e.target.value)} required>
                                 <option value="" disabled hidden>Selecione...</option>
                                 <option value="Pix">Pix</option>
                                 <option value="Cartão de Débito">Cartão de Débito</option>
@@ -289,91 +298,95 @@ export default function Vendas() {
                         </div>
 
                         <div className="col-12 text-end mt-4">
-                            <button type="submit" className="btn btn-primary px-5 btn-gradient">Finalizar Venda</button>
+                            <button type="submit" className="btn btn-gradient px-5 py-2">Finalizar Venda</button>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <div className="card shadow border-0 mb-4">
-                <div className="card-body">
-                    <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-                        <h3 className="fw-bold mb-0">Vendas Recentes</h3>
-                        <button type="button" className="btn btn-outline-primary" onClick={() => setMostrarFiltros((prev) => !prev)}>
-                            {mostrarFiltros ? "Fechar filtros" : "Filtrar"}
-                        </button>
-                    </div>
-
-                    {mostrarFiltros && (
-                        <div className="bg-light p-3 rounded-3 border">
-                            <div className="row g-3">
-                                <div className="col-12 col-lg-6">
-                                    <label className="form-label fw-semibold text-secondary small">Pesquisar Cliente</label>
-                                    <input type="text" className="form-control border-secondary shadow-sm" placeholder="Digite o nome do cliente..." value={buscaCliente} onChange={(e) => setBuscaCliente(e.target.value)} />
-                                </div>
-                                <div className="col-12 col-md-6 col-lg-3">
-                                    <label className="form-label fw-semibold text-secondary small">Forma de Pagamento</label>
-                                    <select className="form-select border-secondary shadow-sm" value={filtroPagamento} onChange={(e) => setFiltroPagamento(e.target.value)}>
-                                        <option value="">Todas as formas</option>
-                                        <option value="Pix">Pix</option>
-                                        <option value="Cartão de Débito">Cartão de Débito</option>
-                                        <option value="Cartão de Crédito">Cartão de Crédito</option>
-                                        <option value="Dinheiro">Dinheiro</option>
-                                    </select>
-                                </div>
-                                <div className="col-12 col-md-6 col-lg-3">
-                                    <label className="form-label fw-semibold text-secondary small">Ordenar por Valor</label>
-                                    <select className="form-select border-secondary shadow-sm" value={ordemValor} onChange={(e) => setOrdemValor(e.target.value)}>
-                                        <option value="">Sem ordenação</option>
-                                        <option value="Crescente">Menor Valor (Crescente)</option>
-                                        <option value="Decrescente">Maior Valor (Decrescente)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+            <div className="actions-bar d-flex justify-content-between align-items-center mb-4">
+                <div className="search-container d-flex align-items-center bg-white rounded-4 shadow-sm px-3 py-2 border w-100" style={{ maxWidth: '400px' }}>
+                    <input 
+                        type="text" 
+                        className="form-control border-0 bg-transparent" 
+                        placeholder="Pesquisar cliente..." 
+                        value={buscaCliente} 
+                        onChange={(e) => setBuscaCliente(e.target.value)} 
+                    />
+                    <button className="btn p-0 text-primary ms-2" onClick={() => setMostrarFiltros(!mostrarFiltros)}>
+                        {mostrarFiltros ? '✕' : '⚙️'}
+                    </button>
                 </div>
+
+                {mostrarFiltros && (
+                    <div className="d-flex gap-2 ms-3 flex-wrap">
+                        <select className="form-select w-auto border-0 shadow-sm bg-white" value={filtroPagamento} onChange={(e) => setFiltroPagamento(e.target.value)}>
+                            <option value="">Todas as formas</option>
+                            <option value="Pix">Pix</option>
+                            <option value="Cartão de Débito">Débito</option>
+                            <option value="Cartão de Crédito">Crédito</option>
+                            <option value="Dinheiro">Dinheiro</option>
+                        </select>
+                        <select className="form-select w-auto border-0 shadow-sm bg-white" value={ordemValor} onChange={(e) => setOrdemValor(e.target.value)}>
+                            <option value="">Sem ordenação</option>
+                            <option value="Crescente">Menor Valor</option>
+                            <option value="Decrescente">Maior Valor</option>
+                        </select>
+                    </div>
+                )}
             </div>
 
-            <div className="table-responsive bg-white rounded shadow p-3 border-0">
-                <table className="table table-hover">
-                    <thead className="table-light">
+            <div className="table-card">
+                <table className="premium-table">
+                    <thead>
                         <tr>
-                            <th>Cliente</th>
-                            <th>Produto</th>
-                            <th>Quantidade</th>
-                            <th>Desconto</th>
-                            <th>Forma de Pagamento</th>
-                            <th>Total da Compra</th>
+                            <th className="ps-4">CLIENTE / PRODUTO</th>
+                            <th className="text-center">QTD</th>
+                            <th className="text-center">DESCONTO</th>
+                            <th className="text-center">PAGAMENTO</th>
+                            <th className="text-end pe-4">TOTAL</th>
                         </tr>
                     </thead>
                     <tbody>
                         {vendasFiltradas.length > 0 ? (
                             vendasFiltradas.map(item =>
                                 <tr key={item.id}>
-                                    <td>{item.clientes?.nome}</td>
-                                    <td>{item.produtos?.nome}</td>
-                                    <td>{item.quantidade}</td>
-                                    <td>R$ {parseFloat(item.desconto || 0).toFixed(2)}</td>
-                                    <td>
+                                    <td className="ps-4">
+                                        <div className="d-flex align-items-center py-1">
+                                            <div className="avatar-circle me-3">
+                                                {item.clientes?.nome ? item.clientes.nome.charAt(0).toUpperCase() : 'C'}
+                                            </div>
+                                            <div>
+                                                <p className="fw-bold text-dark mb-0 fs-6">{item.clientes?.nome || "Consumidor Final"}</p>
+                                                <small className="text-muted">{item.produtos?.nome}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td className="text-center text-muted fw-medium">{item.quantidade} unid.</td>
+                                    <td className="text-center text-danger">R$ {parseFloat(item.desconto || 0).toFixed(2)}</td>
+                                    <td className="text-center">
                                         <span className={`badge rounded-pill ${CorPagamento(item.forma_pagamento)}`}>
                                             {item.forma_pagamento}
                                         </span>
                                     </td>
-                                    <td className="fw-bold text-success">R$ {parseFloat(item.total_compra || 0).toFixed(2)}</td>
+                                    <td className="text-end pe-4 fw-bold text-success fs-6">
+                                        R$ {parseFloat(item.total_compra || 0).toFixed(2)}
+                                    </td>
                                 </tr>
                             )
                         ) : (
                             <tr>
-                                <td colSpan="6" className="text-center text-muted py-3">Nenhuma venda encontrada com esses filtros.</td>
+                                <td colSpan="5" className="text-center text-muted py-5">
+                                    <p className="mb-0">Nenhuma venda encontrada.</p>
+                                </td>
                             </tr>
                         )}
                     </tbody>
                 </table>
 
-                <div className="d-flex justify-content-between align-items-center mt-3">
+                <div className="premium-pagination d-flex justify-content-between align-items-center p-4">
                     <button
-                        className="btn btn-outline-secondary btn-sm px-4 fw-bold"
+                        className="btn btn-outline-secondary btn-sm px-4 fw-bold rounded-pill"
                         onClick={() => setPagina(p => Math.max(0, p - 1))}
                         disabled={pagina === 0}
                     >
@@ -385,7 +398,7 @@ export default function Vendas() {
                     </span>
 
                     <button
-                        className="btn btn-outline-secondary btn-sm px-4 fw-bold"
+                        className="btn btn-outline-secondary btn-sm px-4 fw-bold rounded-pill"
                         onClick={() => setPagina(p => p + 1)}
                         disabled={pagina + 1 >= totalPaginas}
                     >
@@ -393,6 +406,15 @@ export default function Vendas() {
                     </button>
                 </div>
             </div>
-        </>
+
+            <ToastContainer
+                position="top-center"
+                autoClose={2500}
+                theme="light"
+                toastClassName="premium-toast"
+                hideProgressBar={false}
+                newestOnTop={true}
+            />
+        </div>
     );
 }

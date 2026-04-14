@@ -8,11 +8,23 @@ import supabase from "../conexao/supabase";
 export default function BarraLateral() {
     const router = useRouter();
     const [perfil, setPerfil] = useState("");
+    const [theme, setTheme] = useState('light');
 
     useEffect(() => {
         const p = localStorage.getItem("perfil_usuario");
         if (p) setPerfil(p);
+
+        const savedTheme = localStorage.getItem("theme") || 'light';
+        setTheme(savedTheme);
+        document.documentElement.setAttribute('data-theme', savedTheme);
     }, []);
+
+    function toggleTheme() {
+        const newTheme = theme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    }
 
     async function sair() {
         await supabase.auth.signOut();
@@ -76,7 +88,20 @@ export default function BarraLateral() {
                         </Link>
                     </li>
                 </ul>
-                <div className="mt-auto pt-5 pb-3">
+                <div className="mt-auto pt-3">
+                    <button 
+                        onClick={toggleTheme} 
+                        type="button" 
+                        className="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center py-2 rounded-3 mb-3 shadow-sm"
+                        style={{ border: "1px solid var(--border-color)", backgroundColor: "var(--sidebar-bg)", color: "var(--text-main)" }}
+                    >
+                        {theme === 'light' ? (
+                            <><i className="bi bi-moon-stars-fill me-2 fs-5 text-primary"></i> Modo Escuro</>
+                        ) : (
+                            <><i className="bi bi-sun-fill me-2 fs-5 text-warning"></i> Modo Claro</>
+                        )}
+                    </button>
+
                     <button onClick={sair} type="button" className="btn btn-light text-danger fw-bold w-100 d-flex align-items-center justify-content-center py-2 rounded-3 shadow-sm align-middle" style={{ border: "1px solid #ffe4e6", backgroundColor: "#fff5f5" }}>
                         <i className="bi bi-box-arrow-left me-2 fs-5"></i> Sair do Sistema
                     </button>

@@ -8,9 +8,9 @@ import supabase from '../conexao/supabase'
 export default function CadastroClientes() {
 
     const [nome, alteraNome] = useState("")
-    const [data_nascimento, alteraData_Nascimento] = useState()
-    const [cpf, alteraCpf] = useState()
-    const [telefone, alteraTelefone] = useState()
+    const [data_nascimento, alteraData_Nascimento] = useState("")
+    const [cpf, alteraCpf] = useState("")
+    const [telefone, alteraTelefone] = useState("")
     const [email, alteraEmail] = useState("")
     const [endereco, alteraEndereco] = useState("")
 
@@ -29,9 +29,9 @@ export default function CadastroClientes() {
     function cancelaEdicao() {
         alteraEditando(null)
         alteraNome("")
-        alteraData_Nascimento()
+        alteraData_Nascimento("")
         alteraCpf("")
-        alteraTelefone()
+        alteraTelefone("")
         alteraEmail("")
         alteraEndereco("")
     }
@@ -74,9 +74,9 @@ export default function CadastroClientes() {
         if (error == null) {
             alert("Cliente cadastrado com sucesso!")
             alteraNome("")
-            alteraData_Nascimento()
+            alteraData_Nascimento("")
             alteraCpf("")
-            alteraTelefone()
+            alteraTelefone("")
             alteraEmail("")
             alteraEndereco("")
 

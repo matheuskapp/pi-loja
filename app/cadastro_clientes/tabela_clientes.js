@@ -82,7 +82,7 @@ function TabelaClientes({ listaClientes, pesquisar, pesquisaClientes, alteraPesq
                                     <td>{item.endereco}</td>
                                     <td>
                                         <button
-                                            onClick={editar(item)}
+                                            onClick={() => editar(item)}
                                             className="btn btn-warning"
                                             data-bs-toggle="modal"
                                             data-bs-target="#modaledicao"

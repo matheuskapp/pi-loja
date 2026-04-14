@@ -14,10 +14,10 @@ export function BotaoAdicionarProdutos() {
 
     const [nome, alteraNome] = useState("")
     const [sku, alteraSku] = useState("")
-    const [preco, alteraPreco] = useState()
+    const [preco, alteraPreco] = useState("")
     // const [status, alteraStatus] = useState("")
     // const [desconto, alteraDesconto] = useState("")
-    const [quantidade, alteraQuantidade] = useState()
+    const [quantidade, alteraQuantidade] = useState("")
     const [descricao, alteraDescricao] = useState("")
     const [produtos, alteraProdutos] = useState([])
 

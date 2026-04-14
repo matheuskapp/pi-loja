@@ -11,7 +11,7 @@ export default function dashboard() {
   });
 
   return (
-    <div style={{ display: "flex", backgroundColor: "#f4f7f6", minHeight: "100vh" }}>
+    <div style={{ display: "flex", backgroundColor: "var(--bg-body)", minHeight: "100vh" }}>
 
       <BarraLateral />
 
@@ -21,7 +21,7 @@ export default function dashboard() {
           <div>
             <h1 className="fw-bold mb-1" style={{ letterSpacing: "-1px" }}>Dashboard</h1>
             <p className="text-muted mb-0">
-              Gestão Boy+ Plus Size • <span className="fw-semibold text-dark">{dataAtual}</span>
+              <span className="fw-semibold text-dark">{dataAtual}</span>
             </p>
           </div>
           

@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import supabase from "../conexao/supabase";
 import BarraLateral from "../components/barra_lateral";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function GestaoCaixa() {
     const [caixaAberto, setCaixaAberto] = useState(null);
@@ -10,6 +12,7 @@ export default function GestaoCaixa() {
     const [filtroDias, setFiltroDias] = useState("0");
     const [totalVendas, setTotalVendas] = useState(0);
     const [vendaSelecionada, setVendaSelecionada] = useState(null);
+    const [idPrioridade, setIdPrioridade] = useState(null);
 
     // Estados para Paginação
     const [pagina, setPagina] = useState(0);
@@ -33,7 +36,8 @@ export default function GestaoCaixa() {
         if (data) setCaixaAberto(data);
     }
 
-    async function buscarHistorico(dias, paginaAtual) {
+    async function buscarHistorico(dias, paginaAtual, prioId = null) {
+        const idAlvo = prioId || idPrioridade;
         const dataInicio = new Date();
         dataInicio.setHours(0, 0, 0, 0);
         if (dias !== "0") {
@@ -43,7 +47,6 @@ export default function GestaoCaixa() {
         const desde = paginaAtual * itensPorPagina;
         const ate = desde + itensPorPagina - 1;
 
-        // Busca dados com contagem exata para a paginação
         const { data, error, count } = await supabase
             .from('vendas')
             .select(`
@@ -52,17 +55,19 @@ export default function GestaoCaixa() {
                 produtos (nome, preco)
             `, { count: 'exact' })
             .gte('created_at', dataInicio.toISOString())
-            .order('created_at', { ascending: false })
+            .order('id', { ascending: false })
             .range(desde, ate);
 
         if (!error) {
-            setVendasPeriodo(data || []);
-            
-            // Calcula o total de páginas baseado no count do banco
+            const ordenado = (data || []).sort((a, b) => {
+                if (String(a.id) === String(idAlvo)) return -1;
+                if (String(b.id) === String(idAlvo)) return 1;
+                return 0;
+            });
+            setVendasPeriodo(ordenado);
             const totalPags = Math.ceil(count / itensPorPagina);
             setTotalPaginas(totalPags || 1);
 
-            // Busca a soma total de todas as vendas do período (não apenas da página)
             const { data: todasVendas } = await supabase
                 .from('vendas')
                 .select('total_compra')
@@ -74,7 +79,7 @@ export default function GestaoCaixa() {
     }
 
     async function abrirCaixa() {
-        if (!valorInicial) return alert("Defina o troco inicial!");
+        if (!valorInicial) return toast.warning("Defina o troco inicial!", { icon: "💰" });
         const { error } = await supabase.from('caixas').insert([
             { valor_inicial: Number(valorInicial), status: 'aberto', valor_total: Number(valorInicial) }
         ]);
@@ -90,97 +95,124 @@ export default function GestaoCaixa() {
     }
 
     return (
-        <div style={{ display: "flex", backgroundColor: "#f4f7f6", minHeight: "100vh" }}>
+        <div style={{ display: "flex", backgroundColor: "var(--bg-body)", minHeight: "100vh" }}>
             <BarraLateral />
-            <main style={{ marginLeft: "260px", width: "100%", padding: "40px" }}>
+            <main style={{ marginLeft: "260px", width: "100%", padding: "40px" }} className="pagina-caixa">
                 
                 <div className="d-flex justify-content-between align-items-center mb-5">
                     <div>
-                        <h1 className="fw-bold mb-1 text-dark" style={{ letterSpacing: "-1px" }}>Gestão Financeira</h1>
+                        <h1 className="fw-bold mb-1" style={{ letterSpacing: "-1px" }}>Gestão Financeira</h1>
                         <p className="text-muted mb-0">
                             Controle de Caixa Boy+ Plus • <span className="fw-semibold text-dark">Fluxo e Histórico</span>
                         </p>
                     </div>
 
-                    <div className="btn-group shadow-sm bg-white rounded-3 p-1">
-                        <button className={`btn btn-sm px-3 ${filtroDias === '0' ? 'btn-primary' : 'btn-light border-0'}`} onClick={() => {setFiltroDias('0'); setPagina(0);}}>Hoje</button>
-                        <button className={`btn btn-sm px-3 ${filtroDias === '7' ? 'btn-primary' : 'btn-light border-0'}`} onClick={() => {setFiltroDias('7'); setPagina(0);}}>7 Dias</button>
-                        <button className={`btn btn-sm px-3 ${filtroDias === '30' ? 'btn-primary' : 'btn-light border-0'}`} onClick={() => {setFiltroDias('30'); setPagina(0);}}>30 Dias</button>
+                    <div className="actions-bar shadow-sm bg-white rounded-pill p-1 border">
+                        <button className={`btn btn-sm px-4 rounded-pill fw-bold ${filtroDias === '0' ? 'btn-primary shadow-sm' : 'btn-light border-0'}`} onClick={() => {setFiltroDias('0'); setPagina(0);}}>Hoje</button>
+                        <button className={`btn btn-sm px-4 rounded-pill fw-bold ${filtroDias === '7' ? 'btn-primary shadow-sm' : 'btn-light border-0'}`} onClick={() => {setFiltroDias('7'); setPagina(0);}}>7 Dias</button>
+                        <button className={`btn btn-sm px-4 rounded-pill fw-bold ${filtroDias === '30' ? 'btn-primary shadow-sm' : 'btn-light border-0'}`} onClick={() => {setFiltroDias('30'); setPagina(0);}}>30 Dias</button>
                     </div>
                 </div>
 
-                <div className="row g-4">
+                <div className="row g-4 mb-5">
                     <div className="col-md-5">
                         {!caixaAberto ? (
-                            <div className="card shadow-sm border-0 p-4 rounded-4 text-center bg-white h-100 d-flex flex-column justify-content-center">
+                            <div className="card shadow border-0 p-4 rounded-4 text-center bg-white h-100 d-flex flex-column justify-content-center">
+                                <div className="avatar-circle mx-auto mb-3" style={{ width: '60px', height: '60px', fontSize: '24px' }}>💰</div>
                                 <h5 className="fw-bold">Caixa Fechado</h5>
                                 <p className="text-muted small">Insira o fundo de troco para começar</p>
-                                <input type="number" className="form-control mb-3 text-center" placeholder="R$ 0,00" value={valorInicial} onChange={(e)=>setValorInicial(e.target.value)} />
-                                <button onClick={abrirCaixa} className="btn btn-primary fw-bold">Abrir Caixa</button>
+                                <input type="number" className="form-control mb-3 text-center bg-light border-0 py-2" placeholder="R$ 0,00" value={valorInicial} onChange={(e)=>setValorInicial(e.target.value)} />
+                                <button onClick={abrirCaixa} className="btn btn-gradient fw-bold py-2">Abrir Caixa</button>
                             </div>
                         ) : (
-                            <div className="card shadow-sm border-0 p-4 rounded-4 bg-white border-start border-success border-5">
-                                <h6 className="text-success fw-bold">CAIXA ABERTO</h6>
-                                <div className="my-3">
-                                    <div className="d-flex justify-content-between mb-1">
-                                        <small className="text-muted">Abertura (Troco):</small>
-                                        <span className="fw-bold text-secondary text-end">R$ {Number(caixaAberto.valor_inicial).toFixed(2)}</span>
-                                    </div>
-                                    <div className="d-flex justify-content-between mb-1">
-                                        <small className="text-muted">Vendas no Período:</small>
-                                        <span className="fw-bold text-success text-end">+ R$ {totalVendas.toFixed(2)}</span>
-                                    </div>
-                                    <hr />
-                                    <small className="text-muted d-block text-end">Saldo Total:</small>
-                                    <h2 className="fw-bold text-dark text-end">R$ {(caixaAberto.valor_inicial + totalVendas).toFixed(2)}</h2>
+                            <div className="card shadow border-0 p-4 rounded-4 bg-white border-start border-success border-5 h-100">
+                                <div className="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 className="text-success fw-bold mb-0">CAIXA ABERTO</h6>
+                                    <span className="badge bg-success-subtle text-success">Em Operação</span>
                                 </div>
-                                <button onClick={fecharCaixa} className="btn btn-outline-danger btn-sm w-100 fw-bold">Fechar Dia</button>
+                                <div className="my-2">
+                                    <div className="d-flex justify-content-between mb-2">
+                                        <small className="text-muted fw-medium">Troco Inicial:</small>
+                                        <span className="fw-bold text-dark">R$ {Number(caixaAberto.valor_inicial).toFixed(2)}</span>
+                                    </div>
+                                    <div className="d-flex justify-content-between mb-2">
+                                        <small className="text-muted fw-medium">Vendas ({filtroDias === '0' ? 'Hoje' : 'Período'}):</small>
+                                        <span className="fw-bold text-success">+ R$ {totalVendas.toFixed(2)}</span>
+                                    </div>
+                                    <div className="border-top pt-3 mt-2">
+                                        <small className="text-muted d-block text-end small fw-bold">SALDO EM GAVETA</small>
+                                        <h2 className="fw-bold text-dark text-end mb-0" style={{ letterSpacing: '-1.5px' }}>R$ {(caixaAberto.valor_inicial + totalVendas).toFixed(2)}</h2>
+                                    </div>
+                                </div>
+                                <button onClick={fecharCaixa} className="btn btn-outline-danger btn-sm w-100 fw-bold rounded-3 mt-3 py-2">Fechar Dia</button>
                             </div>
                         )}
                     </div>
 
                     <div className="col-md-7">
-                        <div className="card shadow-sm border-0 p-4 rounded-4 bg-primary text-white h-100">
-                            <h6 className="fw-bold opacity-75">TOTAL NO PERÍODO ({filtroDias === '0' ? 'Hoje' : filtroDias + ' dias'})</h6>
-                            <h1 className="display-5 fw-bold mb-0">R$ {totalVendas.toFixed(2)}</h1>
-                            <small>Soma baseada no filtro selecionado</small>
+                        <div className="card shadow border-0 p-4 rounded-4 bg-primary text-white h-100 d-flex flex-column justify-content-center" style={{ background: 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)' }}>
+                            <div className="d-flex align-items-center mb-2">
+                                <i className="bi bi-graph-up-arrow me-2 fs-5"></i>
+                                <h6 className="fw-bold opacity-75 mb-0 uppercase small">TOTAL ACUMULADO</h6>
+                            </div>
+                            <h1 className="display-4 fw-bold mb-1" style={{ letterSpacing: '-2px' }}>R$ {totalVendas.toFixed(2)}</h1>
+                            <p className="mb-0 opacity-75 small">Soma baseada no filtro selecionado ({filtroDias === '0' ? 'Hoje' : filtroDias + ' dias'})</p>
                         </div>
                     </div>
                 </div>
 
-                <div className="card shadow-sm border-0 rounded-4 mt-4 bg-white overflow-hidden">
-                    <div className="p-3 border-bottom">
-                        <h6 className="fw-bold mb-0">Listagem de Vendas</h6>
+                <div className="table-card">
+                    <div className="p-4 bg-white border-bottom d-flex justify-content-between align-items-center">
+                        <h6 className="fw-bold mb-0">Histórico de Movimentações</h6>
+                        <span className="badge bg-light text-muted border fw-bold text-dark">{vendasPeriodo.length} Registros</span>
                     </div>
-                    <div className="table-responsive">
-                        <table className="table table-hover align-middle mb-0">
-                            <thead className="table-light">
-                                <tr>
-                                    <th className="ps-4">Hora</th>
-                                    <th>Total</th>
-                                    <th>Qtd Itens</th>
-                                    <th className="text-end pe-4">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {vendasPeriodo.map((v) => (
+                    <table className="premium-table">
+                        <thead>
+                            <tr>
+                                <th className="ps-4">HORÁRIO / CLIENTE</th>
+                                <th className="text-center">QTD ITENS</th>
+                                <th className="text-center">PAGAMENTO</th>
+                                <th className="text-end pe-4">VALOR TOTAL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {vendasPeriodo.length > 0 ? (
+                                vendasPeriodo.map((v) => (
                                     <tr key={v.id}>
-                                        <td className="ps-4 text-muted">{new Date(v.created_at).toLocaleTimeString('pt-BR')}</td>
-                                        <td className="fw-bold text-primary">R$ {Number(v.total_compra).toFixed(2)}</td>
-                                        <td>{v.quantidade} unid.</td>
+                                        <td className="ps-4">
+                                            <div className="d-flex align-items-center py-1">
+                                                <div className="avatar-circle me-3" style={{ background: 'var(--input-bg)', color: 'var(--text-main)' }}>
+                                                    <i className="bi bi-clock-history"></i>
+                                                </div>
+                                                <div>
+                                                    <p className="fw-bold text-dark mb-0 fs-6">{new Date(v.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</p>
+                                                    <small className="text-muted">{v.clientes?.nome || "Venda Avulsa"}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="text-center text-muted fw-medium">{v.quantidade} unid.</td>
+                                        <td className="text-center">
+                                            <span className="badge bg-light text-dark border px-3 py-1 rounded-pill">{v.forma_pagamento}</span>
+                                        </td>
                                         <td className="text-end pe-4">
-                                            <button className="btn btn-sm btn-light border" onClick={() => setVendaSelecionada(v)}>Ver</button>
+                                            <div className="d-flex flex-column align-items-end">
+                                                <span className="fw-bold text-primary fs-6">R$ {Number(v.total_compra).toFixed(2)}</span>
+                                                <button className="btn btn-link btn-sm p-0 m-0 text-decoration-none small" onClick={() => setVendaSelecionada(v)}>Ver Detalhes</button>
+                                            </div>
                                         </td>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="4" className="text-center text-muted py-5">Nenhuma venda registrada no período selecionado.</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
 
-                    {/* BARRA DE PAGINAÇÃO DINÂMICA */}
-                    <div className="d-flex justify-content-between align-items-center p-3 border-top bg-light">
+                    <div className="premium-pagination d-flex justify-content-between align-items-center p-4">
                         <button
-                            className="btn btn-outline-secondary btn-sm px-4 fw-bold"
+                            className="btn btn-outline-secondary btn-sm px-4 fw-bold rounded-pill"
                             onClick={() => setPagina(p => Math.max(0, p - 1))}
                             disabled={pagina === 0}
                         >
@@ -190,7 +222,7 @@ export default function GestaoCaixa() {
                             Página {pagina + 1} de {totalPaginas}
                         </span>
                         <button
-                            className="btn btn-outline-secondary btn-sm px-4 fw-bold"
+                            className="btn btn-outline-secondary btn-sm px-4 fw-bold rounded-pill"
                             onClick={() => setPagina(p => p + 1)}
                             disabled={pagina + 1 >= totalPaginas}
                         >
@@ -199,49 +231,66 @@ export default function GestaoCaixa() {
                     </div>
                 </div>
 
-                {/* MODAL DE DETALHES */}
                 {vendaSelecionada && (
-                    <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                    <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}>
                         <div className="modal-dialog modal-dialog-centered">
-                            <div className="modal-content border-0 shadow rounded-4">
-                                <div className="modal-header border-0 pb-0">
-                                    <h5 className="fw-bold">Detalhes da Venda</h5>
+                            <div className="modal-content border-0 shadow-lg rounded-4">
+                                <div className="modal-header border-bottom p-4">
+                                    <h5 className="fw-bold mb-0">Detalhes da Transação</h5>
                                     <button type="button" className="btn-close" onClick={() => setVendaSelecionada(null)}></button>
                                 </div>
-                                <div className="modal-body py-4">
-                                    <div className="mb-3">
-                                        <small className="text-muted d-block small uppercase fw-bold">CLIENTE</small>
-                                        <p className="mb-0 fw-semibold">{vendaSelecionada.clientes?.nome || "Consumidor Final"}</p>
-                                    </div>
-                                    <div className="mb-3">
-                                        <small className="text-muted d-block small uppercase fw-bold">PRODUTO</small>
-                                        <p className="mb-0 fw-semibold">{vendaSelecionada.produtos?.nome}</p>
-                                        <small className="text-muted">{vendaSelecionada.quantidade} unidades x R$ {vendaSelecionada.produtos?.preco}</small>
-                                    </div>
-                                    <div className="row bg-light p-3 rounded-3 g-2">
-                                        <div className="col-6">
-                                            <small className="text-muted d-block">Pagamento</small>
-                                            <span className="badge bg-white text-dark border">{vendaSelecionada.forma_pagamento}</span>
+                                <div className="modal-body p-4">
+                                    <div className="mb-4">
+                                        <small className="text-muted d-block small uppercase fw-bold mb-1">DADOS DO CLIENTE</small>
+                                        <div className="d-flex align-items-center bg-light p-3 rounded-3">
+                                            <div className="avatar-circle me-3" style={{ width: '40px', height: '40px' }}>
+                                                {vendaSelecionada.clientes?.nome?.charAt(0) || 'C'}
+                                            </div>
+                                            <p className="mb-0 fw-bold fs-6">{vendaSelecionada.clientes?.nome || "Consumidor Final"}</p>
                                         </div>
-                                        <div className="col-6 text-end">
-                                            <small className="text-muted d-block">Desconto</small>
-                                            <span className="text-danger">- R$ {vendaSelecionada.desconto}</span>
+                                    </div>
+                                    <div className="mb-4">
+                                        <small className="text-muted d-block small uppercase fw-bold mb-1">PRODUTOS VENDIDOS</small>
+                                        <div className="border rounded-3 p-3 bg-white">
+                                            <div className="d-flex justify-content-between align-items-center mb-1">
+                                                <p className="mb-0 fw-semibold">{vendaSelecionada.produtos?.nome}</p>
+                                                <span className="badge bg-light text-dark border">x{vendaSelecionada.quantidade}</span>
+                                            </div>
+                                            <small className="text-muted">Preço Unit: R$ {vendaSelecionada.produtos?.preco}</small>
                                         </div>
-                                        <div className="col-12 mt-2 pt-2 border-top">
-                                            <div className="d-flex justify-content-between align-items-center">
-                                                <span className="fw-bold">Total Pago:</span>
-                                                <h4 className="fw-bold text-success mb-0">R$ {vendaSelecionada.total_compra}</h4>
+                                    </div>
+                                    <div className="bg-light p-3 rounded-4 border-start border-4 border-success">
+                                        <div className="row g-2">
+                                            <div className="col-6">
+                                                <small className="text-muted d-block mb-1">Forma de Pagto</small>
+                                                <span className="fw-bold text-dark">{vendaSelecionada.forma_pagamento}</span>
+                                            </div>
+                                            <div className="col-6 text-end">
+                                                <small className="text-muted d-block mb-1">Desconto</small>
+                                                <span className="text-danger fw-bold">- R$ {vendaSelecionada.desconto}</span>
+                                            </div>
+                                            <div className="col-12 mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
+                                                <span className="fw-bold text-muted uppercase small">Total Recebido:</span>
+                                                <h3 className="fw-bold text-success mb-0">R$ {Number(vendaSelecionada.total_compra).toFixed(2)}</h3>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="modal-footer border-0 pt-0">
-                                    <button type="button" className="btn btn-secondary w-100 fw-bold" onClick={() => setVendaSelecionada(null)}>Fechar</button>
+                                <div className="modal-footer border-0 p-4 pt-0">
+                                    <button type="button" className="btn btn-secondary w-100 fw-bold py-2 rounded-3" onClick={() => setVendaSelecionada(null)} text="Fechar">Fechar Detalhes</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 )}
+                <ToastContainer
+                    position="top-center"
+                    autoClose={2500}
+                    theme="light"
+                    toastClassName="premium-toast"
+                    hideProgressBar={false}
+                    newestOnTop={true}
+                />
             </main>
         </div>
     );

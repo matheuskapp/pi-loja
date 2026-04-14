@@ -13,7 +13,7 @@ import {
 
 export default function DashBoard() {
   const [somaVendas, setSomaVendas] = useState(0);
-  const [totalProdutosCriticos, setTotalProdutosCriticos] = useState(0); // Novo estado para o número total
+  const [totalProdutosCriticos, setTotalProdutosCriticos] = useState(0); 
   const [estoqueBaixo, setEstoqueBaixo] = useState([]);
   const [ticketMedio, setTicketMedio] = useState(0);
   const [dadosGrafico, setDadosGrafico] = useState([]);
@@ -30,7 +30,6 @@ export default function DashBoard() {
   }
 
   async function buscaEstoque() {
-    // 1. Busca todos que estão abaixo de 10 para o contador do card
     const { count, error: errCount } = await supabase
       .from('produtos')
       .select('*', { count: 'exact', head: true })
@@ -38,7 +37,6 @@ export default function DashBoard() {
 
     if (!errCount) setTotalProdutosCriticos(count || 0);
 
-    // 2. Busca apenas os 5 mais críticos (menor quantidade) para a lista de baixo
     const { data, error } = await supabase
       .from('produtos')
       .select('*')
@@ -94,7 +92,6 @@ export default function DashBoard() {
     }
   };
 
-
   async function buscaMaisVendidos() {
     const { data: topProdutos } = await supabase.rpc('top_produtos');
     const { data: produtos } = await supabase.from('produtos').select('*');
@@ -122,75 +119,73 @@ export default function DashBoard() {
     <div className="container-fluid px-0">
       <div className="row g-4">
         <div className="col-md-3">
-          <div className="card shadow-sm border-0 p-3 bg-white rounded-4 h-100">
-            <h6 className="text-muted fw-bold">Vendas</h6>
-            <h4 className="fw-bold text-primary">{somaVendas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h4>
-            <small className="text-muted">Total no período</small>
+          <div className="card shadow border-0 p-4 rounded-4 h-100 bg-white">
+            <h6 className="text-muted fw-bold small uppercase">Vendas</h6>
+            <h4 className="fw-bold text-primary mb-0" style={{ letterSpacing: '-1px' }}>{somaVendas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h4>
+            <small className="text-muted mt-2 d-block">Total no período</small>
           </div>
         </div>
 
         <div className="col-md-3">
-          <div className="card shadow-sm border-0 p-3 bg-white rounded-4 h-100">
-            <h6 className="text-muted fw-bold">Ticket Médio</h6>
-            <h4 className="fw-bold">{ticketMedio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h4>
-            <small className="text-muted">Média por cliente</small>
+          <div className="card shadow border-0 p-4 rounded-4 h-100 bg-white">
+            <h6 className="text-muted fw-bold small uppercase">Ticket Médio</h6>
+            <h4 className="fw-bold mb-0" style={{ letterSpacing: '-1px' }}>{ticketMedio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h4>
+            <small className="text-muted mt-2 d-block">Média por cliente</small>
           </div>
         </div>
 
         <div className="col-md-3">
-          <div className={`card shadow-sm border-0 p-3 rounded-4 h-100 ${caixaStatus ? 'bg-white' : 'bg-light'}`}>
-            <h6 className="text-muted fw-bold">Caixa Atual</h6>
-            <h4 className={`fw-bold ${caixaStatus ? 'text-success' : 'text-secondary'}`}>
-              {caixaStatus ? (Number(caixaStatus.valor_inicial) + somaVendas).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : "Caixa Fechado"}
+          <div className={`card shadow border-0 p-4 rounded-4 h-100 bg-white ${caixaStatus ? 'border-start border-success border-4' : ''}`}>
+            <h6 className="text-muted fw-bold small uppercase">Caixa Atual</h6>
+            <h4 className={`fw-bold mb-0 ${caixaStatus ? 'text-success' : 'text-secondary'}`} style={{ letterSpacing: '-1px' }}>
+              {caixaStatus ? (Number(caixaStatus.valor_inicial) + somaVendas).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : "Fechado"}
             </h4>
-            <small className="text-muted">{caixaStatus ? "Dinheiro em gaveta" : "Aguardando abertura"}</small>
+            <small className="text-muted mt-2 d-block">{caixaStatus ? "Dinheiro em gaveta" : "Aguardando abertura"}</small>
           </div>
         </div>
 
-        {/* CARD DINÂMICO DE ALERTA */}
         <div className="col-md-3">
           <div
             onClick={scrollParaEstoque}
             style={{ cursor: 'pointer' }}
-            className={`card shadow-sm border-0 p-3 rounded-4 h-100 border-start border-4 ${totalProdutosCriticos > 0 ? 'border-danger bg-white' : 'border-success bg-white'}`}
+            className={`card shadow border-0 p-4 rounded-4 h-100 border-start border-4 bg-white ${totalProdutosCriticos > 0 ? 'border-danger' : 'border-success'}`}
           >
-            <h6 className="text-muted fw-bold">Produtos abaixo do Mínimo</h6>
-            <h4 className={`fw-bold ${totalProdutosCriticos > 0 ? 'text-danger' : 'text-success'}`}>
-              {totalProdutosCriticos}
+            <h6 className="text-muted fw-bold small uppercase">Reposição</h6>
+            <h4 className={`fw-bold mb-0 ${totalProdutosCriticos > 0 ? 'text-danger' : 'text-success'}`} style={{ letterSpacing: '-1px' }}>
+              {totalProdutosCriticos} itens
             </h4>
-            <small className="text-muted">Total de itens no estoque baixo (Clique para ver)</small>
+            <small className="text-muted mt-2 d-block">Estoque crítico</small>
           </div>
         </div>
       </div>
 
-      {/* GRAFICO */}
-      <div className="row mt-4">
+      <div className="row mt-5">
         <div className="col-12">
-          <div className="card shadow-sm border-0 p-4 bg-white rounded-4">
-            <div className="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-3">
-              <h5 className="fw-bold mb-0">Fluxo de Vendas</h5>
+          <div className="card shadow border-0 p-4 bg-white rounded-4 overflow-hidden">
+            <div className="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-3 border-bottom pb-4">
+              <h5 className="fw-bold mb-0">Fluxo de Faturamento</h5>
               <div className="d-flex gap-2 flex-wrap">
-                <select className="form-select w-auto shadow-sm" value={tipoFiltro} onChange={(e) => setTipoFiltro(e.target.value)}>
-                  <option value="hoje">Hoje (Por Hora)</option>
-                  <option value="mes">Comparativo Mensal</option>
-                  <option value="personalizado">Período Personalizado</option>
+                <select className="form-select w-auto border-0 shadow-sm bg-light fw-semibold" value={tipoFiltro} onChange={(e) => setTipoFiltro(e.target.value)}>
+                  <option value="hoje">Hoje</option>
+                  <option value="mes">Mensal</option>
+                  <option value="personalizado">Personalizado</option>
                 </select>
                 {tipoFiltro === 'personalizado' && (
                   <>
-                    <input type="date" className="form-control w-auto shadow-sm" value={dataInicio} onChange={(e) => setDataInicio(e.target.value)} />
-                    <input type="date" className="form-control w-auto shadow-sm" value={dataFim} onChange={(e) => setDataFim(e.target.value)} />
+                    <input type="date" className="form-control w-auto border-0 shadow-sm bg-light" value={dataInicio} onChange={(e) => setDataInicio(e.target.value)} />
+                    <input type="date" className="form-control w-auto border-0 shadow-sm bg-light" value={dataFim} onChange={(e) => setDataFim(e.target.value)} />
                   </>
                 )}
               </div>
             </div>
-            <div style={{ width: '100%', height: 300 }}>
+            <div style={{ width: '100%', height: 320 }}>
               <ResponsiveContainer>
                 <BarChart data={dadosGrafico}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                  <XAxis dataKey="label" axisLine={false} tickLine={false} tick={{ fill: '#999', fontSize: 12 }} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#999', fontSize: 12 }} tickFormatter={(val) => `R$${val}`} />
-                  <Tooltip cursor={{ fill: '#f8f9fa' }} contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
-                  <Bar dataKey="total" fill="#0d6efd" radius={[6, 6, 0, 0]} barSize={45} />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border-color)" />
+                  <XAxis dataKey="label" axisLine={false} tickLine={false} tick={{ fill: 'var(--text-muted)', fontSize: 12 }} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--text-muted)', fontSize: 12 }} tickFormatter={(val) => `R$${val}`} />
+                  <Tooltip cursor={{ fill: 'var(--table-row-hover)' }} contentStyle={{ backgroundColor: 'var(--bg-card)', borderRadius: '12px', border: '1px solid var(--border-color)', color: 'var(--text-main)', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
+                  <Bar dataKey="total" fill="#6366f1" radius={[6, 6, 0, 0]} barSize={45} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -198,37 +193,68 @@ export default function DashBoard() {
         </div>
       </div>
 
-      <div className="row mt-4">
-        {/* LISTA MAIS VENDIDOS */}
+      <div className="row mt-5">
         <div className="col-md-6 mb-4">
-          <div className="card shadow-sm border-0 p-4 bg-white rounded-4 h-100">
-            <h5 className="fw-bold mb-3">Top 5 Mais Vendidos</h5>
-            <div className="list-group list-group-flush">
-              {listaVendas.map((item, index) => (
-                <div key={index} className="list-group-item px-0 border-0 d-flex justify-content-between align-items-center">
-                  <div>
-                    <span className="badge bg-light text-dark me-2">{index + 1}º</span>
-                    <span className="fw-semibold">{item.produto_nome}</span>
-                  </div>
-                  <span className="badge rounded-pill bg-primary">{item.quantidade} unid.</span>
-                </div>
-              ))}
+          <div className="table-card h-100">
+            <div className="p-4 bg-white border-bottom">
+              <h5 className="fw-bold mb-0">🔥 Top 5 Mais Vendidos</h5>
             </div>
+            <table className="premium-table">
+              <thead>
+                <tr>
+                  <th className="ps-4">PRODUTO</th>
+                  <th className="text-end pe-4">QUANTIDADE</th>
+                </tr>
+              </thead>
+              <tbody>
+                {listaVendas.map((item, index) => (
+                  <tr key={index}>
+                    <td className="ps-4">
+                      <div className="d-flex align-items-center">
+                        <span className="badge bg-light-subtle text-muted text-dark me-3 rounded-circle d-flex align-items-center justify-content-center" style={{ width: '28px', height: '28px', fontSize: '12px', border: '1px solid var(--border-color)' }}>{index + 1}</span>
+                        <span className="fw-bold text-dark">{item.produto_nome}</span>
+                      </div>
+                    </td>
+                    <td className="text-end pe-4">
+                      <span className="badge bg-primary-subtle text-primary border border-primary px-3 rounded-pill fw-bold">{item.quantidade} unid.</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
-        {/* LISTA CRÍTICA DE ESTOQUE */}
         <div id="sessao-estoque" className="col-md-6 mb-4">
-          <div className="card shadow-sm border-0 p-4 bg-white rounded-4 h-100">
-            <h5 className="fw-bold mb-3 text-danger">Top 5 Críticos (Reposição Imediata)</h5>
-            <div className="list-group list-group-flush">
-              {estoqueBaixo.map((item, index) => (
-                <div key={index} className="list-group-item px-0 border-0 d-flex justify-content-between align-items-center">
-                  <span className="fw-semibold">{item.nome}</span>
-                  <span className="badge bg-danger-subtle text-danger fw-bold">{item.quantidade} em estoque</span>
-                </div>
-              ))}
+          <div className="table-card h-100">
+            <div className="p-4 bg-white border-bottom">
+              <h5 className="fw-bold mb-0 text-danger">⚠️ Reposição Imediata</h5>
             </div>
+            <table className="premium-table">
+              <thead>
+                <tr>
+                  <th className="ps-4">PRODUTO CRÍTICO</th>
+                  <th className="text-end pe-4">EM ESTOQUE</th>
+                </tr>
+              </thead>
+              <tbody>
+                {estoqueBaixo.map((item, index) => (
+                  <tr key={index}>
+                    <td className="ps-4 fw-bold text-dark">{item.nome}</td>
+                    <td className="text-end pe-4">
+                      <span className="badge bg-danger text-white px-3 rounded-pill fw-bold shadow-sm">{item.quantidade} restando</span>
+                    </td>
+                  </tr>
+                ))}
+                {estoqueBaixo.length === 0 && (
+                  <tr>
+                    <td colSpan="2" className="text-center py-5 text-success fw-bold">
+                        <i className="bi bi-check2-circle me-2"></i> Estoque em dia!
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
