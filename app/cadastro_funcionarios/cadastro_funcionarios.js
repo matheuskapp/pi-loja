@@ -235,7 +235,7 @@ export default function PaginaFuncionarios() {
                                         </div>
                                         <div>
                                             <p className="fw-bold text-dark mb-0 fs-6">{item.nome}</p>
-                                            <small className="text-muted">{item.email || "Sem e-mail"}</small>
+                                            
                                         </div>
                                     </div>
                                 </td>
