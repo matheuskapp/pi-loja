@@ -41,7 +41,7 @@ html, body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: var(--text-main) !important;
+    color: var(--text-main);
 }
 
 .text-dark {
@@ -85,12 +85,12 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--text-muted) !important;
 }
 
-a, .btn-link {
+a:not(.premium-btn):not(.btn):not(.outline-btn), .btn-link {
     color: #6366f1 !important;
     text-decoration: none !important;
 }
 
-a:hover, .btn-link:hover {
+a:not(.premium-btn):not(.btn):not(.outline-btn):hover, .btn-link:hover {
     color: #4f46e5 !important;
     text-decoration: underline !important;
 }
