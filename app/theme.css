@@ -106,6 +106,21 @@ a:not(.premium-btn):not(.btn):not(.outline-btn):hover, .btn-link:hover {
     color: var(--text-main) !important;
 }
 
+/* Cards com fundo gradiente: forçam texto branco independente do tema */
+.card-gradient {
+    background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%) !important;
+    border-color: transparent !important;
+    color: #ffffff !important;
+}
+
+.card-gradient * {
+    color: #ffffff !important;
+}
+
+.card-gradient .opacity-75 {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
 .table {
     color: var(--text-main) !important;
 }

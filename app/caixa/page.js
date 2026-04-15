@@ -150,7 +150,7 @@ export default function GestaoCaixa() {
                     </div>
 
                     <div className="col-md-7">
-                        <div className="card shadow border-0 p-4 rounded-4 bg-primary text-white h-100 d-flex flex-column justify-content-center" style={{ background: 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)' }}>
+                        <div className="card-gradient card shadow border-0 p-4 rounded-4 h-100 d-flex flex-column justify-content-center">
                             <div className="d-flex align-items-center mb-2">
                                 <i className="bi bi-graph-up-arrow me-2 fs-5"></i>
                                 <h6 className="fw-bold opacity-75 mb-0 uppercase small">TOTAL ACUMULADO</h6>
